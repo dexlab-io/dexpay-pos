@@ -6,6 +6,7 @@
 
 - [1. Motivation](#motivation)
 - [2. Project History](#history)
+- [3. User interface](#user-interface)
 
 ## Motivation
 
@@ -35,6 +36,13 @@ Being an open platform, Dexpay POS enables economic opportunities through equal 
 
 - [xPay won the POA 1st Prize at the CryptoLife Status Hackathon](https://medium.com/dexlab-io/xpay-won-the-poa-1st-prize-at-the-cryptolife-status-hackathon-in-prague-4945723169f5)
 - [UniPay won the first GoBUILD Hackathon](https://medium.com/gochain/2018-gobuild-finale-winners-5887c3ea9013)
+
+## User Interface
+Reference UI for tablet POS.
+
+![item list with images](https://github.com/dexlab-io/dexpay-pos/blob/feature/specs/docs/design/images/tablet-itemlist-0.png?raw=true)
+![item list no images](https://github.com/dexlab-io/dexpay-pos/blob/feature/specs/docs/design/images/tablet-itemlist-1.png?raw=true)
+
 
 ## Contribute
 
