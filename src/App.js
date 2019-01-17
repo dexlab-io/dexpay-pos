@@ -23,8 +23,6 @@ class App extends Component {
     await this.wallet.setWeb3();
     await this.wallet.fetchBalance();
     await this.wallet.getNetworkID()
-    console.log(this.wallet.balance);
-    console.log( this.wallet.networkID )
 
     // const watcher = new WatcherTx();
     // watcher.etherTransfers(posAddress)
