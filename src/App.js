@@ -5,7 +5,7 @@ import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 //import WatcherTx from './class/WatcherTx';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import { Error404, Payment } from './pages';
+import { Error404, Payment , POS} from './pages';
 const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
 
 const Dummy = () => {
@@ -35,6 +35,7 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={Dummy} />
           <Route path="/payment" exact component={Payment} />
+          <Route path="/pos" exact component={POS} />
           <Route component={Error404} />
         </Switch>
       </BrowserRouter>
