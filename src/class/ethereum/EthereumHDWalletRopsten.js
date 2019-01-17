@@ -2,9 +2,6 @@ import EthereumHDWallet from './EthereumHDWallet';
 import BigNumber from 'bignumber.js';
 import Token from '../Token';
 import { defaultTokens } from '../../utils/constants';
-import {
-    ETHEREUM_TESTNET_ROPSTEN,
-} from '../../utils/constants';
 
 export default class EthereumHDWalletRopsten extends EthereumHDWallet{
     /**
@@ -15,7 +12,6 @@ export default class EthereumHDWalletRopsten extends EthereumHDWallet{
         super(secret, address);
         this.type = 'EthereumHDWalletRopsten';
         this.name = 'Ropsten wallet';
-        this.networkName = ETHEREUM_TESTNET_ROPSTEN;
         this.networkUrl = 'https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB';
         this.API_URL = 'https://api-ropsten.etherscan.io/';
         this.CHAIN_ID = 3;

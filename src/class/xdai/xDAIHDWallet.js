@@ -14,7 +14,6 @@ export default class xDAIHDWallet extends EthereumHDWallet{
         this.type = 'xDAIHDWallet';
         this.name = 'xDAI Wallet';
         this.symbol = 'xDAI';
-        this.networkName = XDAI_NETWORK;
         this.networkUrl = 'https://dai.poa.network/';
         // this.CHAIN_ID = 64;
         this.API_URL = 'https://blockscout.com/poa/dai/';

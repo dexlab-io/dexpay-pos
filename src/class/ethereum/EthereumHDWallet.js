@@ -7,24 +7,9 @@ import { erc20Abi } from '../../utils/constants';
 import findIndex from 'lodash/findIndex';
 import CONF from '../../config';
 import isUndefined from 'lodash/isUndefined';
-import { defaultTokens } from '../../utils/constants';
 import Token from '../Token';
 import HDWallet from '../HDWallet';
-import {
-    ETHEREUM_NETWORK,
-} from '../../utils/constants';
-
-
 const RpcSubprovider = require('web3-provider-engine/subproviders/rpc.js')
-
-/**
- * TODO:
- * [x] Complete HD implementation tests
- * [ ] All the fetch*() should return BigNumber
- * [ ] Check for all the inputs in function
- * 
- * NOTE: Since JS doesn't support multiple inheritance, this implamentation (for now) is duplicated in EthereumWallet
- */
 
 export default class EthereumHDWallet extends HDWallet{
     /**
@@ -36,7 +21,6 @@ export default class EthereumHDWallet extends HDWallet{
         
         this.type = 'EthereumHDWallet';
         this.name = 'ETH Wallet';
-        this.networkName = ETHEREUM_NETWORK;
         this.networkUrl = 'https://mainnet.infura.io/Q1GYXZMXNXfKuURbwBWB';
         this.API_URL = 'https://api.etherscan.io/';
         this.CHAIN_ID = 1;
@@ -98,14 +82,12 @@ export default class EthereumHDWallet extends HDWallet{
                 .then(() => {
                     web3.eth.getAccounts(console.log);
                     this.web3 = new Web3(ethereum)
-                    console.log('Siamo enabled')
                     this.web3.eth.getAccounts(console.log);
                     resolve();
                 })
                 .catch(deniedAccessMessage => {
                     const deniedAccessError = Error(deniedAccessMessage.toString())
-                    console.log(deniedAccessError)
-                    //deniedAccessError.code = ETHEREUM_ACCESS_DENIED
+                    console.log('deniedAccessError', deniedAccessError)
                     resolve(deniedAccessError);
                 })
             // for legacy dapp browsers
@@ -114,7 +96,6 @@ export default class EthereumHDWallet extends HDWallet{
                 console.log('legacy dapp browsers')
                 resolve();
             } else {
-                console.log('PORCA PALETTA')
                 const engine = new ProviderEngine();
                 Web3.providers.HttpProvider.prototype.sendAsync = Web3.providers.HttpProvider.prototype.send
                 
@@ -150,7 +131,6 @@ export default class EthereumHDWallet extends HDWallet{
                 if (error) {
                     reject(error);
                 }
-                console.log('nonce', nonce)
                 this.nonce = nonce;
                 resolve(this.nonce);
             });
@@ -368,8 +348,6 @@ export default class EthereumHDWallet extends HDWallet{
                 const tokens = data.tokens.map(token => {
                     const tokenDecimal = parseInt(token.tokenInfo.decimals, 10);
                     const balance = parseFloat(new BigNumber(token.balance).div(new BigNumber(10).pow( tokenDecimal )).toString());
-
-                    //console.log(`${token.tokenInfo.symbol}: ${balance}`)
                     
                     return new Token(
                         token.tokenInfo.address,
@@ -383,8 +361,6 @@ export default class EthereumHDWallet extends HDWallet{
                     )
                 });
 
-                const coin = defaultTokens[0];
-                coin.balance = this.balance;
                 this.tokens = tokens;
                 return this.tokens;
             });
