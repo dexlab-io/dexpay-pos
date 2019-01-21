@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import WatcherTx, {ethToWei} from '../../class/WatcherTx';
+import WatcherTx from '../../class/WatcherTx';
+import { getTokenPrice } from '../../utils/Coingecko';
 
 const posAddress = '0xB599Ac9d4892f44fEAc6bec3314Ef58432Ae3c79';
 class Payment extends Component {
@@ -9,23 +10,26 @@ class Payment extends Component {
         qrImage: null,
         value: null,
         txState: null,
+        fiatPrices: null,
     }
 
-    componentDidMount() {
-        console.log('this.state', this.props.location.state)
+    async componentDidMount() {
+        const prices = await getTokenPrice();
+        const valueFiat = this.props.location.state.total;
+        const valueCrypto = parseFloat(valueFiat) / parseFloat(prices.usd);
 
-        const total = this.props.location.state.total;
-        ethToWei(total);
+        console.log('valueFiat', valueFiat)
 
         this.setState({
-            value: total,
-            txState: WatcherTx.STATES.PENDING
+            value: valueCrypto,
+            valueFiat,
+            txState: WatcherTx.STATES.PENDING,
+            fiatPrices: prices
         })
 
-        this.genQrCode(total);
+        this.genQrCode(valueCrypto);
         const watcher = new WatcherTx();
-        watcher.etherTransfers(posAddress, total, (data) => {
-            console.log('cb data', data);
+        watcher.etherTransfers(posAddress, valueCrypto, (data) => {
             this.setState({
                 txState: data.state,
                 txHash: data.txHash
@@ -49,7 +53,7 @@ class Payment extends Component {
     }
 
     render() {
-        const {value, txState, txHash} = this.state;
+        const {value, txState, txHash, valueFiat} = this.state;
         return (
           <Container>
               <Row>
@@ -57,7 +61,7 @@ class Payment extends Component {
                     { this.state.qrImage ? <img alt='Qr code payment' src={this.state.qrImage}/> : null }
                 </Col>
                 <Col sm="12" md={{ size: 6, offset: 3 }}>
-                    { txState === WatcherTx.STATES.PENDING ? `Waiting for payment ${value}ETH at address ${posAddress}` : null}
+                    { txState === WatcherTx.STATES.PENDING ? `Waiting for payment ${value.toPrecision(2)} ETH / ${valueFiat}$ at address ${posAddress}` : null}
                     { txState === WatcherTx.STATES.DETECTED ? `Payment detected, waiting for confirmation.` : null}
                     { txState === WatcherTx.STATES.CONFIRMED ? 
                         <div>

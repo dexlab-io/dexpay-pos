@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// https://min-api.cryptocompare.com/data/histohour?fsym=NEO&tsym=USD&limit=60&aggregate=3&e=CCCAGG
 export const getHistohour = net =>
   axios
     .get(

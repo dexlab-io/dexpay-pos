@@ -29,7 +29,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route path="/" exact component={POS} />
-          <Route path="/payment" component={Payment} />
+          <Route path="/payment/:id?" component={Payment} />
           <Route path="/pos" exact component={POS} />
           <Route component={Error404} />
         </Switch>

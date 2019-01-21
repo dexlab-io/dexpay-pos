@@ -10,21 +10,24 @@ export default {
       url: 'wss://mainnet.infura.io/_ws',
       provider: 'Infura',
       blockchain: 'Ethereum',
-      network: 'mainnet'
+      network: 'mainnet',
+      tokenEnabled: true,
     },
     'ropsten': {
       name: 'Ethereum (ropsten) by Infura',
       url: 'wss://ropsten.infura.io/_ws',
       provider: 'Infura',
       blockchain: 'Ethereum',
-      network: 'ropsten'
+      network: 'ropsten',
+      tokenEnabled: true,
     },
     'kovan': {
       name: 'Ethereum (kovan) by Infura',
       url: 'wss://kovan.infura.io/_ws',
       provider: 'Infura',
       blockchain: 'Ethereum',
-      network: 'kovan'
+      network: 'kovan',
+      tokenEnabled: true,
     },
   }
 };
