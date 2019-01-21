@@ -182,8 +182,6 @@ class Keypad extends React.Component {
               <CalculatorKey className="key-clear" onPress={() => clearDisplay ? this.clearDisplay() : this.clearAll()}>{clearText}</CalculatorKey>
             </div>
             <div className="digit-keys">
-              <CalculatorKey className="key-0" onPress={() => this.inputDigit(0)}>0</CalculatorKey>
-              <CalculatorKey className="key-dot" onPress={() => this.inputDot()}>●</CalculatorKey>
               <CalculatorKey className="key-1" onPress={() => this.inputDigit(1)}>1</CalculatorKey>
               <CalculatorKey className="key-2" onPress={() => this.inputDigit(2)}>2</CalculatorKey>
               <CalculatorKey className="key-3" onPress={() => this.inputDigit(3)}>3</CalculatorKey>
@@ -193,11 +191,14 @@ class Keypad extends React.Component {
               <CalculatorKey className="key-7" onPress={() => this.inputDigit(7)}>7</CalculatorKey>
               <CalculatorKey className="key-8" onPress={() => this.inputDigit(8)}>8</CalculatorKey>
               <CalculatorKey className="key-9" onPress={() => this.inputDigit(9)}>9</CalculatorKey>
+              <CalculatorKey onPress={() => this.inputDigit(0)}>0</CalculatorKey>
+              <CalculatorKey className="key-dot" onPress={() => this.inputDot()}>●</CalculatorKey>
+              <CalculatorKey onPress={() => this.inputDot()}>+</CalculatorKey>
             </div>
-          </div>
-          <div className="operator-keys">
+          </div>  
+        </div>
+        <div className="operator-keys">
             <CalculatorKey className="key-equals" onPress={() => this.props.onPay(displayValue) }>PAY</CalculatorKey>
-          </div>
         </div>
       </div>
     )

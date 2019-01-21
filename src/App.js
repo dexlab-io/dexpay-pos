@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import './App.css';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-//import WatcherTx from './class/WatcherTx';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { Error404, Payment , POS} from './pages';
@@ -23,18 +22,14 @@ class App extends Component {
     await this.wallet.setWeb3();
     await this.wallet.fetchBalance();
     await this.wallet.getNetworkID()
-
-    // const watcher = new WatcherTx();
-    // watcher.etherTransfers(posAddress)
-
   }
 
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={Dummy} />
-          <Route path="/payment" exact component={Payment} />
+          <Route path="/" exact component={POS} />
+          <Route path="/payment" component={Payment} />
           <Route path="/pos" exact component={POS} />
           <Route component={Error404} />
         </Switch>

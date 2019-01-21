@@ -2,6 +2,12 @@ import Web3 from 'web3';
 import CONF from '../config/';
 
 export default class WatcherTx {
+
+    static STATES = {
+      DETECTED: 'DETECTED',
+      CONFIRMED: 'CONFIRMED',
+    }
+    
     
     getWeb3ws (url = 'wss://ropsten.infura.io/_ws') {
         return new Web3(new Web3.providers.WebsocketProvider(url))
@@ -12,17 +18,18 @@ export default class WatcherTx {
     }
 
     validate(trx, recepient) {
+        //if(CONF.ENABLE_LOGS) console.log('trx', trx);
+        
         const toValid = trx.to !== null;
         if (!toValid) return false
         
         const walletToValid = trx.to.toLowerCase() === recepient.toLowerCase()
-        //const walletFromValid = trx.from.toLowerCase() === process.env.WALLET_FROM.toLowerCase()
         //const amountValid = ethToWei(process.env.AMOUNT).equals(trx.value)
       
         return toValid && walletToValid;
     }
 
-    etherTransfers(recepient) {
+    etherTransfers(recepient, cb) {
         // Instantiate web3 with WebSocket provider
         const web3 = this.getWeb3ws();
       
@@ -32,9 +39,7 @@ export default class WatcherTx {
         // Subscribe to pending transactions
         subscription.subscribe((error, result) => {
           if (error) console.error(error)
-        })
-          .on('data', async (txHash) => {
-
+        }).on('data', async (txHash) => {
             try {
               // Instantiate web3 with HttpProvider
               const web3Http = this.getWeb3Http()
@@ -46,14 +51,21 @@ export default class WatcherTx {
               // If transaction is not valid, simply return
               if (!valid) return
             
-              console.log('trx', trx);
-              // blockHash, blockNumber, from, gas, gasPrice, hash, input, nonce, r, s, to, transactionIndex, v, value
-              console.log('Found incoming Ether transaction from ' + trx.from + ' to ' + trx.to);
-              console.log('Transaction value is: ' + trx.value)
-              console.log('Transaction hash is: ' + txHash + '\n')
+              if(CONF.ENABLE_LOGS) {
+                console.log('trx', trx);
+                console.log('Found incoming Ether transaction from ' + trx.from + ' to ' + trx.to);
+                console.log('Transaction value is: ' + trx.value)
+                console.log('Transaction hash is: ' + txHash + '\n')
+              }
+
+              // CB for detected transactions
+              cb({
+                state: WatcherTx.STATES.DETECTED,
+                tx: trx
+              });
       
               // Initiate transaction confirmation
-              this.confirmEtherTransaction(txHash)
+              this.confirmEtherTransaction(txHash, CONF.confirmationNeeded, cb)
       
               // Unsubscribe from pending transactions.
               subscription.unsubscribe()
@@ -84,16 +96,26 @@ export default class WatcherTx {
         }
       }
 
-    confirmEtherTransaction(txHash, confirmations = CONF.confirmationNeeded) {
+    confirmEtherTransaction(txHash, confirmations = CONF.confirmationNeeded, cb) {
         setTimeout(async () => {
           // Get current number of confirmations and compare it with sought-for value
           const trxConfirmations = await this.getConfirmations(txHash)
-          console.log('Transaction with hash ' + txHash + ' has ' + trxConfirmations + ' confirmation(s)')
+
+          if(CONF.ENABLE_LOGS) {
+            console.log('Transaction with hash ' + txHash + ' has ' + trxConfirmations + ' confirmation(s)')
+          }
       
           if (trxConfirmations >= confirmations) {
             // Handle confirmation event according to your business logic
       
-            console.log('Transaction with hash ' + txHash + ' has been successfully confirmed')
+            if(CONF.ENABLE_LOGS) {
+              console.log('Transaction with hash ' + txHash + ' has been successfully confirmed')
+            }
+
+            cb({
+              state: WatcherTx.STATES.CONFIRMED,
+              txHash: txHash
+            });
       
             return
           }

@@ -37,8 +37,6 @@ button {
   .calculator {
     
     background: black;
-    
-    display: flex;
     flex-direction: column;
   }
   
@@ -49,7 +47,8 @@ button {
   .calculator-display {
     color: #1c191c;
     background: #F1F2F6;
-    line-height: 130px;
+    line-height: 120px;
+    height: 130px;
     font-size: 5em;
     
     flex: 1;
@@ -67,13 +66,12 @@ button {
   }
   
   .calculator-keypad {
-    height: 400px;
-    
+    height: 500px;
     display: flex;
   }
   
   .calculator .input-keys {
-    width: 240px;
+    width: 420px;
   }
   
   .calculator .function-keys {
@@ -85,12 +83,12 @@ button {
     
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap-reverse;
+    flex-wrap: wrap;
   }
   
   .calculator-key {
-    width: 80px;
-    height: 80px;
+    width: 140px;
+    height: 100px;
     border-top: 1px solid #777;
     border-right: 1px solid #666;  
     text-align: center;
@@ -126,10 +124,12 @@ button {
   }
   .calculator .operator-keys {
     background:  linear-gradient(to bottom, rgb(200, 228, 245) 0%, rgb(95, 66, 228) 100%);
+    border-top: 1px solid black;
   }
 
   .key-equals {
       height: 100%;
+      border: 0;
   }
 
   .key-clear {

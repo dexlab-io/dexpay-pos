@@ -1,5 +1,6 @@
 export default {
   DEV_MOVE: true,
+  ENABLE_LOGS: true,
   APP_VERSION: "0.2.12-b2",
   defaultHDpathEthereum: "m/44'/60'/0'/0/0", // Compatible with Jaxx, Metamask, Exodus, imToken, TREZOR (ETH) & Digital Bitbox
   confirmationNeeded: 1,

@@ -4,19 +4,23 @@ import Keypad from '../../components/Keypad'
 
 class POS extends Component {
 
+    state = {}
+
+    componentDidMount() {
+        this.onPay = this.onPay.bind(this);
+    }
+
     onPay(total) {
         console.log('Total', total)
+        this.props.history.push('/payment', { total });
     }
+
     render() {
         return (
           <Container>
             <Row>
-                <Col> POS </Col> 
-            </Row>
-
-            <Row>
                 <Col sm="12" md={{ size: 6, offset: 3 }}>
-                    <Keypad onPay={this.onPay}/>
+                    <Keypad onPay={(total) => this.onPay(total)}/>
                 </Col>
             </Row>
           </Container>
