@@ -1,13 +1,19 @@
 import Web3 from 'web3';
+import BigNumber from 'bignumber.js';
 import CONF from '../config/';
+
+export const ethToWei = ( v ) => {
+  const wei = new BigNumber(v).multipliedBy(1000000000000000000);
+  return wei;
+};
 
 export default class WatcherTx {
 
     static STATES = {
+      PENDING: 'PENDING',
       DETECTED: 'DETECTED',
       CONFIRMED: 'CONFIRMED',
     }
-    
     
     getWeb3ws (url = 'wss://ropsten.infura.io/_ws') {
         return new Web3(new Web3.providers.WebsocketProvider(url))
@@ -17,19 +23,18 @@ export default class WatcherTx {
         return new Web3(url);
     }
 
-    validate(trx, recepient) {
-        //if(CONF.ENABLE_LOGS) console.log('trx', trx);
-        
+    validate(trx, total, recepient) {
+
         const toValid = trx.to !== null;
         if (!toValid) return false
         
         const walletToValid = trx.to.toLowerCase() === recepient.toLowerCase()
-        //const amountValid = ethToWei(process.env.AMOUNT).equals(trx.value)
+        const amountValid = ethToWei(total).isEqualTo(trx.value)
       
-        return toValid && walletToValid;
+        return toValid && amountValid && walletToValid;
     }
 
-    etherTransfers(recepient, cb) {
+    etherTransfers(recepient, total, cb) {
         // Instantiate web3 with WebSocket provider
         const web3 = this.getWeb3ws();
       
@@ -47,7 +52,7 @@ export default class WatcherTx {
               // Get transaction details
               const trx = await web3Http.eth.getTransaction(txHash)
       
-              const valid = this.validate(trx, recepient)
+              const valid = this.validate(trx, total, recepient)
               // If transaction is not valid, simply return
               if (!valid) return
             
@@ -61,7 +66,8 @@ export default class WatcherTx {
               // CB for detected transactions
               cb({
                 state: WatcherTx.STATES.DETECTED,
-                tx: trx
+                tx: trx,
+                txHash
               });
       
               // Initiate transaction confirmation
@@ -69,8 +75,7 @@ export default class WatcherTx {
       
               // Unsubscribe from pending transactions.
               subscription.unsubscribe()
-            }
-            catch (error) {
+            } catch (error) {
               console.log(error)
             }
           })
@@ -120,7 +125,7 @@ export default class WatcherTx {
             return
           }
           // Recursive call
-          return this.confirmEtherTransaction(txHash, confirmations)
+          return this.confirmEtherTransaction(txHash, confirmations, cb)
         }, 30 * 1000)
     }
 }
