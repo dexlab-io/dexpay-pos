@@ -198,7 +198,7 @@ class Keypad extends React.Component {
           </div>  
         </div>
         <div className="operator-keys">
-            <CalculatorKey className="key-equals" onPress={() => this.props.onPay(displayValue) }>PAY</CalculatorKey>
+            <CalculatorKey className="pay-button" onPress={() => this.props.onPay(displayValue) }>GENERATE BILL</CalculatorKey>
         </div>
       </div>
     )

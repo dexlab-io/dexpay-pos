@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import './App.css';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
+import xDAIHDWallet from './class/xdai/xDAIHDWallet';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { Error404, Payment , POS} from './pages';
@@ -18,10 +19,14 @@ class App extends Component {
 
   async init() {
     
-    this.wallet = new EthereumHDWallet(false, posAddress);
-    await this.wallet.setWeb3();
-    await this.wallet.fetchBalance();
-    await this.wallet.getNetworkID()
+    this.wallets = {
+      eth: new EthereumHDWallet(false, posAddress),
+      xdai: new xDAIHDWallet(false, posAddress),
+    };
+
+    await this.wallets.xdai.setWeb3();
+    const txs = await this.wallets.xdai.fetchEthTransactions();
+    console.log('txs', txs);
   }
 
   render() {

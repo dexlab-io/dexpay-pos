@@ -35,8 +35,6 @@ button {
   }
   
   .calculator {
-    
-    background: black;
     flex-direction: column;
   }
   
@@ -46,7 +44,7 @@ button {
   
   .calculator-display {
     color: #1c191c;
-    background: #F1F2F6;
+    background: #ffffff;
     line-height: 120px;
     height: 130px;
     font-size: 5em;
@@ -79,8 +77,7 @@ button {
   }
   
   .calculator .digit-keys {
-    background: #e0e0e7;
-    
+    /* background: #e0e0e7; */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -89,8 +86,8 @@ button {
   .calculator-key {
     width: 140px;
     height: 100px;
-    border-top: 1px solid #777;
-    border-right: 1px solid #666;  
+    /* border-top: 1px solid #777;
+    border-right: 1px solid #666;   */
     text-align: center;
     line-height: 80px;
   }
@@ -114,22 +111,20 @@ button {
   }
   .calculator .operator-keys .calculator-key {
     color: white;
-    width: 180px;
-    border-right: 0;
-    font-size: 3em;
+    width: 100%;
+    font-size: 1em;
   }
   
   .calculator .function-keys {
     background: linear-gradient(to bottom, rgba(202,202,204,1) 0%, rgba(196,194,204,1) 100%);
   }
-  .calculator .operator-keys {
-    background:  linear-gradient(to bottom, rgb(200, 228, 245) 0%, rgb(95, 66, 228) 100%);
-    border-top: 1px solid black;
-  }
 
-  .key-equals {
-      height: 100%;
+  .pay-button {
+      height: 50px;
       border: 0;
+      line-height: 0;
+      background: #000000;
+      border-radius: 5px;
   }
 
   .key-clear {
