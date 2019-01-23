@@ -71,7 +71,7 @@ export default class WatcherTx {
               });
       
               // Initiate transaction confirmation
-              this.confirmEtherTransaction(txHash, CONF.confirmationNeeded, cb)
+              this.confirmTransaction(txHash, CONF.confirmationNeeded, cb)
       
               // Unsubscribe from pending transactions.
               subscription.unsubscribe()
@@ -79,6 +79,40 @@ export default class WatcherTx {
               console.log(error)
             }
           })
+    }
+
+    tokenTransfers( contractAddress, ABI, recepient, value, cb ) {
+      // Instantiate web3 with WebSocketProvider
+      const web3 = this.getWeb3ws();
+    
+      // Instantiate token contract object with JSON ABI and address
+      const tokenContract = new web3.eth.Contract( ABI, contractAddress,(error, result) => { if (error) console.log(error) });
+    
+      // Generate filter options
+      const options = {
+        filter: {
+          _to:    recepient,
+          _value: value
+        },
+        fromBlock: 'latest'
+      }
+    
+      // Subscribe to Transfer events matching filter criteria
+      tokenContract.events.Transfer(options, async (error, event) => {
+        if (error) {
+          console.log(error)
+          return
+        }
+    
+        if(CONF.ENABLE_LOGS) {
+          console.log('event', event);
+        }
+    
+        // Initiate transaction confirmation
+        this.confirmTransaction(event.transactionHash, CONF.confirmationNeeded, cb)
+    
+        return
+      })
     }
 
     async getConfirmations(txHash) {
@@ -101,7 +135,7 @@ export default class WatcherTx {
         }
       }
 
-    confirmEtherTransaction(txHash, confirmations = CONF.confirmationNeeded, cb) {
+    confirmTransaction(txHash, confirmations = CONF.confirmationNeeded, cb) {
         setTimeout(async () => {
           // Get current number of confirmations and compare it with sought-for value
           const trxConfirmations = await this.getConfirmations(txHash)
