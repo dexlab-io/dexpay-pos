@@ -9,7 +9,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .jsx,.js src/*.js src/**/*.js",
     "lint-two": "NODE_ENV=production lint-staged",
-    "css-build": "node-sass --omit-source-map-url src/bulma/mystyles.scss src/bulma/styles.css"
+    "css-build": "node-sass --omit-source-map-url src/theme/bulma.scss src/theme/bulma.css"
   },
   "dependencies": {
     "axios": "^0.17.1",

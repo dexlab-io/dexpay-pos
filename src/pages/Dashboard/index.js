@@ -18,7 +18,11 @@ class Dashboard extends Component {
     return (
       <Layout>
         <Seo title="POS" description="POS System" />
-        <Keypad onPay={total => this.onPay(total)} />
+        <div className="section">
+          <div className="container is-fluid">
+            <Keypad onPay={total => this.onPay(total)} />
+          </div>
+        </div>
       </Layout>
     );
   }

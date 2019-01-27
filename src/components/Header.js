@@ -1,15 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.section``;
+import barsImg from '../assets/images/bars.png';
 
-export default () => (
+const Container = styled.section`
+  padding: 1rem 1.5rem;
+`;
+
+const Header = ({ header }) => (
   <Container className="section">
     <div className="container is-fluid">
-      <a className="button icon">
-        <i className="fas fa-bars" />
+      <a>
+        <img src={barsImg} alt="side menu" />
       </a>
-      <h3 className="title">Header title here</h3>
+      {header && <h3 className="title">Header title here</h3>}
     </div>
   </Container>
 );
+
+export default Header;

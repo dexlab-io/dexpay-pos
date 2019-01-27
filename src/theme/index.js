@@ -6,7 +6,7 @@ export const colors = {
   riptide: '#83E8E1'
 };
 
-export default {
+const theme = {
   primaryColor: colors.black,
   secondaryColor: colors.riptide,
   primaryFontFamily: '"Quicksand", sans-serif',
@@ -18,9 +18,14 @@ export default {
   fontSizeReguar: '400'
 };
 
+export default theme;
+
 export const GlobalStyle = createGlobalStyle`
   body {
 		margin: 0;
   	padding: 0;
+  }
+  a {
+    color: ${theme.primaryColor};
   }
 `;
