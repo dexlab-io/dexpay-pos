@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "extends": ["airbnb", "prettier", "prettier/react"],
   "plugins": ["prettier"],
   "rules": {
@@ -22,6 +23,5 @@
     "Blob": true,
     "navigator": true,
     "it": true
-  },
-  "parser": "babel-eslint"
+  }
 }
