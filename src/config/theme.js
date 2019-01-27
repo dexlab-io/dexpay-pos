@@ -9,8 +9,8 @@ export const colors = {
 export default {
   primaryColor: colors.black,
   secondaryColor: colors.riptide,
-  primaryFontFamily: 'Quicksand, sans-serif',
-  secondaryFontFamily: 'Open Sans, sans-serif',
+  primaryFontFamily: '"Quicksand", sans-serif',
+  secondaryFontFamily: '"Open Sans", sans-serif',
   fontWeightLight: '300',
   fontWeightRegular: '400',
   fontWeightSemiBold: '600',

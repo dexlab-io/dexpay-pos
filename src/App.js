@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import './bulma/styles.css';
 import theme, { GlobalStyle } from './config/theme';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import { Error404, Dashboard, Payment } from './pages';
