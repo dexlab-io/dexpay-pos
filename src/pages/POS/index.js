@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import styled from 'styled-components';
+
 import Keypad from '../../components/Keypad'
+
+const Container = styled.div``;
+const Row = styled.div``;
+const Col = styled.div``;
 
 class POS extends Component {
 

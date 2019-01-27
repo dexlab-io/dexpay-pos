@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
-import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 
 import { Error404, Payment , POS } from './pages';
+
 const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
 
 class App extends Component {

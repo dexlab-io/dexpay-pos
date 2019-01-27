@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import styled from 'styled-components';
+
 import WatcherTx from '../../class/WatcherTx';
 import { getTokenPrice } from '../../utils/Coingecko';
+
+const Container = styled.div``;
+const Row = styled.div``;
+const Col = styled.div``;
 
 const posAddress = '0xB599Ac9d4892f44fEAc6bec3314Ef58432Ae3c79';
 class Payment extends Component {
@@ -63,7 +68,7 @@ class Payment extends Component {
                 <Col sm="12" md={{ size: 6, offset: 3 }}>
                     { txState === WatcherTx.STATES.PENDING ? `Waiting for payment ${value.toPrecision(2)} ETH / ${valueFiat}$ at address ${posAddress}` : null}
                     { txState === WatcherTx.STATES.DETECTED ? `Payment detected, waiting for confirmation.` : null}
-                    { txState === WatcherTx.STATES.CONFIRMED ? 
+                    { txState === WatcherTx.STATES.CONFIRMED ?
                         <div>
                             Payment confirmed 🎊. <a href='https://ropsten.etherscan.io/tx/${txHash}' > Verify tx </a>
                         </div> : null}
