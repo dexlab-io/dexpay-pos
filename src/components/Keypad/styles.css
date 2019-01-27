@@ -1,4 +1,4 @@
-button {
+.calculator.keypad button {
     display: block;
     background: none;
     border: none;
@@ -11,16 +11,8 @@ button {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
 
-  button:active {
+  .calculator.keypad button:active {
     box-shadow: inset 0px 0px 80px 0px rgba(0,0,0,0.25);
-  }
-
-  #wrapper {
-    height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .keypad {
@@ -35,7 +27,7 @@ button {
     flex-direction: column;
   }
 
-  #wrapper .calculator {
+  .calculator {
     box-shadow: 0px 0px 20px 0px #aaa;
   }
 
@@ -122,11 +114,11 @@ button {
     border-top: 1px solid black;
   }
 
-  .key-equals {
+  .calculator.keypad .key-equals {
       height: 100%;
       border: 0;
   }
 
-  .key-clear {
+  .calculator.keypad .key-clear {
       width: 100%;
   }
