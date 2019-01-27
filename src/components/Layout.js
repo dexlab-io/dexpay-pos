@@ -1,15 +1,18 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 
 import config from '../config';
 import Header from './Header';
 
+const Container = styled.div``;
+
 const Layout = ({ children }) => (
-  <div>
+  <Container>
     <Helmet title={config.siteName} />
     <Header />
     {children}
-  </div>
+  </Container>
 );
 
 export default Layout;

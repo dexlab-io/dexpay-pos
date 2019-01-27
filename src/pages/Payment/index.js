@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Layout from '../../components/Layout';
+import Seo from '../../components/Seo';
 import WatcherTx from '../../class/WatcherTx';
 import { getTokenPrice } from '../../utils/Coingecko';
 
@@ -61,6 +62,7 @@ class Payment extends Component {
     const { value, txState, txHash, valueFiat } = this.state;
     return (
       <Layout>
+        <Seo title="POS" description="POS System" />
         <Container>
           <Row>
             <Col sm="12" md={{ size: 6, offset: 3 }}>

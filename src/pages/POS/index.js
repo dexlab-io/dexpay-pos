@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Layout from '../../components/Layout';
+import Seo from '../../components/Seo';
 import Keypad from '../../components/Keypad';
 
 const Container = styled.div``;
@@ -23,6 +24,7 @@ class POS extends Component {
   render() {
     return (
       <Layout>
+        <Seo title="POS" description="POS System" />
         <Container>
           <Row>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
