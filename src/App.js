@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import theme from './config/theme';
+import theme, { GlobalStyle } from './config/theme';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import { Error404, Payment, POS } from './pages';
 
@@ -23,14 +23,17 @@ class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/" exact component={POS} />
-            <Route path="/payment/:id?" component={Payment} />
-            <Route path="/pos" exact component={POS} />
-            <Route component={Error404} />
-          </Switch>
-        </BrowserRouter>
+        <React.Fragment>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" exact component={POS} />
+              <Route path="/payment/:id?" component={Payment} />
+              <Route path="/pos" exact component={POS} />
+              <Route component={Error404} />
+            </Switch>
+          </BrowserRouter>
+          <GlobalStyle />
+        </React.Fragment>
       </ThemeProvider>
     );
   }
