@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import theme, { GlobalStyle } from './config/theme';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import { Error404, Payment, POS } from './pages';
+import { Error404, Dashboard, Payment } from './pages';
 
 const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
 
@@ -26,9 +26,9 @@ class App extends Component {
         <React.Fragment>
           <BrowserRouter>
             <Switch>
-              <Route path="/" exact component={POS} />
+              <Route path="/" exact component={Dashboard} />
               <Route path="/payment/:id?" component={Payment} />
-              <Route path="/pos" exact component={POS} />
+              <Route path="/pos" exact component={Dashboard} />
               <Route component={Error404} />
             </Switch>
           </BrowserRouter>

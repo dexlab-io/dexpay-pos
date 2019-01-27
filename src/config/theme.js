@@ -1,14 +1,21 @@
-/* eslint no-unused-expressions: 0 */
-
 import { createGlobalStyle } from 'styled-components';
 
 // http://chir.ag/projects/name-that-color/
 export const colors = {
-  caribbeanGreen: '#00D1B2'
+  black: '#000000',
+  riptide: '#83E8E1'
 };
 
 export default {
-  primary: colors.caribbeanGreen
+  primaryColor: colors.black,
+  secondaryColor: colors.riptide,
+  primaryFontFamily: 'Quicksand, sans-serif',
+  secondaryFontFamily: 'Open Sans, sans-serif',
+  fontWeightLight: '300',
+  fontWeightRegular: '400',
+  fontWeightSemiBold: '600',
+  fontWeightBold: '700',
+  fontSizeReguar: '400'
 };
 
 export const GlobalStyle = createGlobalStyle`

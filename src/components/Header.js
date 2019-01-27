@@ -1,24 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import config from '../config';
-
-const LinkStyled = styled(Link)`
-  color: ${props => props.theme.primary};
-`;
+const Container = styled.section``;
 
 export default () => (
-  <nav
-    className="navbar is-transparent"
-    role="navigation"
-    aria-label="dropdown navigation"
-  >
-    <LinkStyled className="navbar-item" to="/">
-      {config.siteName}
-    </LinkStyled>
-    <LinkStyled className="navbar-item" to="/">
-      Home
-    </LinkStyled>
-  </nav>
+  <Container className="section">
+    <div className="container is-fluid">
+      <a className="button icon">
+        <i className="fas fa-bars" />
+      </a>
+      <h3 className="title">Header title here</h3>
+    </div>
+  </Container>
 );

@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import Keypad from '../../components/Keypad';
 
-const Container = styled.div``;
-const Row = styled.div``;
-const Col = styled.div``;
-
-class POS extends Component {
-  state = {};
-
+class Dashboard extends Component {
   componentDidMount() {
     this.onPay = this.onPay.bind(this);
   }
@@ -25,16 +18,10 @@ class POS extends Component {
     return (
       <Layout>
         <Seo title="POS" description="POS System" />
-        <Container>
-          <Row>
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <Keypad onPay={total => this.onPay(total)} />
-            </Col>
-          </Row>
-        </Container>
+        <Keypad onPay={total => this.onPay(total)} />
       </Layout>
     );
   }
 }
 
-export default POS;
+export default Dashboard;
