@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from 'react';
 import PointTarget from 'react-point';
 import './styles.css';

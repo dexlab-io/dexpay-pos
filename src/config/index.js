@@ -8,6 +8,7 @@ export default {
   fbAppID: '',
   twitter: '',
 
+  currency: '€',
   defaultHDpathEthereum: "m/44'/60'/0'/0/0", // Compatible with Jaxx, Metamask, Exodus, imToken, TREZOR (ETH) & Digital Bitbox
   confirmationNeeded: 1,
   networkProviders: {

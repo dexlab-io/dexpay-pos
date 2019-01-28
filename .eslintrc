@@ -12,11 +12,14 @@
     "react/prop-types": 0,
     "no-underscore-dangle": 0,
     "react/prefer-stateless-function": 0,
+    "react/forbid-prop-types": 0,
     "import/imports-first": ["error", "absolute-first"],
     "import/newline-after-import": "error",
     "jsx-a11y/label-has-associated-control": 0,
     "jsx-a11y/label-has-for": 0,
-    "jsx-a11y/anchor-is-valid": 0
+    "jsx-a11y/anchor-is-valid": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/no-static-element-interactions": 0
   },
   "globals": {
     "window": true,
