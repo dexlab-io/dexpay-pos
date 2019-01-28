@@ -55,18 +55,20 @@ class Dashboard extends Component {
               </ul>
             </div>
             {activeTab === 'numberPad' && (
-              <Keypad
-                handleChange={val => this.setState({ totalAmount: val })}
-              />
+              <React.Fragment>
+                <Keypad
+                  handleChange={val => this.setState({ totalAmount: val })}
+                />
+                <button
+                  type="submit"
+                  className="button is-black is-uppercase is-large is-fullwidth"
+                  onClick={this.handlePay}
+                >
+                  Generate bill
+                </button>
+              </React.Fragment>
             )}
             {activeTab === 'recentPayments' && <RecentPayments />}
-            <button
-              type="submit"
-              className="button is-black is-uppercase is-large is-fullwidth"
-              onClick={this.handlePay}
-            >
-              Generate bill
-            </button>
           </div>
         </div>
       </Layout>

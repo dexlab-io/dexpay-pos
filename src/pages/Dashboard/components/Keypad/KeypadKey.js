@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import PointTarget from 'react-point';
 
 const Container = styled.div`
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 `;
 const Text = styled.span`
   font-size: 48px;
