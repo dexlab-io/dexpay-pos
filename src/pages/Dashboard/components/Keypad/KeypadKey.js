@@ -12,11 +12,11 @@ const Text = styled.span`
 `;
 
 const KeypadKey = ({ text, onClick }) => (
-  <Container className="column is-one-third is-one-third-mobile has-text-centered">
-    <PointTarget onPoint={() => onClick(text)}>
+  <PointTarget onPoint={() => onClick(text)}>
+    <Container className="column is-one-third is-one-third-mobile has-text-centered">
       <Text className="has-text-weight-light">{text}</Text>
-    </PointTarget>
-  </Container>
+    </Container>
+  </PointTarget>
 );
 
 KeypadKey.propTypes = {

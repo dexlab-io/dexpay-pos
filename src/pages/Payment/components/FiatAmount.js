@@ -12,12 +12,16 @@ const Container = styled.div`
   margin-bottom: 25px;
 `;
 
+const Amount = styled.span`
+  font-size: 72px;
+`;
+
 const FiatAmount = ({ fiatAmount }) => {
   return (
     <Container>
-      <span className="has-text-weight-light is-size-1">
+      <Amount className="has-text-weight-light">
         {formatCurrency(fiatAmount)}
-      </span>
+      </Amount>
     </Container>
   );
 };
@@ -27,7 +31,7 @@ FiatAmount.propTypes = {
 };
 
 FiatAmount.propTypes = {
-  fiatAmount: PropTypes.string.isRequired
+  fiatAmount: PropTypes.number
 };
 
 export default FiatAmount;

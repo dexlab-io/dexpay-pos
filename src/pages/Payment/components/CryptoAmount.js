@@ -20,12 +20,12 @@ const Image = styled.img`
   height: 32px;
 `;
 
-const CryptoAmount = ({ fiatAmount, hasSelection }) => {
+const CryptoAmount = ({ cryptoValue, hasSelection }) => {
   const activeItem = (
     <Container>
       <Image src={cryptoIcon} alt="DAI" />
-      <span>DAI</span>{' '}
-      <span className="has-text-weight-light	">{fiatAmount}</span>
+      <span>DAI </span>
+      <span className="has-text-weight-light	">{cryptoValue}</span>
     </Container>
   );
 
@@ -38,12 +38,14 @@ const CryptoAmount = ({ fiatAmount, hasSelection }) => {
 
 CryptoAmount.propTypes = {
   fiatAmount: 0,
+  cryptoValue: 0,
   hasSelection: false
 };
 
 CryptoAmount.propTypes = {
-  fiatAmount: PropTypes.string.isRequired,
-  hasSelection: PropTypes.bool.isRequired
+  fiatAmount: PropTypes.number,
+  cryptoValue: PropTypes.number,
+  hasSelection: PropTypes.bool
 };
 
 export default CryptoAmount;
