@@ -3,6 +3,11 @@ import styled from 'styled-components';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
+import CryptoAmount from './components/CryptoAmount';
+import FiatAmount from './components/FiatAmount';
+import AddTip from './components/AddTip';
+import QrCode from './components/QrCode';
+import { Divider } from '../../components/elements';
 import WatcherTx from '../../class/WatcherTx';
 import { getTokenPrice } from '../../utils/Coingecko';
 
@@ -20,11 +25,12 @@ class Payment extends Component {
   };
 
   async componentDidMount() {
+    const { location } = this.props;
     const prices = await getTokenPrice();
-    const valueFiat = this.props.location.state.total;
+    const valueFiat = location.state.total;
     const valueCrypto = parseFloat(valueFiat) / parseFloat(prices.usd);
 
-    console.log('valueFiat', valueFiat);
+    // console.log('valueFiat', valueFiat);
 
     this.setState({
       value: valueCrypto,
@@ -58,8 +64,9 @@ class Payment extends Component {
     });
   }
 
-  render() {
+  renderOld() {
     const { value, txState, txHash, valueFiat } = this.state;
+
     return (
       <Layout>
         <Seo title="POS" description="POS System" />
@@ -91,6 +98,26 @@ class Payment extends Component {
             </Col>
           </Row>
         </Container>
+      </Layout>
+    );
+  }
+
+  render() {
+    return (
+      <Layout header={{ leftIcon: 'back', title: '1/3 Awaiting Payment' }}>
+        <Seo
+          title="Awaiting payment"
+          description="Awaiting payment for transection"
+        />
+        <section className="section">
+          <div className="container is-fluid">
+            <CryptoAmount fiatAmount={10} />
+            <FiatAmount fiatAmount={10} />
+            <Divider isDotted />
+            <AddTip />
+            <QrCode />
+          </div>
+        </section>
       </Layout>
     );
   }
