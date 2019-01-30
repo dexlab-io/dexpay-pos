@@ -1,44 +1,41 @@
 import React, { Component } from 'react';
+import { ThemeProvider } from 'styled-components';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import './App.css';
+import './theme/bulma.css'; // load bulma
+import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import xDAIHDWallet from './class/xdai/xDAIHDWallet';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Error404, Dashboard, Payment } from './pages';
 
-import { Error404, Payment , POS} from './pages';
 const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
 
-const Dummy = () => {
-  return (<div>Dexpay: POS</div>)
-}
 class App extends Component {
-
   componentDidMount() {
     this.init();
   }
 
   async init() {
-    
-    this.wallets = {
-      eth: new EthereumHDWallet(false, posAddress),
-      xdai: new xDAIHDWallet(false, posAddress),
-    };
-
-    await this.wallets.xdai.setWeb3();
-    const txs = await this.wallets.xdai.fetchEthTransactions();
-    console.log('txs', txs);
+    this.wallet = new EthereumHDWallet(false, posAddress);
+    await this.wallet.setWeb3();
+    await this.wallet.fetchBalance();
+    await this.wallet.getNetworkID();
   }
 
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact component={POS} />
-          <Route path="/payment/:id?" component={Payment} />
-          <Route path="/pos" exact component={POS} />
-          <Route component={Error404} />
-        </Switch>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <React.Fragment>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" exact component={Dashboard} />
+              <Route path="/payment/:id?" component={Payment} />
+              <Route path="/pos" exact component={Dashboard} />
+              <Route component={Error404} />
+            </Switch>
+          </BrowserRouter>
+          <GlobalStyle />
+        </React.Fragment>
+      </ThemeProvider>
     );
   }
 }
