@@ -27,6 +27,7 @@ const CryptoAmount = ({ cryptoCurrency, cryptoValue, hasSelection }) => {
       <span>{cryptoCurrency}&nbsp;</span>
       <span className="has-text-weight-light">
         {parseFloat(cryptoValue).toFixed(2)}
+        {cryptoValue}
       </span>
     </Container>
   );

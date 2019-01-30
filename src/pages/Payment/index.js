@@ -27,7 +27,7 @@ class Payment extends Component {
   async componentDidMount() {
     const { location } = this.props;
     const valueFiat = location.state.total;
-    // console.log('valueFiat', valueFiat);
+    console.log('valueFiat', valueFiat);
 
     await this.setState({
       valueFiat,
@@ -60,18 +60,32 @@ class Payment extends Component {
     const { valueFiat } = this.state;
 
     const prices = await getTokenPrice();
-    const valueCrypto = parseFloat(valueFiat) / parseFloat(prices.usd);
+    console.log('prices', prices);
+    const valueCrypto =
+      parseFloat(valueFiat) / parseFloat(prices[config.currency.id]);
     await this.setState({
       value: valueCrypto
     });
 
-    const watcher = new WatcherTx();
-    watcher.etherTransfers(config.posAddress, valueCrypto, data => {
-      this.setState({
-        txState: data.state,
-        txHash: data.txHash
-      });
-    });
+    //const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
+    const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
+
+    console.log('config.posAddress', config.posAddress);
+    console.log('valueCrypto', valueCrypto);
+
+    // watcherXdai.xdaiTransfer(config.posAddress, valueCrypto, data => {
+    //   this.setState({
+    //     txState: data.state,
+    //     txHash: data.txHash
+    //   });
+    // });
+
+    // watcherEth.etherTransfers(config.posAddress, valueCrypto, data => {
+    //   this.setState({
+    //     txState: data.state,
+    //     txHash: data.txHash
+    //   });
+    // });
   };
 
   render() {

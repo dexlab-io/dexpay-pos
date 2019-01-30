@@ -39,6 +39,8 @@ export default class WatcherTx {
   }
 
   validate(trx, total, recepient) {
+    console.log('validate: ', trx);
+    console.log('recepient: ', recepient);
     const toValid = trx.to !== null;
     if (!toValid) return false;
 
@@ -54,17 +56,16 @@ export default class WatcherTx {
     const web3 = new Web3('https://dai.poa.network');
     const currentBlock = await web3.eth.getBlockNumber();
 
-    console.log('currentBlock', currentBlock);
+    //console.log('currentBlock', currentBlock);
+    console.log('recepient', recepient);
 
     const block = await web3.eth.getBlock(currentBlock);
 
-    console.log('block', block);
-
     if (block.transactions.length) {
-      console.log('block.transactions', block.transactions);
-
+      const self = this;
       block.transactions.forEach(async txHash => {
         const trx = await web3.eth.getTransaction(txHash);
+        console.log('trx', trx);
         const valid = this.validate(trx, total, recepient);
 
         if (!valid) return;
@@ -88,11 +89,11 @@ export default class WatcherTx {
 
         // Initiate transaction confirmation
         this.confirmTransaction(txHash, CONF.confirmationNeeded, cb);
-      });
+      }, this);
     }
 
     if (pollActivate) {
-      setInterval(this.xdaiTransfer, 5000);
+      setInterval(() => this.xdaiTransfer(recepient, total, cb), 10000);
     }
   }
 

@@ -28,7 +28,7 @@ const NumberInput = ({ value }) => {
   // if (match) formattedValue += /[1-9]/.test(match[0]) ? match[1] : match[0];
 
   formattedValue = currency(parseFloat(value), {
-    symbol: `${config.currency}`,
+    symbol: `${config.currency.symbol}`,
     formatWithSymbol: true
   }).format();
 
