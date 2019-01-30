@@ -23,6 +23,30 @@ export default class WatcherTx {
     this.selectedNetwork = network;
     this.pollingOn = true;
     this.lastBlockChecked = null;
+    this.conf = this.getConf();
+  }
+
+  getConf() {
+    switch (this.selectedNetwork) {
+      case WatcherTx.NETWORKS.XDAI:
+        return {
+          avgBlockTime: 5000,
+          rpc: 'https://dai.poa.network',
+          confirmationNeeded: 1
+        };
+      case WatcherTx.NETWORKS.ROPSTEN:
+        return {
+          avgBlockTime: 30 * 1000,
+          rpc: 'https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB',
+          confirmationNeeded: 1
+        };
+      default:
+        return {
+          avgBlockTime: 30 * 1000,
+          rpc: 'https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB',
+          confirmationNeeded: 1
+        };
+    }
   }
 
   getWeb3ws(url = 'wss://ropsten.infura.io/_ws') {
@@ -30,14 +54,7 @@ export default class WatcherTx {
   }
 
   getWeb3Http() {
-    switch (this.selectedNetwork) {
-      case WatcherTx.NETWORKS.XDAI:
-        return new Web3('https://dai.poa.network');
-      case WatcherTx.NETWORKS.ROPSTEN:
-        return new Web3('https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB');
-      default:
-        return new Web3('https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB');
-    }
+    return new Web3(this.conf.rpc);
   }
 
   validate(trx, total, recipient) {
@@ -94,7 +111,10 @@ export default class WatcherTx {
     }
 
     if (this.pollingOn) {
-      setTimeout(() => this.xdaiTransfer(recipient, total, cb), 5000);
+      setTimeout(
+        () => this.xdaiTransfer(recipient, total, cb),
+        this.conf.avgBlockTime
+      );
     }
   }
 
@@ -238,7 +258,7 @@ export default class WatcherTx {
         return;
       }
       // Recursive call
-      return this.confirmEtherTransaction(txHash, confirmations, cb);
-    }, 30 * 1000);
+      return this.confirmTransaction(txHash, confirmations, cb);
+    }, this.conf.avgBlockTime);
   }
 }
