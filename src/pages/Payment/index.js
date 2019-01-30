@@ -1,96 +1,118 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
+import CryptoAmount from './components/CryptoAmount';
+import FiatAmount from './components/FiatAmount';
+import AddTip from './components/AddTip';
+import QrCode from './components/QrCode';
+import AddressClipboard from './components/AddressClipboard';
+import NetworkStatus from './components/NetworkStatus';
+import InProgressBlocks from './components/InProgressBlocks';
+import { Divider } from '../../components/elements';
 import WatcherTx from '../../class/WatcherTx';
+import config from '../../config';
 import { getTokenPrice } from '../../utils/Coingecko';
 
-const Container = styled.div``;
-const Row = styled.div``;
-const Col = styled.div``;
-
-const posAddress = '0xB599Ac9d4892f44fEAc6bec3314Ef58432Ae3c79';
 class Payment extends Component {
   state = {
-    qrImage: null,
-    value: null,
+    value: 0,
     txState: null,
-    fiatPrices: null
+    txHash: null
   };
 
   async componentDidMount() {
-    const prices = await getTokenPrice();
-    const valueFiat = this.props.location.state.total;
-    const valueCrypto = parseFloat(valueFiat) / parseFloat(prices.usd);
+    const { location } = this.props;
+    const valueFiat = location.state.total;
+    // console.log('valueFiat', valueFiat);
 
-    console.log('valueFiat', valueFiat);
-
-    this.setState({
-      value: valueCrypto,
+    await this.setState({
       valueFiat,
-      txState: WatcherTx.STATES.PENDING,
-      fiatPrices: prices
+      txState: WatcherTx.STATES.PENDING
     });
 
-    this.genQrCode(valueCrypto);
+    await this.calculateCryptoValue();
+  }
+
+  addTipPayment = async percentage => {
+    console.log('addTipPayment', percentage);
+    const percentageNormalized = 0.015;
+    const valueFiat = parseFloat(this.state.valueFiat);
+    console.log('addTipPayment', valueFiat, percentageNormalized);
+    const percentageToAdd = valueFiat * percentageNormalized + valueFiat;
+    console.log('percentageToAdd', percentageToAdd);
+    await this.setState({
+      value: valueFiat + percentageToAdd
+    });
+    this.calculateCryptoValue();
+  };
+
+  calculateCryptoValue = async () => {
+    const { valueFiat } = this.state;
+
+    const prices = await getTokenPrice();
+    const valueCrypto = parseFloat(valueFiat) / parseFloat(prices.usd);
+    await this.setState({
+      value: valueCrypto
+    });
+
     const watcher = new WatcherTx();
-    watcher.etherTransfers(posAddress, valueCrypto, data => {
+    watcher.etherTransfers(config.posAddress, valueCrypto, data => {
       this.setState({
         txState: data.state,
         txHash: data.txHash
       });
     });
-  }
-
-  getQrData(to, value) {
-    return `ethereum:${to}?amount=${value}`;
-  }
-
-  genQrCode(total) {
-    console.log('Total', total);
-    const payload = this.getQrData(posAddress, total);
-    const qrImgUrl = `http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=${escape(
-      payload
-    )}&qzone=1&margin=0&size=250x250&ecc=L`;
-    this.setState({
-      qrImage: qrImgUrl
-    });
-  }
+  };
 
   render() {
-    const { value, txState, txHash, valueFiat } = this.state;
+    const { value, valueFiat, txState, txHash } = this.state;
+    const { posAddress } = config;
+    let title = '';
+    let status = null;
+    let statusText = null;
+
+    if (txState === WatcherTx.STATES.PENDING) {
+      title = '1 / 3 Awaiting Payment';
+      status = 'pending';
+      statusText = `Waiting for payment ${
+        value ? value.toPrecision(2) : 0
+      } ETH / ${valueFiat}$ at address ${posAddress}`;
+    } else if (txState === WatcherTx.STATES.DETECTED) {
+      title = '2 / 3 Pending Payment';
+      status = 'detected';
+      statusText = `Payment detected, waiting for confirmation.`;
+    } else if (txState === WatcherTx.STATES.CONFIRMED) {
+      title = '3 / 3 Payment Successful';
+      status = 'confirmed';
+      statusText = `Payment confirmed 🎊.{' '} <a href="https://ropsten.etherscan.io/tx/${txHash}"> Verify tx </a>`;
+    }
+    // status = 'confirmed';
+    console.log('status', statusText);
+
     return (
-      <Layout>
-        <Seo title="POS" description="POS System" />
-        <Container>
-          <Row>
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              {this.state.qrImage ? (
-                <img alt="Qr code payment" src={this.state.qrImage} />
-              ) : null}
-            </Col>
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              {txState === WatcherTx.STATES.PENDING
-                ? `Waiting for payment ${value.toPrecision(
-                    2
-                  )} ETH / ${valueFiat}$ at address ${posAddress}`
-                : null}
-              {txState === WatcherTx.STATES.DETECTED
-                ? `Payment detected, waiting for confirmation.`
-                : null}
-              {txState === WatcherTx.STATES.CONFIRMED ? (
-                <div>
-                  Payment confirmed 🎊.{' '}
-                  <a href="https://ropsten.etherscan.io/tx/${txHash}">
-                    {' '}
-                    Verify tx{' '}
-                  </a>
-                </div>
-              ) : null}
-            </Col>
-          </Row>
-        </Container>
+      <Layout header={{ leftIcon: 'back', title }}>
+        <Seo title={title} description="Payment transaction details." />
+        <section className="section">
+          <div className="container is-fluid">
+            <CryptoAmount
+              cryptoValue={value}
+              fiatAmount={parseFloat(valueFiat)}
+              hasSelection={status !== 'pending'}
+            />
+            <FiatAmount fiatAmount={parseFloat(valueFiat)} />
+            {status !== 'pending' && <Divider isDotted />}
+            {status === 'pending' && (
+              <AddTip value={0} handleChange={this.addTipPayment} />
+            )}
+            {status === 'pending' && <QrCode valueCrypto={value} />}
+            {status !== 'pending' && (
+              <InProgressBlocks blocksCount={14} status={status} />
+            )}
+            <AddressClipboard address={posAddress} />
+            <NetworkStatus status="connected" />
+          </div>
+        </section>
       </Layout>
     );
   }

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Quicksand:400,700");
+@import url("https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Quicksand:400,700");
 /*! bulma.io v0.7.2 | MIT License | github.com/jgthms/bulma */
 @keyframes spinAround {
   from {
@@ -264,7 +264,7 @@ button,
 input,
 select,
 textarea {
-  font-family: "Open Sans", sans-serif; }
+  font-family: "Rubik", sans-serif; }
 
 code,
 pre {
@@ -793,7 +793,7 @@ a.has-text-danger:hover, a.has-text-danger:focus {
   font-weight: 400 !important; }
 
 .has-text-weight-semibold {
-  font-weight: 600 !important; }
+  font-weight: 500 !important; }
 
 .has-text-weight-bold {
   font-weight: 700 !important; }
@@ -1877,7 +1877,7 @@ a.box:active {
 .content h5,
 .content h6 {
   color: #363636;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.125; }
 
 .content h1 {
@@ -3388,7 +3388,7 @@ a.tag:hover {
 .title {
   color: #363636;
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.125; }
   .title strong {
     color: inherit;
@@ -3419,7 +3419,7 @@ a.tag:hover {
   line-height: 1.25; }
   .subtitle strong {
     color: #363636;
-    font-weight: 600; }
+    font-weight: 500; }
   .subtitle:not(.is-spaced) + .title {
     margin-top: -1.25rem; }
   .subtitle.is-1 {

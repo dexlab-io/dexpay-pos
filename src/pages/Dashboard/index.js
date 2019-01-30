@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
@@ -22,7 +23,7 @@ class Dashboard extends Component {
     return (
       <Layout>
         <Seo title="POS" description="POS System" />
-        <div className="section">
+        <section className="section">
           <div className="container is-fluid">
             <div className="tabs ">
               <ul>
@@ -70,7 +71,7 @@ class Dashboard extends Component {
             )}
             {activeTab === 'recentPayments' && <RecentPayments />}
           </div>
-        </div>
+        </section>
       </Layout>
     );
   }
@@ -80,4 +81,4 @@ Dashboard.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default Dashboard;
+export default withRouter(Dashboard);
