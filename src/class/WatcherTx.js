@@ -36,7 +36,7 @@ export default class WatcherTx {
         };
       case WatcherTx.NETWORKS.ROPSTEN:
         return {
-          avgBlockTime: 30 * 1000,
+          avgBlockTime: 21 * 1000,
           rpc: 'https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB',
           confirmationNeeded: 1
         };
@@ -58,17 +58,66 @@ export default class WatcherTx {
   }
 
   validate(trx, total, recipient) {
+    // console.log('total', total);
+    // console.log('recipient', recipient);
+    const web3Http = this.getWeb3Http();
+
+    if (trx.to.toLowerCase() === recipient.toLowerCase()) {
+      console.log('----------------------------');
+      console.log('total', total);
+      console.log('recipient', recipient);
+      console.log('trx.value', trx.value);
+      console.log(
+        'ethToWei(total)',
+        web3Http.utils.toWei(total.toString(), 'ether')
+      );
+      console.log('----------------------------');
+    }
+
     const toValid = trx.to !== null;
     if (!toValid) return false;
 
     const walletToValid = trx.to.toLowerCase() === recipient.toLowerCase();
-    const amountValid = ethToWei(total).isEqualTo(trx.value);
+    const amountValid =
+      web3Http.utils.toWei(total.toString(), 'ether') === trx.value;
 
     return toValid && amountValid && walletToValid;
   }
 
+  async checkTransferFromTxHash(txHash, recipient, total, cb) {
+    const web3 = this.getWeb3Http();
+    const trx = await web3.eth.getTransaction(txHash);
+    console.log('trx', trx);
+    const valid = this.validate(trx, total, recipient);
+
+    if (valid) {
+      this.pollingOn = false;
+
+      if (CONF.ENABLE_LOGS) {
+        console.log('trx', trx);
+        console.log(
+          `Found incoming XDAI transaction from ${trx.from} to ${trx.to}`
+        );
+        console.log(`Transaction value is: ${trx.value}`);
+        console.log(`Transaction hash is: ${txHash}\n`);
+      }
+
+      // CB for detected transactions
+      cb({
+        state: WatcherTx.STATES.DETECTED,
+        tx: trx,
+        txHash
+      });
+
+      // Initiate transaction confirmation
+      this.confirmTransaction(txHash, CONF.confirmationNeeded, cb);
+    }
+  }
+
   async xdaiTransfer(recipient, total, cb) {
-    // Get block number
+    if (this.selectedNetwork !== WatcherTx.NETWORKS.XDAI)
+      throw new Error(`This method is available only on the Xdai network`);
+
     const web3 = this.getWeb3Http();
     const currentBlock = await web3.eth.getBlockNumber();
 
@@ -80,32 +129,7 @@ export default class WatcherTx {
 
       if (block.transactions.length) {
         block.transactions.forEach(async txHash => {
-          const trx = await web3.eth.getTransaction(txHash);
-          console.log('trx', trx);
-          const valid = this.validate(trx, total, recipient);
-
-          if (valid) {
-            this.pollingOn = false;
-
-            if (CONF.ENABLE_LOGS) {
-              console.log('trx', trx);
-              console.log(
-                `Found incoming XDAI transaction from ${trx.from} to ${trx.to}`
-              );
-              console.log(`Transaction value is: ${trx.value}`);
-              console.log(`Transaction hash is: ${txHash}\n`);
-            }
-
-            // CB for detected transactions
-            cb({
-              state: WatcherTx.STATES.DETECTED,
-              tx: trx,
-              txHash
-            });
-
-            // Initiate transaction confirmation
-            this.confirmTransaction(txHash, CONF.confirmationNeeded, cb);
-          }
+          this.checkTransferFromTxHash(txHash, recipient, total, cb);
         }, this);
       }
     }
@@ -137,8 +161,10 @@ export default class WatcherTx {
 
           // Get transaction details
           const trx = await web3Http.eth.getTransaction(txHash);
+          //console.log('trx', trx);
 
           const valid = this.validate(trx, total, recipient);
+          console.log('valid', valid);
           // If transaction is not valid, simply return
           if (!valid) return;
 

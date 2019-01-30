@@ -45,7 +45,7 @@ CryptoAmount.propTypes = {
 
 CryptoAmount.propTypes = {
   fiatAmount: PropTypes.number,
-  cryptoValue: PropTypes.number,
+  cryptoValue: PropTypes.string,
   hasSelection: PropTypes.bool,
   cryptoCurrency: PropTypes.string
 };

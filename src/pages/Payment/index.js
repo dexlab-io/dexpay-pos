@@ -18,8 +18,8 @@ class Payment extends Component {
   state = {
     value: 0,
     valueCrypto: {
-      eth: 0,
-      dai: 0
+      eth: '0',
+      dai: '0'
     },
     valueFiat: 0,
     tipPercentage: 0,
@@ -65,10 +65,12 @@ class Payment extends Component {
     const pricesEth = await getTokenPrice();
     const pricesDai = await getTokenPrice('dai');
 
-    const ethValue =
-      parseFloat(totalIncludingTip) / parseFloat(pricesEth[config.currency.id]);
-    const daiValue =
-      parseFloat(totalIncludingTip) / parseFloat(pricesDai[config.currency.id]);
+    const ethValue = (
+      parseFloat(totalIncludingTip) / parseFloat(pricesEth[config.currency.id])
+    ).toPrecision(4);
+    const daiValue = (
+      parseFloat(totalIncludingTip) / parseFloat(pricesDai[config.currency.id])
+    ).toPrecision(2);
 
     await this.setState({
       valueCrypto: {
@@ -77,22 +79,24 @@ class Payment extends Component {
       }
     });
 
-    //const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
-    const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
+    const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
+    // const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
 
-    watcherXdai.xdaiTransfer(config.posAddress, daiValue, data => {
-      this.setState({
-        txState: data.state,
-        txHash: data.txHash
-      });
-    });
-
-    // watcherEth.etherTransfers(config.posAddress, valueCrypto, data => {
+    // watcherXdai.xdaiTransfer(config.posAddress, daiValue, data => {
     //   this.setState({
     //     txState: data.state,
     //     txHash: data.txHash
     //   });
     // });
+
+    console.log('ethValue', ethValue);
+
+    watcherEth.etherTransfers(config.posAddress, ethValue, data => {
+      this.setState({
+        txState: data.state,
+        txHash: data.txHash
+      });
+    });
   };
 
   render() {
@@ -106,7 +110,7 @@ class Payment extends Component {
       title = '1 / 3 Awaiting Payment';
       status = 'pending';
       statusText = `Waiting for payment ${
-        valueCrypto.eth ? valueCrypto.eth.toPrecision(4) : 0
+        valueCrypto.eth ? valueCrypto.eth : 0
       } ETH / ${valueFiat}$ at address ${posAddress}`;
     } else if (txState === WatcherTx.STATES.DETECTED) {
       title = '2 / 3 Pending Payment';

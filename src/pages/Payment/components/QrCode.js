@@ -49,11 +49,11 @@ class QrCode extends React.Component {
 }
 
 QrCode.propTypes = {
-  valueCrypto: 0
+  valueCrypto: '0'
 };
 
 QrCode.propTypes = {
-  valueCrypto: PropTypes.number.isRequired
+  valueCrypto: PropTypes.string.isRequired
 };
 
 export default QrCode;
