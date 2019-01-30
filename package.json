@@ -25,6 +25,7 @@
     "moment": "^2.24.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
+    "react-clipboard.js": "^2.0.2",
     "react-dom": "^16.7.0",
     "react-helmet": "^5.2.0",
     "react-point": "^3.0.1",

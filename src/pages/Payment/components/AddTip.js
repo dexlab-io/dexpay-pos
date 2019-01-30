@@ -41,7 +41,11 @@ class AddTip extends React.Component {
 
   handleChange = value => {
     const { handleChange } = this.props;
-    this.setState({ value });
+    if (value === this.state.value) {
+      this.setState({ value: 0 });
+    } else {
+      this.setState({ value });
+    }
     handleChange(value);
   };
 

@@ -29,7 +29,7 @@ const Count = styled.div`
   margin-bottom: 10px;
 `;
 
-const InProgressBlocks = ({ blocksCount, status }) => {
+const InProgressBlocks = ({ blocksCount, status, txHash }) => {
   return (
     <Container>
       <div>
@@ -42,9 +42,14 @@ const InProgressBlocks = ({ blocksCount, status }) => {
       </div>
       <Count status={status}>{blocksCount}</Count>
       <div>Blocks Verified</div>
-      <p className="has-text-weight-semibold">
+      <a
+        href={`https://ropsten.etherscan.io/tx/${txHash}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="has-text-weight-semibold"
+      >
         Open Block Explorer <span role="img">🔗</span>
-      </p>
+      </a>
     </Container>
   );
 };

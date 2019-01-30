@@ -17,6 +17,9 @@ import { getTokenPrice } from '../../utils/Coingecko';
 class Payment extends Component {
   state = {
     value: 0,
+    valueFiat: 0,
+    tipPercentage: 0,
+    tipValue: 0,
     txState: null,
     txHash: null
   };
@@ -35,15 +38,21 @@ class Payment extends Component {
   }
 
   addTipPayment = async percentage => {
-    console.log('addTipPayment', percentage);
-    const percentageNormalized = 0.015;
-    const valueFiat = parseFloat(this.state.valueFiat);
-    console.log('addTipPayment', valueFiat, percentageNormalized);
-    const percentageToAdd = valueFiat * percentageNormalized + valueFiat;
-    console.log('percentageToAdd', percentageToAdd);
-    await this.setState({
-      value: valueFiat + percentageToAdd
-    });
+    const { tipPercentage } = this.state;
+    if (tipPercentage === percentage) {
+      await this.setState({
+        tipPercentage: 0,
+        tipValue: 0
+      });
+    } else {
+      const valueFiat = parseFloat(this.state.valueFiat);
+      const tipValue = (valueFiat / 100) * percentage;
+      console.log('tipValue', tipValue);
+      await this.setState({
+        tipPercentage: percentage,
+        tipValue
+      });
+    }
     this.calculateCryptoValue();
   };
 
@@ -66,7 +75,7 @@ class Payment extends Component {
   };
 
   render() {
-    const { value, valueFiat, txState, txHash } = this.state;
+    const { value, valueFiat, txState, txHash, tipValue } = this.state;
     const { posAddress } = config;
     let title = '';
     let status = null;
@@ -87,7 +96,7 @@ class Payment extends Component {
       status = 'confirmed';
       statusText = `Payment confirmed 🎊.{' '} <a href="https://ropsten.etherscan.io/tx/${txHash}"> Verify tx </a>`;
     }
-    // status = 'confirmed';
+    // status = 'detected';
     console.log('status', statusText);
 
     return (
@@ -96,18 +105,23 @@ class Payment extends Component {
         <section className="section">
           <div className="container is-fluid">
             <CryptoAmount
+              cryptoCurrency="DAI"
               cryptoValue={value}
               fiatAmount={parseFloat(valueFiat)}
               hasSelection={status !== 'pending'}
             />
-            <FiatAmount fiatAmount={parseFloat(valueFiat)} />
+            <FiatAmount fiatAmount={parseFloat(valueFiat) + tipValue} />
             {status !== 'pending' && <Divider isDotted />}
             {status === 'pending' && (
               <AddTip value={0} handleChange={this.addTipPayment} />
             )}
             {status === 'pending' && <QrCode valueCrypto={value} />}
             {status !== 'pending' && (
-              <InProgressBlocks blocksCount={14} status={status} />
+              <InProgressBlocks
+                blocksCount={14}
+                status={status}
+                txHash={txHash}
+              />
             )}
             <AddressClipboard address={posAddress} />
             <NetworkStatus status="connected" />
