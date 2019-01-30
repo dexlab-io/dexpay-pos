@@ -31,7 +31,6 @@ class Payment extends Component {
   async componentDidMount() {
     const { location } = this.props;
     const valueFiat = location.state.total;
-    console.log('valueFiat', valueFiat);
 
     await this.setState({
       valueFiat,
@@ -51,7 +50,6 @@ class Payment extends Component {
     } else {
       const valueFiat = parseFloat(this.state.valueFiat);
       const tipValue = (valueFiat / 100) * percentage;
-      console.log('tipValue', tipValue);
       await this.setState({
         tipPercentage: percentage,
         tipValue
@@ -62,10 +60,7 @@ class Payment extends Component {
 
   calculateCryptoValue = async () => {
     const { valueFiat, tipValue } = this.state;
-
-    console.log('valueFiat', valueFiat);
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
-    console.log('totalIncludingTip', totalIncludingTip);
 
     const pricesEth = await getTokenPrice();
     const pricesDai = await getTokenPrice('dai');
@@ -85,12 +80,12 @@ class Payment extends Component {
     //const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
     const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
 
-    // watcherXdai.xdaiTransfer(config.posAddress, valueCrypto, data => {
-    //   this.setState({
-    //     txState: data.state,
-    //     txHash: data.txHash
-    //   });
-    // });
+    watcherXdai.xdaiTransfer(config.posAddress, daiValue, data => {
+      this.setState({
+        txState: data.state,
+        txHash: data.txHash
+      });
+    });
 
     // watcherEth.etherTransfers(config.posAddress, valueCrypto, data => {
     //   this.setState({
@@ -123,7 +118,6 @@ class Payment extends Component {
       statusText = `Payment confirmed 🎊.{' '} <a href="https://ropsten.etherscan.io/tx/${txHash}"> Verify tx </a>`;
     }
     // status = 'detected';
-    console.log('valueCrypto', valueCrypto);
 
     return (
       <Layout header={{ leftIcon: 'back', title }}>

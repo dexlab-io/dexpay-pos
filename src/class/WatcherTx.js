@@ -21,6 +21,8 @@ export default class WatcherTx {
 
   constructor(network) {
     this.selectedNetwork = network;
+    this.pollingOn = true;
+    this.lastBlockChecked = null;
   }
 
   getWeb3ws(url = 'wss://ropsten.infura.io/_ws') {
@@ -38,66 +40,65 @@ export default class WatcherTx {
     }
   }
 
-  validate(trx, total, recepient) {
-    console.log('validate: ', trx);
-    console.log('recepient: ', recepient);
+  validate(trx, total, recipient) {
     const toValid = trx.to !== null;
     if (!toValid) return false;
 
-    const walletToValid = trx.to.toLowerCase() === recepient.toLowerCase();
+    const walletToValid = trx.to.toLowerCase() === recipient.toLowerCase();
     const amountValid = ethToWei(total).isEqualTo(trx.value);
 
     return toValid && amountValid && walletToValid;
   }
 
-  async xdaiTransfer(recepient, total, cb) {
+  async xdaiTransfer(recipient, total, cb) {
     // Get block number
-    let pollActivate = true;
-    const web3 = new Web3('https://dai.poa.network');
+    const web3 = this.getWeb3Http();
     const currentBlock = await web3.eth.getBlockNumber();
 
-    //console.log('currentBlock', currentBlock);
-    console.log('recepient', recepient);
+    console.log(currentBlock, this.pollingOn);
 
-    const block = await web3.eth.getBlock(currentBlock);
+    if (currentBlock > this.lastBlockChecked) {
+      const block = await web3.eth.getBlock(currentBlock);
+      this.lastBlockChecked = currentBlock;
 
-    if (block.transactions.length) {
-      const self = this;
-      block.transactions.forEach(async txHash => {
-        const trx = await web3.eth.getTransaction(txHash);
-        console.log('trx', trx);
-        const valid = this.validate(trx, total, recepient);
-
-        if (!valid) return;
-
-        pollActivate = false;
-        if (CONF.ENABLE_LOGS) {
+      if (block.transactions.length) {
+        block.transactions.forEach(async txHash => {
+          const trx = await web3.eth.getTransaction(txHash);
           console.log('trx', trx);
-          console.log(
-            `Found incoming Ether transaction from ${trx.from} to ${trx.to}`
-          );
-          console.log(`Transaction value is: ${trx.value}`);
-          console.log(`Transaction hash is: ${txHash}\n`);
-        }
+          const valid = this.validate(trx, total, recipient);
 
-        // CB for detected transactions
-        cb({
-          state: WatcherTx.STATES.DETECTED,
-          tx: trx,
-          txHash
-        });
+          if (valid) {
+            this.pollingOn = false;
 
-        // Initiate transaction confirmation
-        this.confirmTransaction(txHash, CONF.confirmationNeeded, cb);
-      }, this);
+            if (CONF.ENABLE_LOGS) {
+              console.log('trx', trx);
+              console.log(
+                `Found incoming XDAI transaction from ${trx.from} to ${trx.to}`
+              );
+              console.log(`Transaction value is: ${trx.value}`);
+              console.log(`Transaction hash is: ${txHash}\n`);
+            }
+
+            // CB for detected transactions
+            cb({
+              state: WatcherTx.STATES.DETECTED,
+              tx: trx,
+              txHash
+            });
+
+            // Initiate transaction confirmation
+            this.confirmTransaction(txHash, CONF.confirmationNeeded, cb);
+          }
+        }, this);
+      }
     }
 
-    if (pollActivate) {
-      setInterval(() => this.xdaiTransfer(recepient, total, cb), 10000);
+    if (this.pollingOn) {
+      setTimeout(() => this.xdaiTransfer(recipient, total, cb), 5000);
     }
   }
 
-  etherTransfers(recepient, total, cb) {
+  etherTransfers(recipient, total, cb) {
     // Instantiate web3 with WebSocket provider
     const web3 = this.getWeb3ws();
 
@@ -117,7 +118,7 @@ export default class WatcherTx {
           // Get transaction details
           const trx = await web3Http.eth.getTransaction(txHash);
 
-          const valid = this.validate(trx, total, recepient);
+          const valid = this.validate(trx, total, recipient);
           // If transaction is not valid, simply return
           if (!valid) return;
 
@@ -148,7 +149,7 @@ export default class WatcherTx {
       });
   }
 
-  tokenTransfers(contractAddress, ABI, recepient, value, cb) {
+  tokenTransfers(contractAddress, ABI, recipient, value, cb) {
     // Instantiate web3 with WebSocketProvider
     const web3 = this.getWeb3ws();
 
@@ -164,7 +165,7 @@ export default class WatcherTx {
     // Generate filter options
     const options = {
       filter: {
-        _to: recepient,
+        _to: recipient,
         _value: value
       },
       fromBlock: 'latest'
