@@ -58,21 +58,7 @@ export default class WatcherTx {
   }
 
   validate(trx, total, recipient) {
-    // console.log('total', total);
-    // console.log('recipient', recipient);
     const web3Http = this.getWeb3Http();
-
-    if (trx.to.toLowerCase() === recipient.toLowerCase()) {
-      console.log('----------------------------');
-      console.log('total', total);
-      console.log('recipient', recipient);
-      console.log('trx.value', trx.value);
-      console.log(
-        'ethToWei(total)',
-        web3Http.utils.toWei(total.toString(), 'ether')
-      );
-      console.log('----------------------------');
-    }
 
     const toValid = trx.to !== null;
     if (!toValid) return false;
@@ -87,7 +73,6 @@ export default class WatcherTx {
   async checkTransferFromTxHash(txHash, recipient, total, cb) {
     const web3 = this.getWeb3Http();
     const trx = await web3.eth.getTransaction(txHash);
-    console.log('trx', trx);
     const valid = this.validate(trx, total, recipient);
 
     if (valid) {
@@ -95,9 +80,7 @@ export default class WatcherTx {
 
       if (CONF.ENABLE_LOGS) {
         console.log('trx', trx);
-        console.log(
-          `Found incoming XDAI transaction from ${trx.from} to ${trx.to}`
-        );
+        console.log(`Found incoming transaction from ${trx.from} to ${trx.to}`);
         console.log(`Transaction value is: ${trx.value}`);
         console.log(`Transaction hash is: ${txHash}\n`);
       }
@@ -156,39 +139,12 @@ export default class WatcherTx {
       })
       .on('data', async txHash => {
         try {
-          // Instantiate web3 with HttpProvider
-          const web3Http = this.getWeb3Http();
-
-          // Get transaction details
-          const trx = await web3Http.eth.getTransaction(txHash);
-          //console.log('trx', trx);
-
-          const valid = this.validate(trx, total, recipient);
-          console.log('valid', valid);
-          // If transaction is not valid, simply return
-          if (!valid) return;
-
-          if (CONF.ENABLE_LOGS) {
-            console.log('trx', trx);
-            console.log(
-              `Found incoming Ether transaction from ${trx.from} to ${trx.to}`
-            );
-            console.log(`Transaction value is: ${trx.value}`);
-            console.log(`Transaction hash is: ${txHash}\n`);
-          }
-
-          // CB for detected transactions
-          cb({
-            state: WatcherTx.STATES.DETECTED,
-            tx: trx,
-            txHash
-          });
-
-          // Initiate transaction confirmation
-          this.confirmTransaction(txHash, CONF.confirmationNeeded, cb);
+          await this.checkTransferFromTxHash(txHash, recipient, total, cb);
 
           // Unsubscribe from pending transactions.
-          subscription.unsubscribe();
+          if (!this.pollingOn) {
+            subscription.unsubscribe();
+          }
         } catch (error) {
           console.log(error);
         }

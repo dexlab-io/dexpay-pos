@@ -79,24 +79,22 @@ class Payment extends Component {
       }
     });
 
-    const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
-    // const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
+    // const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
+    const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
 
-    // watcherXdai.xdaiTransfer(config.posAddress, daiValue, data => {
-    //   this.setState({
-    //     txState: data.state,
-    //     txHash: data.txHash
-    //   });
-    // });
-
-    console.log('ethValue', ethValue);
-
-    watcherEth.etherTransfers(config.posAddress, ethValue, data => {
+    watcherXdai.xdaiTransfer(config.posAddress, daiValue, data => {
       this.setState({
         txState: data.state,
         txHash: data.txHash
       });
     });
+
+    // watcherEth.etherTransfers(config.posAddress, ethValue, data => {
+    //   this.setState({
+    //     txState: data.state,
+    //     txHash: data.txHash
+    //   });
+    // });
   };
 
   render() {
