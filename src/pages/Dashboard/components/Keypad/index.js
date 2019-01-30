@@ -8,7 +8,7 @@ const KeysContainer = styled.div`
   margin-bottom: 2rem !important;
 `;
 
-const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, ',', 0, ''];
+const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, ',', 0, 'C'];
 
 class Keypad extends React.Component {
   state = { value: 0 };
@@ -99,7 +99,15 @@ class Keypad extends React.Component {
             <KeypadKey
               key={item}
               text={item.toString()}
-              onClick={this.inputDigit}
+              onClick={input => {
+                if (input === ',') {
+                  this.inputDot();
+                } else if (input === 'C') {
+                  this.clearAll();
+                } else {
+                  this.inputDigit(input);
+                }
+              }}
             />
           ))}
         </KeysContainer>
