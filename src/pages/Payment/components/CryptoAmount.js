@@ -25,10 +25,7 @@ const CryptoAmount = ({ cryptoCurrency, cryptoValue, hasSelection }) => {
     <Container>
       <Image src={cryptoIcon} alt={cryptoCurrency} />
       <span>{cryptoCurrency}&nbsp;</span>
-      <span className="has-text-weight-light">
-        {parseFloat(cryptoValue).toFixed(2)}
-        {cryptoValue}
-      </span>
+      <span className="has-text-weight-light">{cryptoValue}</span>
     </Container>
   );
 

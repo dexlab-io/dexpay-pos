@@ -17,6 +17,10 @@ import { getTokenPrice } from '../../utils/Coingecko';
 class Payment extends Component {
   state = {
     value: 0,
+    valueCrypto: {
+      eth: 0,
+      dai: 0
+    },
     valueFiat: 0,
     tipPercentage: 0,
     tipValue: 0,
@@ -57,21 +61,29 @@ class Payment extends Component {
   };
 
   calculateCryptoValue = async () => {
-    const { valueFiat } = this.state;
+    const { valueFiat, tipValue } = this.state;
 
-    const prices = await getTokenPrice();
-    console.log('prices', prices);
-    const valueCrypto =
-      parseFloat(valueFiat) / parseFloat(prices[config.currency.id]);
+    console.log('valueFiat', valueFiat);
+    const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
+    console.log('totalIncludingTip', totalIncludingTip);
+
+    const pricesEth = await getTokenPrice();
+    const pricesDai = await getTokenPrice('dai');
+
+    const ethValue =
+      parseFloat(totalIncludingTip) / parseFloat(pricesEth[config.currency.id]);
+    const daiValue =
+      parseFloat(totalIncludingTip) / parseFloat(pricesDai[config.currency.id]);
+
     await this.setState({
-      value: valueCrypto
+      valueCrypto: {
+        eth: ethValue,
+        dai: daiValue
+      }
     });
 
     //const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
     const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
-
-    console.log('config.posAddress', config.posAddress);
-    console.log('valueCrypto', valueCrypto);
 
     // watcherXdai.xdaiTransfer(config.posAddress, valueCrypto, data => {
     //   this.setState({
@@ -89,7 +101,7 @@ class Payment extends Component {
   };
 
   render() {
-    const { value, valueFiat, txState, txHash, tipValue } = this.state;
+    const { valueCrypto, valueFiat, txState, txHash, tipValue } = this.state;
     const { posAddress } = config;
     let title = '';
     let status = null;
@@ -99,7 +111,7 @@ class Payment extends Component {
       title = '1 / 3 Awaiting Payment';
       status = 'pending';
       statusText = `Waiting for payment ${
-        value ? value.toPrecision(2) : 0
+        valueCrypto.eth ? valueCrypto.eth.toPrecision(4) : 0
       } ETH / ${valueFiat}$ at address ${posAddress}`;
     } else if (txState === WatcherTx.STATES.DETECTED) {
       title = '2 / 3 Pending Payment';
@@ -111,7 +123,7 @@ class Payment extends Component {
       statusText = `Payment confirmed 🎊.{' '} <a href="https://ropsten.etherscan.io/tx/${txHash}"> Verify tx </a>`;
     }
     // status = 'detected';
-    console.log('status', statusText);
+    console.log('valueCrypto', valueCrypto);
 
     return (
       <Layout header={{ leftIcon: 'back', title }}>
@@ -119,8 +131,14 @@ class Payment extends Component {
         <section className="section">
           <div className="container is-fluid">
             <CryptoAmount
+              cryptoCurrency="ETH"
+              cryptoValue={valueCrypto.eth}
+              fiatAmount={parseFloat(valueFiat)}
+              hasSelection={status !== 'pending'}
+            />
+            <CryptoAmount
               cryptoCurrency="DAI"
-              cryptoValue={value}
+              cryptoValue={valueCrypto.dai}
               fiatAmount={parseFloat(valueFiat)}
               hasSelection={status !== 'pending'}
             />
@@ -129,7 +147,7 @@ class Payment extends Component {
             {status === 'pending' && (
               <AddTip value={0} handleChange={this.addTipPayment} />
             )}
-            {status === 'pending' && <QrCode valueCrypto={value} />}
+            {status === 'pending' && <QrCode valueCrypto={valueCrypto.eth} />}
             {status !== 'pending' && (
               <InProgressBlocks
                 blocksCount={14}
