@@ -1,39 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import WatcherTx from './class/WatcherTx';
-const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
-class App extends Component {
+import { ThemeProvider } from 'styled-components';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import './theme/bulma.css'; // load bulma
+import './localization'; // load i18n
+import theme, { GlobalStyle } from './theme'; // load custom theme
+import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
+import { Error404, Dashboard, Payment } from './pages';
+
+const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
+
+class App extends Component {
   componentDidMount() {
     this.init();
   }
 
   async init() {
-    
     this.wallet = new EthereumHDWallet(false, posAddress);
     await this.wallet.setWeb3();
     await this.wallet.fetchBalance();
-    await this.wallet.getNetworkID()
-    console.log(this.wallet.balance);
-    console.log( this.wallet.networkID )
-
-    // const watcher = new WatcherTx();
-    // watcher.etherTransfers(posAddress)
-
+    await this.wallet.getNetworkID();
   }
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-        </header>
-      </div>
+      <ThemeProvider theme={theme}>
+        <React.Fragment>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" exact component={Dashboard} />
+              <Route path="/payment/:id?" component={Payment} />
+              <Route path="/pos" exact component={Dashboard} />
+              <Route component={Error404} />
+            </Switch>
+          </BrowserRouter>
+          <GlobalStyle />
+        </React.Fragment>
+      </ThemeProvider>
     );
   }
 }

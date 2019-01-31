@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch';
+
 const getGASRecommendation = async () => {
     return fetch(`https://ethgasstation.info/json/ethgasAPI.json`)
       .then(response => response.json())
