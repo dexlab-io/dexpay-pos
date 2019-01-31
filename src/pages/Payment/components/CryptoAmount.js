@@ -48,7 +48,7 @@ class CryptoAmount extends React.Component {
         <Image src={cryptoIcon} alt={selectedCrypto} />
         <span>{selectedCrypto.toUpperCase()}&nbsp;</span>
         <span className="has-text-weight-light">
-          {parseFloat(cryptoValue).toFixed(2)}
+          {cryptoValue[selectedCrypto.toLowerCase()]}
         </span>
       </Container>
     );
@@ -79,14 +79,14 @@ class CryptoAmount extends React.Component {
 }
 
 CryptoAmount.defaultProps = {
-  cryptoValue: 0,
+  cryptoValue: { dai: 0, eth: 0 },
   hasSelection: false,
   cryptoCurrency: 'DAI',
   handleChange: () => {}
 };
 
 CryptoAmount.propTypes = {
-  cryptoValue: PropTypes.number,
+  cryptoValue: PropTypes.object,
   hasSelection: PropTypes.bool,
   cryptoCurrency: PropTypes.string,
   handleChange: PropTypes.func
