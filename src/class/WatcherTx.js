@@ -32,25 +32,28 @@ export default class WatcherTx {
         return {
           avgBlockTime: 5000,
           rpc: 'https://dai.poa.network',
-          confirmationNeeded: 1
+          confirmationNeeded: 1,
+          ws: null
         };
       case WatcherTx.NETWORKS.ROPSTEN:
         return {
           avgBlockTime: 21 * 1000,
           rpc: 'https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB',
+          ws: 'wss://ropsten.infura.io/_ws',
           confirmationNeeded: 1
         };
       default:
         return {
           avgBlockTime: 30 * 1000,
           rpc: 'https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB',
+          ws: 'wss://ropsten.infura.io/_ws',
           confirmationNeeded: 1
         };
     }
   }
 
-  getWeb3ws(url = 'wss://ropsten.infura.io/_ws') {
-    return new Web3(new Web3.providers.WebsocketProvider(url));
+  getWeb3ws() {
+    return new Web3(new Web3.providers.WebsocketProvider(this.conf.ws));
   }
 
   getWeb3Http() {
@@ -134,7 +137,7 @@ export default class WatcherTx {
 
     // Subscribe to pending transactions
     subscription
-      .subscribe((error, result) => {
+      .subscribe(error => {
         if (error) console.error(error);
       })
       .on('data', async txHash => {
@@ -156,13 +159,9 @@ export default class WatcherTx {
     const web3 = this.getWeb3ws();
 
     // Instantiate token contract object with JSON ABI and address
-    const tokenContract = new web3.eth.Contract(
-      ABI,
-      contractAddress,
-      (error, result) => {
-        if (error) console.log(error);
-      }
-    );
+    const tokenContract = new web3.eth.Contract(ABI, contractAddress, error => {
+      if (error) console.log(error);
+    });
 
     // Generate filter options
     const options = {
@@ -209,6 +208,7 @@ export default class WatcherTx {
       return trx.blockNumber === null ? 0 : currentBlock - trx.blockNumber;
     } catch (error) {
       console.log(error);
+      return error;
     }
   }
 
@@ -240,6 +240,7 @@ export default class WatcherTx {
         return;
       }
       // Recursive call
+      // eslint-disable-next-line consistent-return
       return this.confirmTransaction(txHash, confirmations, cb);
     }, this.conf.avgBlockTime);
   }

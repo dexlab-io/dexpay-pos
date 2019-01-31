@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { Trans } from 'react-i18next';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
@@ -36,7 +37,7 @@ class Dashboard extends Component {
                   }
                 >
                   <a onClick={() => this.setState({ activeTab: 'numberPad' })}>
-                    Number Pad
+                    <Trans>Numberpad</Trans>
                   </a>
                 </li>
                 <li
@@ -51,7 +52,7 @@ class Dashboard extends Component {
                       this.setState({ activeTab: 'recentPayments' })
                     }
                   >
-                    Recent Payments
+                    <Trans>Recent Payments</Trans>
                   </a>
                 </li>
               </ul>
@@ -66,7 +67,7 @@ class Dashboard extends Component {
                   className="button is-black is-uppercase is-large is-fullwidth"
                   onClick={this.handlePay}
                 >
-                  Generate bill
+                  <Trans>Generate bill</Trans>
                 </button>
               </React.Fragment>
             )}
