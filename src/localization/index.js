@@ -3,6 +3,7 @@ import { reactI18nextModule } from 'react-i18next';
 
 import english from './english.json';
 import italian from './italian.json';
+import hindi from './hindi.json';
 
 // the translations
 // (tip move them in a JSON file and import them)
@@ -12,6 +13,9 @@ const resources = {
   },
   it: {
     translation: italian
+  },
+  hi: {
+    translation: hindi
   }
 };
 

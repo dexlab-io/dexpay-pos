@@ -9043,6 +9043,7 @@ react-helmet@^5.2.0:
 react-i18next@^9.0.10:
   version "9.0.10"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-9.0.10.tgz#ba596b98e8dd06dbb805cf720147459ad55a3ada"
+  integrity sha512-xpeCWNut7ylQLs3Qqyo7dT13kgZbML1CdftbdnswLCv0RbRT16bRP16ma59iLe1KHIbn92VJo0Q8LSKYoXVNvg==
   dependencies:
     "@babel/runtime" "^7.3.1"
     hoist-non-react-statics "3.2.1"
