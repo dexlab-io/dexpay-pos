@@ -6,6 +6,7 @@ import PointTarget from 'react-point';
 const Container = styled.div`
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+  cursor: pointer;
 `;
 const Text = styled.span`
   font-size: 48px;

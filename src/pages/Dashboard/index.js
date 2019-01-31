@@ -15,6 +15,7 @@ class Dashboard extends Component {
     const { totalAmount } = this.state;
     const { history } = this.props;
 
+    console.log('totalAmount', totalAmount);
     history.push('/payment', { total: totalAmount });
   };
 

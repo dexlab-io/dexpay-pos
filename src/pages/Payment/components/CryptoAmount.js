@@ -25,9 +25,7 @@ const CryptoAmount = ({ cryptoCurrency, cryptoValue, hasSelection }) => {
     <Container>
       <Image src={cryptoIcon} alt={cryptoCurrency} />
       <span>{cryptoCurrency}&nbsp;</span>
-      <span className="has-text-weight-light">
-        {parseFloat(cryptoValue).toFixed(2)}
-      </span>
+      <span className="has-text-weight-light">{cryptoValue}</span>
     </Container>
   );
 
@@ -47,7 +45,7 @@ CryptoAmount.propTypes = {
 
 CryptoAmount.propTypes = {
   fiatAmount: PropTypes.number,
-  cryptoValue: PropTypes.number,
+  cryptoValue: PropTypes.string,
   hasSelection: PropTypes.bool,
   cryptoCurrency: PropTypes.string
 };

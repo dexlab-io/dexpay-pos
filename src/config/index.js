@@ -9,7 +9,11 @@ export default {
   twitter: '',
   posAddress: '0xB599Ac9d4892f44fEAc6bec3314Ef58432Ae3c79',
 
-  currency: '€',
+  currency: {
+    symbol: '€',
+    id: 'eur'
+  },
+
   defaultHDpathEthereum: "m/44'/60'/0'/0/0", // Compatible with Jaxx, Metamask, Exodus, imToken, TREZOR (ETH) & Digital Bitbox
   confirmationNeeded: 1,
   networkProviders: {

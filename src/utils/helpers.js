@@ -3,7 +3,7 @@ import config from '../config';
 
 export const formatCurrency = value => {
   return currency(parseFloat(value), {
-    symbol: `${config.currency} `,
+    symbol: `${config.currency.symbol} `,
     formatWithSymbol: true
   }).format();
 };
