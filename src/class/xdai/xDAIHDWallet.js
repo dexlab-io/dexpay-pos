@@ -57,9 +57,10 @@ export default class xDAIHDWallet extends EthereumHDWallet{
           .then(response => response.json())
           .then(res => res.result)
           .then(transactions => {
+            console.log('transactions', transactions)
             this.transactions = transactions.map(t => ({
               from: t.from,
-              timestamp: t.timestamp,
+              timestamp: t.timeStamp,
               transactionHash: t.hash,
               type: t.contractAddress !== '' ? 'transfer' : 'contract',
               value:  this.web3.utils.fromWei(t.value, 'ether'),
