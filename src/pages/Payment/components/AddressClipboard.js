@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Clipboard from 'react-clipboard.js';
+import { Trans } from 'react-i18next';
 
 const Container = styled.div`
   display: flex;
@@ -19,7 +20,9 @@ const Input = styled.input`
 const AddressClipboard = ({ address }) => {
   return (
     <Container>
-      <span>To:</span>
+      <span>
+        <Trans>To</Trans>:
+      </span>
       <Clipboard data-clipboard-text={address}>
         <Input className="input" type="text" value={address} />
       </Clipboard>

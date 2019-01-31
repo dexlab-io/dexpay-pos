@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Trans } from 'react-i18next';
 
 const Container = styled.div`
   display: flex;
@@ -54,7 +55,9 @@ class AddTip extends React.Component {
 
     return (
       <Container>
-        <Title>Add a tip</Title>
+        <Title>
+          <Trans>Add a tip</Trans>
+        </Title>
         {tipOptions.map(item => (
           <ItemContainer
             key={item.id}

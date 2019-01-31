@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withNamespaces } from 'react-i18next';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
@@ -76,23 +77,24 @@ class Payment extends Component {
 
   render() {
     const { value, valueFiat, txState, txHash, tipValue } = this.state;
+    const { t } = this.props;
     const { posAddress } = config;
     let title = '';
     let status = null;
     let statusText = null;
 
     if (txState === WatcherTx.STATES.PENDING) {
-      title = '1 / 3 Awaiting Payment';
+      title = `1 / 3 ${t('Awaiting Payment')}`;
       status = 'pending';
       statusText = `Waiting for payment ${
         value ? value.toPrecision(2) : 0
       } ETH / ${valueFiat}$ at address ${posAddress}`;
     } else if (txState === WatcherTx.STATES.DETECTED) {
-      title = '2 / 3 Pending Payment';
+      title = `2 / 3 ${t('Pending Payment')}`;
       status = 'detected';
       statusText = `Payment detected, waiting for confirmation.`;
     } else if (txState === WatcherTx.STATES.CONFIRMED) {
-      title = '3 / 3 Payment Successful';
+      title = `3 / 3 ${t('Payment Successful')}`;
       status = 'confirmed';
       statusText = `Payment confirmed 🎊.{' '} <a href="https://ropsten.etherscan.io/tx/${txHash}"> Verify tx </a>`;
     }
@@ -132,4 +134,4 @@ class Payment extends Component {
   }
 }
 
-export default Payment;
+export default withNamespaces()(Payment);

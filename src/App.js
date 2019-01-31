@@ -3,6 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './theme/bulma.css'; // load bulma
+import './localization'; // load i18n
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import { Error404, Dashboard, Payment } from './pages';
