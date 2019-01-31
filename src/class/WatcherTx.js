@@ -32,6 +32,7 @@ export default class WatcherTx {
         return {
           avgBlockTime: 5000,
           rpc: 'https://dai.poa.network',
+          label: 'XDAI Poa Network',
           confirmationNeeded: 1,
           ws: null
         };
@@ -40,6 +41,7 @@ export default class WatcherTx {
           avgBlockTime: 21 * 1000,
           rpc: 'https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB',
           ws: 'wss://ropsten.infura.io/_ws',
+          label: 'Ropsten Ethereum Testnet',
           confirmationNeeded: 1
         };
       default:
@@ -47,9 +49,15 @@ export default class WatcherTx {
           avgBlockTime: 30 * 1000,
           rpc: 'https://ropsten.infura.io/Q1GYXZMXNXfKuURbwBWB',
           ws: 'wss://ropsten.infura.io/_ws',
+          label: 'Ropsten Ethereum Testnet',
           confirmationNeeded: 1
         };
     }
+  }
+
+  async isConnected() {
+    const web3 = this.getWeb3Http();
+    return await web3.eth.net.isListening();
   }
 
   getWeb3ws() {

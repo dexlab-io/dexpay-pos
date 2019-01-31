@@ -17,11 +17,11 @@ import { getTokenPrice } from '../../utils/Coingecko';
 
 class Payment extends Component {
   state = {
-    value: 0,
     valueCrypto: {
       eth: '0',
       dai: '0'
     },
+    watchers: null,
     valueFiat: 0,
     tipPercentage: 0,
     tipValue: 0,
@@ -90,6 +90,12 @@ class Payment extends Component {
       });
     });
 
+    this.setState({
+      watchers: {
+        xdai: watcherXdai
+      }
+    });
+
     // watcherEth.etherTransfers(config.posAddress, ethValue, data => {
     //   this.setState({
     //     txState: data.state,
@@ -99,7 +105,14 @@ class Payment extends Component {
   };
 
   render() {
-    const { valueCrypto, valueFiat, txState, txHash, tipValue } = this.state;
+    const {
+      valueCrypto,
+      valueFiat,
+      txState,
+      txHash,
+      tipValue,
+      watchers
+    } = this.state;
     const { t } = this.props;
     const { posAddress } = config;
     let title = '';
@@ -149,7 +162,15 @@ class Payment extends Component {
               />
             )}
             <AddressClipboard address={posAddress} />
-            <NetworkStatus status="connected" />
+
+            {watchers ? (
+              <NetworkStatus
+                label={watchers.xdai.conf.label}
+                status={
+                  watchers.xdai.isConnected() ? 'connected' : 'not connected'
+                }
+              />
+            ) : null}
           </div>
         </section>
       </Layout>

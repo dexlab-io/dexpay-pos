@@ -14,17 +14,17 @@ const Status = styled.span`
   padding: 3px 5px;
 `;
 
-const NetworkStatus = ({ status }) => {
+const NetworkStatus = ({ status, label }) => {
   return (
     <Container>
-      Ethereum Main Network{' '}
-      <Status className="has-text-weight-bold">{status}</Status>
+      {label} <Status className="has-text-weight-bold">{status}</Status>
     </Container>
   );
 };
 
 NetworkStatus.propTypes = {
-  status: PropTypes.string.isRequired
+  status: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired
 };
 
 export default NetworkStatus;
