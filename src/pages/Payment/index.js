@@ -110,7 +110,8 @@ class Payment extends Component {
               cryptoCurrency="DAI"
               cryptoValue={value}
               fiatAmount={parseFloat(valueFiat)}
-              hasSelection={status !== 'pending'}
+              hasSelection={status === 'pending'}
+              handleChange={option => console.log('currency changed', option)}
             />
             <FiatAmount fiatAmount={parseFloat(valueFiat) + tipValue} />
             {status !== 'pending' && <Divider isDotted />}
