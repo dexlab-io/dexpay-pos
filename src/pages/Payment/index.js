@@ -130,12 +130,6 @@ class Payment extends Component {
           <div className="container is-fluid">
             <CryptoAmount
               cryptoCurrency="ETH"
-              cryptoValue={valueCrypto.eth}
-              fiatAmount={parseFloat(valueFiat)}
-              hasSelection={status !== 'pending'}
-            />
-            <CryptoAmount
-              cryptoCurrency="DAI"
               cryptoValue={valueCrypto.dai}
               fiatAmount={parseFloat(valueFiat)}
               hasSelection={status === 'pending'}
