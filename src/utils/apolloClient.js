@@ -21,6 +21,7 @@ export const persistor = new CachePersistor({
 persistor.restore();
 
 const client = new ApolloClient({
+  connectToDevTools: debug,
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (debug) {

@@ -1,4 +1,5 @@
 export default {
   isOnline: true,
-  isLoggedIn: false
+  isLoggedIn: false,
+  user: undefined
 };
