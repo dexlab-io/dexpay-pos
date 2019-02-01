@@ -1,22 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withNamespaces } from 'react-i18next';
 
-import Layout from '../../components/Layout';
-import Seo from '../../components/Seo';
-import CryptoAmount from './components/CryptoAmount';
-import FiatAmount from './components/FiatAmount';
-import AddTip from './components/AddTip';
-import QrCode from './components/QrCode';
-import AddressClipboard from './components/AddressClipboard';
-import NetworkStatus from './components/NetworkStatus';
-import InProgressBlocks from './components/InProgressBlocks';
-import { Divider } from '../../components/elements';
 import WatcherTx from '../../class/WatcherTx';
+import { checkWindowSize } from '../../utils/helpers';
 import config from '../../config';
 import { getTokenPrice } from '../../utils/Coingecko';
+import MobileView from './mobile.view';
+import DesktopView from './desktop.view';
 
-class Payment extends Component {
+class Payment extends React.Component {
   state = {
+    isMobile: checkWindowSize(),
     valueCrypto: {
       eth: '0',
       dai: '0'
@@ -32,6 +26,11 @@ class Payment extends Component {
   async componentDidMount() {
     const { location } = this.props;
     const valueFiat = location.state.total;
+
+    // on screen resize
+    checkWindowSize(false, isMobile => {
+      this.setState({ isMobile });
+    });
 
     await this.setState({
       valueFiat,
@@ -105,76 +104,28 @@ class Payment extends Component {
   };
 
   render() {
-    const {
-      valueCrypto,
-      valueFiat,
-      txState,
-      txHash,
-      tipValue,
-      watchers
-    } = this.state;
+    const { txState } = this.state;
     const { t } = this.props;
-    const { posAddress } = config;
-    let title = '';
-    let status = null;
-    let statusText = null;
+    this.title = '';
+    this.status = null;
 
     if (txState === WatcherTx.STATES.PENDING) {
-      title = `1 / 3 ${t('Awaiting Payment')}`;
-      status = 'pending';
-      statusText = `Waiting for payment ${
-        valueCrypto.eth ? valueCrypto.eth : 0
-      } ETH / ${valueFiat}$ at address ${posAddress}`;
+      this.title = `1 / 3 ${t('Awaiting Payment')}`;
+      this.status = 'pending';
     } else if (txState === WatcherTx.STATES.DETECTED) {
-      title = `2 / 3 ${t('Pending Payment')}`;
-      status = 'detected';
-      statusText = `Payment detected, waiting for confirmation.`;
+      this.title = `2 / 3 ${t('Pending Payment')}`;
+      this.status = 'detected';
     } else if (txState === WatcherTx.STATES.CONFIRMED) {
-      title = `3 / 3 ${t('Payment Successful')}`;
-      status = 'confirmed';
-      statusText = `Payment confirmed 🎊.{' '} <a href="https://ropsten.etherscan.io/tx/${txHash}"> Verify tx </a>`;
+      this.title = `3 / 3 ${t('Payment Successful')}`;
+      this.status = 'confirmed';
     }
     // status = 'detected';
 
-    return (
-      <Layout header={{ leftIcon: 'back', title }}>
-        <Seo title={title} description="Payment transaction details." />
-        <section className="section">
-          <div className="container is-fluid">
-            <CryptoAmount
-              cryptoCurrency="ETH"
-              cryptoValue={valueCrypto}
-              fiatAmount={parseFloat(valueFiat)}
-              hasSelection={status === 'pending'}
-              handleChange={option => console.log('currency changed', option)}
-            />
-            <FiatAmount fiatAmount={parseFloat(valueFiat) + tipValue} />
-            {status !== 'pending' && <Divider isDotted />}
-            {status === 'pending' && (
-              <AddTip value={0} handleChange={this.addTipPayment} />
-            )}
-            {status === 'pending' && <QrCode valueCrypto={valueCrypto.eth} />}
-            {status !== 'pending' && (
-              <InProgressBlocks
-                blocksCount={14}
-                status={status}
-                txHash={txHash}
-              />
-            )}
-            <AddressClipboard address={posAddress} />
+    const { isMobile } = this.state;
 
-            {watchers ? (
-              <NetworkStatus
-                label={watchers.xdai.conf.label}
-                status={
-                  watchers.xdai.isConnected() ? 'connected' : 'not connected'
-                }
-              />
-            ) : null}
-          </div>
-        </section>
-      </Layout>
-    );
+    return isMobile
+      ? MobileView.call(this, this.props, this.state, this.title, this.status)
+      : DesktopView.call(this, this.props, this.state, this.title, this.status);
   }
 }
 
