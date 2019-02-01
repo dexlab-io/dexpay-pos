@@ -1,3 +1,5 @@
+![logo xpay vertical small](https://user-images.githubusercontent.com/10923247/52067516-095ff700-257b-11e9-824a-bcaec3d29e2c.png)
+
 # Dexpay POS
 
 > `Dexpay: POS`, a modularized and extensible point of sale which enables Merchants to accept payments in cryptocurrencies without being exposed to the volatility of the specific currency used during the transaction, in a completely decentralized matter.
