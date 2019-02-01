@@ -15,7 +15,8 @@ const theme = {
   fontWeightRegular: '400',
   fontWeightSemiBold: '600',
   fontWeightBold: '700',
-  fontSizeReguar: '400'
+  fontSizeReguar: '400',
+  borderColor: '#D6D6D6'
 };
 
 export default theme;

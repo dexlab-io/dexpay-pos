@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import NumberInput from './NumberInput';
 import KeypadKey from './KeypadKey';
 
 const KeysContainer = styled.div`
@@ -93,7 +92,6 @@ class Keypad extends React.Component {
 
     return (
       <div>
-        <NumberInput value={parseFloat(value)} />
         <KeysContainer className="columns is-mobile is-multiline">
           {keyNumbers.map(item => (
             <KeypadKey
