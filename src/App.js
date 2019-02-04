@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
+import apolloClient from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import { Error404, Dashboard, Payment } from './pages';
+import { Error404, Dashboard, Payment, Test } from './pages';
 
 const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
 
@@ -24,19 +26,22 @@ class App extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <React.Fragment>
-          <BrowserRouter>
-            <Switch>
-              <Route path="/" exact component={Dashboard} />
-              <Route path="/payment/:id?" component={Payment} />
-              <Route path="/pos" exact component={Dashboard} />
-              <Route component={Error404} />
-            </Switch>
-          </BrowserRouter>
-          <GlobalStyle />
-        </React.Fragment>
-      </ThemeProvider>
+      <ApolloProvider client={apolloClient}>
+        <ThemeProvider theme={theme}>
+          <React.Fragment>
+            <BrowserRouter>
+              <Switch>
+                <Route path="/" exact component={Dashboard} />
+                <Route path="/payment/:id?" component={Payment} />
+                <Route path="/pos" exact component={Dashboard} />
+                <Route path="/test" exact component={Test} />
+                <Route component={Error404} />
+              </Switch>
+            </BrowserRouter>
+            <GlobalStyle />
+          </React.Fragment>
+        </ThemeProvider>
+      </ApolloProvider>
     );
   }
 }
