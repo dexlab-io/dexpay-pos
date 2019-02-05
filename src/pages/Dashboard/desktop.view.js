@@ -7,6 +7,7 @@ import NumberInput from './components/Keypad/NumberInput';
 import GenerateBillBtn from './components/GenerateBillBtn';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
+import Payment from '../Payment';
 
 const Section = styled.div`
   border-top: ${props => `1px solid ${props.theme.borderColor}`};
@@ -29,7 +30,7 @@ const LeftSide = styled.div`
 `;
 
 export default function() {
-  const { activeTab, totalAmount } = this.state;
+  const { activeTab, totalAmount, paymentModalOpen } = this.state;
 
   return (
     <Layout>
@@ -54,6 +55,11 @@ export default function() {
           </div>
         </div>
       </Section>
+      <Payment
+        isModalOpen={paymentModalOpen}
+        onCloseModal={this.onClosePaymentModal}
+        total={totalAmount}
+      />
     </Layout>
   );
 }

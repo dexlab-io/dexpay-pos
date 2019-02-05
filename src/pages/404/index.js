@@ -7,7 +7,12 @@ const Error404 = () => {
   return (
     <Layout>
       <Seo title="POS" description="POS System" />
-      <h2 className="title">404</h2>
+      <div className="section">
+        <div className="container">
+          <h2 className="title">404</h2>
+          <p>The page you are looking for, could not be found.</p>
+        </div>
+      </div>
     </Layout>
   );
 };

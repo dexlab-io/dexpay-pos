@@ -1,5 +1,6 @@
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
+import Modal from 'react-responsive-modal';
 
 import WatcherTx from '../../class/WatcherTx';
 import { checkWindowSize } from '../../utils/helpers';
@@ -24,8 +25,8 @@ class Payment extends React.Component {
   };
 
   async componentDidMount() {
-    const { location } = this.props;
-    const valueFiat = location.state.total;
+    const { total } = this.props;
+    const valueFiat = total;
 
     // on screen resize
     checkWindowSize(false, isMobile => {
@@ -122,10 +123,32 @@ class Payment extends React.Component {
     // status = 'detected';
 
     const { isMobile } = this.state;
+    const { isModalOpen, onCloseModal } = this.props;
 
-    return isMobile
-      ? MobileView.call(this, this.props, this.state, this.title, this.status)
-      : DesktopView.call(this, this.props, this.state, this.title, this.status);
+    return (
+      <Modal
+        open={isModalOpen}
+        onClose={onCloseModal}
+        center
+        styles={{ modal: { maxWidth: 'initial' } }}
+      >
+        {isMobile
+          ? MobileView.call(
+              this,
+              this.props,
+              this.state,
+              this.title,
+              this.status
+            )
+          : DesktopView.call(
+              this,
+              this.props,
+              this.state,
+              this.title,
+              this.status
+            )}
+      </Modal>
+    );
   }
 }
 

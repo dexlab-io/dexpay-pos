@@ -8,7 +8,7 @@ import './localization'; // load i18n
 import apolloClient from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import { Error404, Dashboard, Payment, Test } from './pages';
+import { Error404, Dashboard, Test } from './pages';
 
 const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
 
@@ -32,8 +32,6 @@ class App extends Component {
             <BrowserRouter>
               <Switch>
                 <Route path="/" exact component={Dashboard} />
-                <Route path="/payment/:id?" component={Payment} />
-                <Route path="/pos" exact component={Dashboard} />
                 <Route path="/test" exact component={Test} />
                 <Route component={Error404} />
               </Switch>

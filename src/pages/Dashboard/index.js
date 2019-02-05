@@ -13,7 +13,8 @@ class Dashboard extends Component {
     this.state = {
       isMobile: checkWindowSize(),
       activeTab: 'numberPad',
-      totalAmount: 0
+      totalAmount: 0,
+      paymentModalOpen: false
     };
   }
 
@@ -25,11 +26,16 @@ class Dashboard extends Component {
   }
 
   handlePay = () => {
-    const { totalAmount } = this.state;
-    const { history } = this.props;
+    // const { totalAmount } = this.state;
+    // const { history } = this.props;
 
-    console.log('totalAmount', totalAmount);
-    history.push('/payment', { total: totalAmount });
+    // console.log('totalAmount', totalAmount);
+    // history.push('/payment', { total: totalAmount });
+    this.setState({ paymentModalOpen: true });
+  };
+
+  onClosePaymentModal = () => {
+    this.setState({ paymentModalOpen: false });
   };
 
   render() {

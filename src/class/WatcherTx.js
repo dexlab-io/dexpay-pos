@@ -115,7 +115,7 @@ export default class WatcherTx {
     const web3 = this.getWeb3Http();
     const currentBlock = await web3.eth.getBlockNumber();
 
-    console.log(currentBlock, this.pollingOn);
+    // console.log(currentBlock, this.pollingOn);
 
     if (currentBlock > this.lastBlockChecked) {
       const block = await web3.eth.getBlock(currentBlock);
