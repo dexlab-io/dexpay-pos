@@ -1,5 +1,5 @@
 export default {
-  DEV_MOVE: true,
+  debug: process.env.NODE_ENV === 'development',
   ENABLE_LOGS: true,
   APP_VERSION: '0.2.12-b2',
   siteName: 'Dexpay',
@@ -7,7 +7,7 @@ export default {
   logo: '',
   fbAppID: '',
   twitter: '',
-  posAddress: '0xB599Ac9d4892f44fEAc6bec3314Ef58432Ae3c79',
+  posAddress: '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139',
 
   currency: {
     symbol: '€',

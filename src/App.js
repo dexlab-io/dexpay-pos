@@ -7,10 +7,9 @@ import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
 import apolloClient from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
+import config from './config';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import { Error404, Dashboard, Test } from './pages';
-
-const posAddress = '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139';
 
 class App extends Component {
   componentDidMount() {
@@ -18,7 +17,7 @@ class App extends Component {
   }
 
   async init() {
-    this.wallet = new EthereumHDWallet(false, posAddress);
+    this.wallet = new EthereumHDWallet(false, config.posAddress);
     await this.wallet.setWeb3();
     await this.wallet.fetchBalance();
     await this.wallet.getNetworkID();
