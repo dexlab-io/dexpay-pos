@@ -21,6 +21,22 @@ const Image = styled.img`
   height: 32px;
 `;
 
+const InnerSelect = styled.div`
+  position: relative;
+  border: 1px solid #383838;
+  border-radius: 4px;
+  width: 210px;
+  padding-top: 14px;
+  padding-bottom: 7px;
+  margin: 0 auto;
+`;
+
+const SelectIcon = styled.i`
+  position: absolute;
+  top: 22px;
+  right: 22px;
+`;
+
 const options = [
   { value: 'dai', label: 'Dai' },
   { value: 'eth', label: 'Ethereum' }
@@ -65,9 +81,12 @@ class CryptoAmount extends React.Component {
                 menuIsOpen={selectOpen}
               />
             ) : (
-              <div onClick={() => this.setState({ selectOpen: !selectOpen })}>
+              <InnerSelect
+                onClick={() => this.setState({ selectOpen: !selectOpen })}
+              >
                 {activeItem}
-              </div>
+                <SelectIcon className="fas fa-angle-down" />
+              </InnerSelect>
             )}
           </div>
         </SelectContainer>

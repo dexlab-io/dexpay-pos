@@ -7,6 +7,7 @@ export const colors = {
 };
 
 const theme = {
+  mobileBreakpoint: '700px',
   primaryColor: colors.black,
   secondaryColor: colors.riptide,
   primaryFontFamily: '"Quicksand", sans-serif',

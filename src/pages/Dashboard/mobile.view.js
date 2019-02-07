@@ -7,9 +7,10 @@ import GenerateBillBtn from './components/GenerateBillBtn';
 import NumberInput from './components/Keypad/NumberInput';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
+import Payment from '../Payment';
 
 export default function() {
-  const { activeTab, totalAmount } = this.state;
+  const { activeTab, totalAmount, paymentModalOpen } = this.state;
 
   return (
     <Layout>
@@ -32,6 +33,11 @@ export default function() {
           {activeTab === 'recentPayments' && <RecentPayments />}
         </div>
       </section>
+      <Payment
+        isModalOpen={paymentModalOpen}
+        onCloseModal={this.onClosePaymentModal}
+        total={totalAmount}
+      />
     </Layout>
   );
 }

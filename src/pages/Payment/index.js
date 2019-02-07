@@ -130,7 +130,11 @@ class Payment extends React.Component {
         open={isModalOpen}
         onClose={onCloseModal}
         center
-        styles={{ modal: { maxWidth: 'initial' } }}
+        showCloseIcon={false}
+        styles={{
+          modal: { maxWidth: 'initial', width: '100%' },
+          overlay: { padding: 0 }
+        }}
       >
         {isMobile
           ? MobileView.call(

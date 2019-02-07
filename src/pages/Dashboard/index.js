@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { checkWindowSize } from '../../utils/helpers';
@@ -26,11 +25,6 @@ class Dashboard extends Component {
   }
 
   handlePay = () => {
-    // const { totalAmount } = this.state;
-    // const { history } = this.props;
-
-    // console.log('totalAmount', totalAmount);
-    // history.push('/payment', { total: totalAmount });
     this.setState({ paymentModalOpen: true });
   };
 
@@ -46,9 +40,5 @@ class Dashboard extends Component {
       : DesktopView.call(this, this.props, this.state);
   }
 }
-
-Dashboard.propTypes = {
-  history: PropTypes.object.isRequired
-};
 
 export default withRouter(Dashboard);
