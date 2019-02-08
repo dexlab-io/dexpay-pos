@@ -29,7 +29,12 @@ const AddressClipboard = ({ address }) => {
         <Trans>To</Trans>:
       </span>
       <ClipboardBtn data-clipboard-text={address}>
-        <Input className="input" type="text" value={address} />
+        <Input
+          className="input"
+          type="text"
+          value={address}
+          onChange={() => {}}
+        />
       </ClipboardBtn>
     </Container>
   );

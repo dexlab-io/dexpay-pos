@@ -1,16 +1,13 @@
 import React from 'react';
 
-import Layout from '../../components/Layout';
-import Seo from '../../components/Seo';
 import NavTabs from './components/NavTabs';
 import GenerateBillBtn from './components/GenerateBillBtn';
 import NumberInput from './components/Keypad/NumberInput';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
-import Payment from '../Payment';
 
 export default function() {
-  const { activeTab, totalAmount, paymentModalOpen } = this.state;
+  const { activeTab, totalAmount } = this.state;
 
   return (
     <section className="section">

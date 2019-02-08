@@ -27,7 +27,7 @@ class QrCode extends React.Component {
   }
 
   genQrCode(total) {
-    console.log('Total', total);
+    // console.log('Total', total);
     const payload = this.getQrData(config.posAddress, total);
     const qrImgUrl = `http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=${escape(
       payload

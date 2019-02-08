@@ -27,20 +27,19 @@ class Payment extends Component {
   };
 
   async componentDidMount() {
-    const { total } = this.props;
-    const valueFiat = total;
-
     // on screen resize
     checkWindowSize(false, isMobile => {
       this.setState({ isMobile });
     });
 
-    await this.setState({
-      valueFiat,
-      txState: WatcherTx.STATES.PENDING
-    });
+    this.updateFiatValue();
+  }
 
-    await this.calculateCryptoValue();
+  componentDidUpdate(prevProps) {
+    const { total } = this.props;
+    if (total !== prevProps.total) {
+      this.updateFiatValue();
+    }
   }
 
   addTipPayment = async percentage => {
@@ -105,6 +104,16 @@ class Payment extends Component {
     //   });
     // });
   };
+
+  async updateFiatValue() {
+    const { total } = this.props;
+    const valueFiat = total;
+    await this.setState({
+      valueFiat,
+      txState: WatcherTx.STATES.PENDING
+    });
+    await this.calculateCryptoValue();
+  }
 
   render() {
     const { txState } = this.state;

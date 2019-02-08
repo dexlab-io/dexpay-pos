@@ -10,6 +10,9 @@ const Section = styled.div`
   border-top: ${props => `1px solid ${props.theme.borderColor}`};
   padding-top: 9px;
 `;
+const Columns = styled.div`
+  min-height: 500px;
+`;
 const RightSide = styled.div`
   padding-top: 80px;
 `;
@@ -32,7 +35,7 @@ export default function() {
   return (
     <Section className="section">
       <div className="container">
-        <div className="columns">
+        <Columns className="columns">
           <RightSide className="column is-two-thirds">
             {activeTab === 'numberPad' && (
               <React.Fragment>
@@ -47,7 +50,7 @@ export default function() {
             <NumberInput value={parseFloat(totalAmount)} />
             <GenerateBillBtn handlePay={this.handlePay} />
           </LeftSide>
-        </div>
+        </Columns>
       </div>
     </Section>
   );

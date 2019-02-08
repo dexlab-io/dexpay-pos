@@ -42,7 +42,7 @@ const MenuItem = styled.a`
   }
 `;
 
-const Header = ({ leftIcon, hideNav, title, leftBtnClick }) => (
+const Header = ({ leftIcon, hideNav, title, leftBtnClick, onNavItemClick }) => (
   <Container className="section">
     <div className="container is-fluid">
       <div className="columns is-mobile">
@@ -71,10 +71,16 @@ const Header = ({ leftIcon, hideNav, title, leftBtnClick }) => (
               </LogoContainer>
               <div className="navbar-menu">
                 <div className="navbar-start">
-                  <MenuItem className="navbar-item is-active">
+                  <MenuItem
+                    className="navbar-item is-active"
+                    onClick={() => onNavItemClick('numberPad')}
+                  >
                     Number Pad
                   </MenuItem>
-                  <MenuItem className="navbar-item">
+                  <MenuItem
+                    className="navbar-item"
+                    onClick={() => onNavItemClick('recentPayments')}
+                  >
                     Recent Transactions
                   </MenuItem>
                 </div>
@@ -91,14 +97,16 @@ Header.defaultProps = {
   leftIcon: 'menu',
   hideNav: false,
   title: undefined,
-  leftBtnClick: () => {}
+  leftBtnClick: () => {},
+  onNavItemClick: () => {}
 };
 
 Header.propTypes = {
   leftIcon: PropTypes.string,
   hideNav: PropTypes.bool,
   title: PropTypes.string,
-  leftBtnClick: PropTypes.func
+  leftBtnClick: PropTypes.func,
+  onNavItemClick: PropTypes.func
 };
 
 export default Header;

@@ -35,11 +35,15 @@ class Dashboard extends Component {
     this.setState({ paymentModalOpen: false });
   };
 
+  handleNavItemChange = activeTab => {
+    this.setState({ activeTab });
+  };
+
   render() {
     const { isMobile, totalAmount, paymentModalOpen } = this.state;
 
     return (
-      <Layout>
+      <Layout header={{ onNavItemClick: this.handleNavItemChange }}>
         <Seo title="POS" description="POS System" />
         {isMobile
           ? MobileView.call(this, this.props, this.state)
