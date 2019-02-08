@@ -53,7 +53,7 @@ export default function() {
               </LeftSide>
             </div>
           ) : (
-            <div>Pos address is empty</div>
+            <div>{pos.error}</div>
           )}
         </Columns>
       </div>

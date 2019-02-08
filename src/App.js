@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import qs from 'qs';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
 import apolloClient from './utils/apolloClient';
@@ -18,10 +18,17 @@ class App extends Component {
   }
 
   async init() {
+    const params = qs.parse(window.location.search.slice(1));
     this.wallet = new EthereumHDWallet();
     await this.wallet.setWeb3();
 
-    store.update.pos.address(this.wallet.getAddress());
+    if (this.wallet.getAddress()) {
+      store.update.pos.address(this.wallet.getAddress());
+    } else if (!this.wallet.getAddress() && params.posAddress) {
+      store.update.pos.address(params.posAddress);
+    } else {
+      store.update.pos.address(null, 'Pos address is empty');
+    }
   }
 
   render() {

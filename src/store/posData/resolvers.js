@@ -4,8 +4,10 @@ const resolvers = {
       const data = {
         __typename: 'pos',
         address: variables.address,
+        error: variables.error,
         pos: {
           address: variables.address,
+          error: variables.error,
           __typename: 'pos'
         }
       };
