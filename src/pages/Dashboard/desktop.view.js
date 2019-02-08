@@ -36,7 +36,7 @@ export default function() {
       <div className="container">
         <Columns className="columns">
           {pos.address ? (
-            <div>
+            <React.Fragment>
               <RightSide className="column is-two-thirds">
                 {activeTab === 'numberPad' && (
                   <React.Fragment>
@@ -51,7 +51,7 @@ export default function() {
                 <NumberInput value={parseFloat(totalAmount)} />
                 <GenerateBillBtn handlePay={this.handlePay} />
               </LeftSide>
-            </div>
+            </React.Fragment>
           ) : (
             <div>{pos.error}</div>
           )}

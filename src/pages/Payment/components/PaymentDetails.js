@@ -9,10 +9,8 @@ import AddressClipboard from './AddressClipboard';
 import NetworkStatus from './NetworkStatus';
 import InProgressBlocks from './InProgressBlocks';
 import { Divider } from '../../../components/elements';
-import config from '../../../config';
 
 const PaymentDetails = props => {
-  const { posAddress } = config;
   const {
     valueCrypto,
     valueFiat,
