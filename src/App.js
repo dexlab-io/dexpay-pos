@@ -7,22 +7,21 @@ import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
 import apolloClient from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
-import config from './config';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import { Error404, Dashboard, Test } from './pages';
 
 import { store } from './store';
 
 class App extends Component {
-  componentDidMount() {
-    this.init();
+  async componentDidMount() {
+    await this.init();
   }
 
   async init() {
-    this.wallet = new EthereumHDWallet(false, config.posAddress);
+    this.wallet = new EthereumHDWallet();
     await this.wallet.setWeb3();
-    await this.wallet.fetchBalance();
-    await this.wallet.getNetworkID();
+
+    store.update.pos.address(this.wallet.getAddress());
   }
 
   render() {
@@ -32,7 +31,11 @@ class App extends Component {
           <React.Fragment>
             <BrowserRouter>
               <Switch>
-                <Route path="/" exact render={() => <Dashboard />} />
+                <Route
+                  path="/"
+                  exact
+                  render={() => <Dashboard store={store} />}
+                />
                 <Route
                   path="/test"
                   exact

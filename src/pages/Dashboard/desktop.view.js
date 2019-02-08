@@ -30,26 +30,31 @@ const LeftSide = styled.div`
 `;
 
 export default function() {
-  const { activeTab, totalAmount } = this.state;
-
+  const { activeTab, totalAmount, pos } = this.state;
   return (
     <Section className="section">
       <div className="container">
         <Columns className="columns">
-          <RightSide className="column is-two-thirds">
-            {activeTab === 'numberPad' && (
-              <React.Fragment>
-                <Keypad
-                  handleChange={val => this.setState({ totalAmount: val })}
-                />
-              </React.Fragment>
-            )}
-            {activeTab === 'recentPayments' && <RecentPayments />}
-          </RightSide>
-          <LeftSide className="column">
-            <NumberInput value={parseFloat(totalAmount)} />
-            <GenerateBillBtn handlePay={this.handlePay} />
-          </LeftSide>
+          {pos.address ? (
+            <div>
+              <RightSide className="column is-two-thirds">
+                {activeTab === 'numberPad' && (
+                  <React.Fragment>
+                    <Keypad
+                      handleChange={val => this.setState({ totalAmount: val })}
+                    />
+                  </React.Fragment>
+                )}
+                {activeTab === 'recentPayments' && <RecentPayments />}
+              </RightSide>
+              <LeftSide className="column">
+                <NumberInput value={parseFloat(totalAmount)} />
+                <GenerateBillBtn handlePay={this.handlePay} />
+              </LeftSide>
+            </div>
+          ) : (
+            <div>Pos address is empty</div>
+          )}
         </Columns>
       </div>
     </Section>

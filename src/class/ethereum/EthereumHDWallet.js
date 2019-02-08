@@ -4,9 +4,9 @@ import Web3 from 'web3';
 import ProviderEngine from 'web3-provider-engine';
 import WalletSubprovider from 'web3-provider-engine/subproviders/wallet';
 import findIndex from 'lodash/findIndex';
+import isUndefined from 'lodash/isUndefined';
 import { erc20Abi } from '../../utils/constants';
 import CONF from '../../config';
-import isUndefined from 'lodash/isUndefined';
 import Token from '../Token';
 import HDWallet from '../HDWallet';
 
@@ -50,7 +50,7 @@ export default class EthereumHDWallet extends HDWallet {
   }
 
   getAddress() {
-    if (this.watchOnly) return this.address;
+    if (!this.secret) return this.address;
     return this.instanceWallet.getAddressString();
   }
 
@@ -75,16 +75,18 @@ export default class EthereumHDWallet extends HDWallet {
   async setWeb3() {
     const { web3, ethereum } = window;
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       // for modern dapp browsers
       if (ethereum) {
         console.log(ethereum);
         ethereum
           .enable()
-          .then(() => {
-            web3.eth.getAccounts(console.log);
+          .then(async () => {
             this.web3 = new Web3(ethereum);
-            this.web3.eth.getAccounts(console.log);
+            const accounts = await this.web3.eth.getAccounts();
+            // eslint-disable-next-line prefer-destructuring
+            this.address = accounts[0];
+            console.log(this.getAddress());
             resolve();
           })
           .catch(deniedAccessMessage => {
@@ -95,6 +97,11 @@ export default class EthereumHDWallet extends HDWallet {
         // for legacy dapp browsers
       } else if (web3 && web3.currentProvider) {
         this.web3 = new Web3(web3.currentProvider);
+
+        const accounts = await this.web3.eth.getAccounts();
+        // eslint-disable-next-line prefer-destructuring
+        this.address = accounts[0];
+        console.log(this.getAddress());
         console.log('legacy dapp browsers');
         resolve();
       } else {
@@ -189,7 +196,7 @@ export default class EthereumHDWallet extends HDWallet {
     return new Promise((resolve, reject) => {
       try {
         this.web3.eth.sendSignedTransaction(
-          `0x${  signedTx.toString('hex')}`,
+          `0x${signedTx.toString('hex')}`,
           (error, tx) => {
             if (error) {
               console.log('err', error);
@@ -500,16 +507,13 @@ export default class EthereumHDWallet extends HDWallet {
 
       token.methods
         .transfer(toAddress, amount * Math.pow(10, decimals))
-        .send(
-          { from: this.getAddress(), gasLimit },
-          (error, transaction) => {
-            if (error) {
-              reject(error);
-            }
-
-            resolve(transaction);
+        .send({ from: this.getAddress(), gasLimit }, (error, transaction) => {
+          if (error) {
+            reject(error);
           }
-        );
+
+          resolve(transaction);
+        });
     });
   }
 

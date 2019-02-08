@@ -29,6 +29,7 @@ const store = {
      */
     posSub: (context, key) => {
       fetchPosData().subscribe(result => {
+        console.log('result', result);
         const ns = {};
         ns[key] = result.data.pos;
         context.setState(ns);
