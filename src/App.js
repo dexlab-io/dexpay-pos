@@ -11,6 +11,8 @@ import config from './config';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import { Error404, Dashboard, Test } from './pages';
 
+import { store } from './store';
+
 class App extends Component {
   componentDidMount() {
     this.init();
@@ -30,8 +32,12 @@ class App extends Component {
           <React.Fragment>
             <BrowserRouter>
               <Switch>
-                <Route path="/" exact component={Dashboard} />
-                <Route path="/test" exact component={Test} />
+                <Route path="/" exact render={() => <Dashboard />} />
+                <Route
+                  path="/test"
+                  exact
+                  render={() => <Test store={store} />}
+                />
                 <Route component={Error404} />
               </Switch>
             </BrowserRouter>

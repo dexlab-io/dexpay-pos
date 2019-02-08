@@ -1,8 +1,6 @@
 const resolvers = {
   Mutation: {
     setPosAddress: (_, variables, { cache }) => {
-      console.log('variables', variables);
-
       const data = {
         __typename: 'pos',
         address: variables.address,
@@ -13,7 +11,6 @@ const resolvers = {
       };
 
       cache.writeData({ data });
-
       return data;
     }
   }

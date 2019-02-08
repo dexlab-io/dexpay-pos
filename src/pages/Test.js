@@ -6,8 +6,6 @@ import Layout from '../components/Layout';
 import Seo from '../components/Seo';
 import apolloClient from '../utils/apolloClient';
 
-import { fetchPosData, updatePosAddress } from '../store/posData/queries';
-
 const query = gql`
   {
     user @client {
@@ -55,10 +53,9 @@ class Test extends React.Component {
   };
 
   async componentDidMount() {
-    fetchPosData().subscribe(result => {
-      console.log('result fetchPosData', result);
-      this.setState({ pos: result.data.pos });
-    });
+    const { store } = this.props;
+
+    store.fetch.posSub(this, 'pos');
 
     apolloClient.watchQuery({ query }).subscribe(result => {
       console.log('result', result);
@@ -67,6 +64,7 @@ class Test extends React.Component {
 
   render() {
     console.log('state', this.state);
+    const { store } = this.props;
     return (
       <Layout>
         <Seo title="Test page" description="A Test page" />
@@ -99,7 +97,9 @@ class Test extends React.Component {
             <hr />
             <button
               type="submit"
-              onClick={() => updatePosAddress(`afd ${Math.random() * 100}`)}
+              onClick={() =>
+                store.update.pos.address(`afd ${Math.random() * 100}`)
+              }
             >
               Change {this.state.pos.address}
             </button>
