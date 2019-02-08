@@ -6,25 +6,28 @@ const query = gql`
   {
     pos @client {
       address
+      source
       error
     }
   }
 `;
 
 const updatePosAddressMutation = gql`
-  mutation setPosAddress($address: String!, $error: String) {
-    setPosAddress(address: $address, error: $error) @client {
+  mutation setPosAddress($address: String!, $error: String, $source: String!) {
+    setPosAddress(address: $address, error: $error, source: $source) @client {
       address
+      source
       error
     }
   }
 `;
 
-const updatePosAddress = (address, error) => {
+const updatePosAddress = (address, error, source) => {
   const web3 = new Web3();
   apolloClient.mutate({
     mutation: updatePosAddressMutation,
     variables: {
+      source,
       address: web3.utils.isAddress(address) ? address : null,
       error:
         address && !web3.utils.isAddress(address)

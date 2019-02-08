@@ -23,11 +23,15 @@ class App extends Component {
     await this.wallet.setWeb3();
 
     if (this.wallet.getAddress()) {
-      store.update.pos.address(this.wallet.getAddress());
+      store.update.pos.address(
+        this.wallet.getAddress(),
+        null,
+        'Injected Provider'
+      );
     } else if (!this.wallet.getAddress() && params.posAddress) {
-      store.update.pos.address(params.posAddress);
+      store.update.pos.address(params.posAddress, null, 'GET');
     } else {
-      store.update.pos.address(null, 'Pos address is empty');
+      store.update.pos.address(null, 'Pos address is empty', null);
     }
   }
 

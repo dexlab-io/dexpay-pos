@@ -1,6 +1,8 @@
 const typeDefs = `
   type PosData {
     address: String!
+    error: String
+    source: String
   }
 
   type Query {
@@ -8,7 +10,7 @@ const typeDefs = `
   }
 
   type Mutation {
-    setPosAddress(address: String!): PosData!
+    setPosAddress(address: String!, error: String, source: String!): PosData!
   }
 `;
 

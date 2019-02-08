@@ -5,9 +5,11 @@ const resolvers = {
         __typename: 'pos',
         address: variables.address,
         error: variables.error,
+        source: variables.source,
         pos: {
           address: variables.address,
           error: variables.error,
+          source: variables.source,
           __typename: 'pos'
         }
       };
