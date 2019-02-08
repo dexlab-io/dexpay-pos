@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
-import config from '../../../config';
+import { store } from '../../../store';
 
 const Container = styled.div`
   display: flex;
@@ -13,32 +12,30 @@ const Container = styled.div`
 
 class QrCode extends React.Component {
   state = {
-    qrImage: null
+    address: null
   };
 
   componentDidMount() {
-    const { valueCrypto } = this.props;
-    this.posAddress = config.posAddress;
-    this.genQrCode(valueCrypto);
-  }
-
-  getQrData(value) {
-    return `ethereum:${this.posAddress}?amount=${value}`;
-  }
-
-  genQrCode(total) {
-    // console.log('Total', total);
-    const payload = this.getQrData(total);
-    const qrImgUrl = `http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=${escape(
-      payload
-    )}&qzone=1&margin=0&size=250x250&ecc=L`;
-    this.setState({
-      qrImage: qrImgUrl
+    store.fetch.pos().subscribe(res => {
+      this.setState({ address: res.data.pos.address });
     });
   }
 
+  getQrData(value) {
+    const { address } = this.state;
+    return `ethereum:${address}?amount=${value}`;
+  }
+
+  genQrCode(total) {
+    const payload = this.getQrData(total);
+    return `http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=${escape(
+      payload
+    )}&qzone=1&margin=0&size=250x250&ecc=L`;
+  }
+
   render() {
-    const { qrImage } = this.state;
+    const { valueCrypto } = this.props;
+    const qrImage = this.genQrCode(valueCrypto);
 
     return (
       <Container>
