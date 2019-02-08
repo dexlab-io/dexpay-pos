@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Layout from '../../components/Layout';
-import Seo from '../../components/Seo';
 import NumberInput from './components/Keypad/NumberInput';
 import GenerateBillBtn from './components/GenerateBillBtn';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
-import Payment from '../Payment';
 
 const Section = styled.div`
   border-top: ${props => `1px solid ${props.theme.borderColor}`};
@@ -30,36 +27,28 @@ const LeftSide = styled.div`
 `;
 
 export default function() {
-  const { activeTab, totalAmount, paymentModalOpen } = this.state;
+  const { activeTab, totalAmount } = this.state;
 
   return (
-    <Layout>
-      <Seo title="POS" description="POS System" />
-      <Section className="section">
-        <div className="container">
-          <div className="columns">
-            <RightSide className="column is-two-thirds">
-              {activeTab === 'numberPad' && (
-                <React.Fragment>
-                  <Keypad
-                    handleChange={val => this.setState({ totalAmount: val })}
-                  />
-                </React.Fragment>
-              )}
-              {activeTab === 'recentPayments' && <RecentPayments />}
-            </RightSide>
-            <LeftSide className="column">
-              <NumberInput value={parseFloat(totalAmount)} />
-              <GenerateBillBtn handlePay={this.handlePay} />
-            </LeftSide>
-          </div>
+    <Section className="section">
+      <div className="container">
+        <div className="columns">
+          <RightSide className="column is-two-thirds">
+            {activeTab === 'numberPad' && (
+              <React.Fragment>
+                <Keypad
+                  handleChange={val => this.setState({ totalAmount: val })}
+                />
+              </React.Fragment>
+            )}
+            {activeTab === 'recentPayments' && <RecentPayments />}
+          </RightSide>
+          <LeftSide className="column">
+            <NumberInput value={parseFloat(totalAmount)} />
+            <GenerateBillBtn handlePay={this.handlePay} />
+          </LeftSide>
         </div>
-      </Section>
-      <Payment
-        isModalOpen={paymentModalOpen}
-        onCloseModal={this.onClosePaymentModal}
-        total={totalAmount}
-      />
-    </Layout>
+      </div>
+    </Section>
   );
 }

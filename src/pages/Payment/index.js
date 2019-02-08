@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withNamespaces } from 'react-i18next';
 import Modal from 'react-responsive-modal';
 
@@ -8,8 +8,10 @@ import config from '../../config';
 import { getTokenPrice } from '../../utils/Coingecko';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
+import Layout from '../../components/Layout';
+import Seo from '../../components/Seo';
 
-class Payment extends React.Component {
+class Payment extends Component {
   state = {
     isMobile: checkWindowSize(),
     valueCrypto: {
@@ -136,21 +138,31 @@ class Payment extends React.Component {
           overlay: { padding: 0 }
         }}
       >
-        {isMobile
-          ? MobileView.call(
-              this,
-              this.props,
-              this.state,
-              this.title,
-              this.status
-            )
-          : DesktopView.call(
-              this,
-              this.props,
-              this.state,
-              this.title,
-              this.status
-            )}
+        <Layout
+          header={{
+            leftIcon: 'back',
+            title: this.title,
+            hideNav: true,
+            leftBtnClick: onCloseModal
+          }}
+        >
+          <Seo title={this.title} description="Payment transaction details." />
+          {isMobile
+            ? MobileView.call(
+                this,
+                this.props,
+                this.state,
+                this.title,
+                this.status
+              )
+            : DesktopView.call(
+                this,
+                this.props,
+                this.state,
+                this.title,
+                this.status
+              )}
+        </Layout>
       </Modal>
     );
   }
