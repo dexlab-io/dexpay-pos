@@ -3,11 +3,6 @@ import { persistor } from '../../utils/apolloClient';
 
 const resolvers = {
   Mutation: {
-    setPosAddress: (_, variables, { cache }) => {
-      console.log('variables', variables);
-      console.log('cache', cache);
-      return 'test';
-    },
     toggleOnline: (_, variables, { cache }) => {
       const { isOnline } = variables.input;
       // console.log('toggleIsLoggedIn', isLoggedIn);

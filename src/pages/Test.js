@@ -99,7 +99,7 @@ class Test extends React.Component {
             <hr />
             <button
               type="submit"
-              onClick={() => updatePosAddress('jkshafdkjhdkah')}
+              onClick={() => updatePosAddress(`afd ${Math.random() * 100}`)}
             >
               Change {this.state.pos.address}
             </button>
