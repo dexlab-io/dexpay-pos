@@ -1,5 +1,5 @@
 import { mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
-import { fetchPosData, updatePosAddress } from './posData/queries';
+import { fetchPosData, updatePosAddress, posQuery } from './posData/queries';
 import posData from './posData/resolvers';
 import posType from './posData/schema';
 import posDefaults from './posData/defaults';
@@ -21,6 +21,9 @@ const defaults = {
  *
  */
 const store = {
+  queries: {
+    pos: posQuery
+  },
   fetch: {
     pos: fetchPosData,
     /**
@@ -29,7 +32,6 @@ const store = {
      */
     posSub: (context, key) => {
       fetchPosData().subscribe(result => {
-        console.log('result', result);
         const ns = {};
         ns[key] = result.data.pos;
         context.setState(ns);

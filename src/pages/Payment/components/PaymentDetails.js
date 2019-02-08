@@ -1,5 +1,7 @@
 import React from 'react';
-
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import { store } from '../../../store';
 import CryptoAmount from './CryptoAmount';
 import FiatAmount from './FiatAmount';
 import AddTip from './AddTip';
@@ -40,7 +42,14 @@ const PaymentDetails = props => {
       {status !== 'pending' && (
         <InProgressBlocks blocksCount={14} status={status} txHash={txHash} />
       )}
-      <AddressClipboard address={posAddress} />
+
+      <Query query={store.queries.pos} fetchPolicy="cache">
+        {({ data }) => (
+          <AddressClipboard
+            address={data.pos.address ? data.pos.address : data.pos.error}
+          />
+        )}
+      </Query>
 
       {watchers ? (
         <NetworkStatus

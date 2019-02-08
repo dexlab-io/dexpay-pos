@@ -86,7 +86,6 @@ export default class EthereumHDWallet extends HDWallet {
             const accounts = await this.web3.eth.getAccounts();
             // eslint-disable-next-line prefer-destructuring
             this.address = accounts[0];
-            console.log(this.getAddress());
             resolve();
           })
           .catch(deniedAccessMessage => {

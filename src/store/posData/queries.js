@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import Web3 from 'web3';
 import apolloClient from '../../utils/apolloClient';
 
-const query = gql`
+const posQuery = gql`
   {
     pos @client {
       address
@@ -24,6 +24,7 @@ const updatePosAddressMutation = gql`
 
 const updatePosAddress = (address, error, source) => {
   const web3 = new Web3();
+
   apolloClient.mutate({
     mutation: updatePosAddressMutation,
     variables: {
@@ -38,7 +39,7 @@ const updatePosAddress = (address, error, source) => {
 };
 
 const fetchPosData = () => {
-  return apolloClient.watchQuery({ query });
+  return apolloClient.watchQuery({ query: posQuery });
 };
 
-export { fetchPosData, updatePosAddress };
+export { fetchPosData, updatePosAddress, posQuery };
