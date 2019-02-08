@@ -6,6 +6,8 @@ import Layout from '../components/Layout';
 import Seo from '../components/Seo';
 import apolloClient from '../utils/apolloClient';
 
+import { fetchPosData, updatePosAddress } from '../store/posData/queries';
+
 const query = gql`
   {
     user @client {
@@ -48,13 +50,23 @@ const Logout = () => (
 );
 
 class Test extends React.Component {
+  state = {
+    pos: {}
+  };
+
   async componentDidMount() {
+    fetchPosData().subscribe(result => {
+      console.log('result fetchPosData', result);
+      this.setState({ pos: result.data.pos });
+    });
+
     apolloClient.watchQuery({ query }).subscribe(result => {
       console.log('result', result);
     });
   }
 
   render() {
+    console.log('state', this.state);
     return (
       <Layout>
         <Seo title="Test page" description="A Test page" />
@@ -85,6 +97,12 @@ class Test extends React.Component {
               }}
             </Query>
             <hr />
+            <button
+              type="submit"
+              onClick={() => updatePosAddress('jkshafdkjhdkah')}
+            >
+              Change {this.state.pos.address}
+            </button>
             <Mutation mutation={loginMutation}>
               {(login, { loading, error }) => (
                 <React.Fragment>

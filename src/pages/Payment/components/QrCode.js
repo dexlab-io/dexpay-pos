@@ -18,17 +18,17 @@ class QrCode extends React.Component {
 
   componentDidMount() {
     const { valueCrypto } = this.props;
-
+    this.posAddress = config.posAddress;
     this.genQrCode(valueCrypto);
   }
 
-  getQrData(to, value) {
-    return `ethereum:${to}?amount=${value}`;
+  getQrData(value) {
+    return `ethereum:${this.posAddress}?amount=${value}`;
   }
 
   genQrCode(total) {
     // console.log('Total', total);
-    const payload = this.getQrData(config.posAddress, total);
+    const payload = this.getQrData(total);
     const qrImgUrl = `http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=${escape(
       payload
     )}&qzone=1&margin=0&size=250x250&ecc=L`;
