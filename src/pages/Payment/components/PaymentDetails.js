@@ -1,5 +1,4 @@
 import React from 'react';
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { store } from '../../../store';
 import CryptoAmount from './CryptoAmount';
