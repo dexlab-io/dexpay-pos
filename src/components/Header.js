@@ -19,6 +19,9 @@ const LeftSide = styled.div`
     width: 10%;
   }
 `;
+const LeftLink = styled.a`
+  cursor: pointer;
+`;
 
 const LogoContainer = styled.div`
   padding-top: 4px;
@@ -42,15 +45,19 @@ const MenuItem = styled.a`
   }
 `;
 
+const Nav = styled.nav`
+  z-index: 0;
+`;
+
 const Header = ({ leftIcon, hideNav, title, leftBtnClick, onNavItemClick }) => (
   <Container className="section">
     <div className="container is-fluid">
       <div className="columns is-mobile">
         <LeftSide className="column is-one-fifth">
-          <a onClick={leftBtnClick}>
+          <LeftLink onClick={leftBtnClick}>
             {leftIcon === 'menu' && <img src={barsImg} alt="side menu" />}
             {leftIcon === 'back' && <img src={backImg} alt="back button" />}
-          </a>
+          </LeftLink>
         </LeftSide>
         {hideNav ? (
           <React.Fragment>
@@ -61,7 +68,7 @@ const Header = ({ leftIcon, hideNav, title, leftBtnClick, onNavItemClick }) => (
           </React.Fragment>
         ) : (
           <div className="column">
-            <nav
+            <Nav
               className="navbar"
               role="navigation"
               aria-label="main navigation"
@@ -85,7 +92,7 @@ const Header = ({ leftIcon, hideNav, title, leftBtnClick, onNavItemClick }) => (
                   </MenuItem>
                 </div>
               </div>
-            </nav>
+            </Nav>
           </div>
         )}
       </div>
