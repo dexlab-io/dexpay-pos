@@ -42,6 +42,7 @@
     "react-helmet": "^5.2.0",
     "react-i18next": "^9.0.10",
     "react-point": "^3.0.1",
+    "react-qrcode-logo": "^2.0.0",
     "react-responsive-modal": "^3.6.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.3",
