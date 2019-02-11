@@ -142,7 +142,7 @@ class Payment extends Component {
         center
         showCloseIcon={false}
         styles={{
-          modal: { maxWidth: 'initial', width: '100%' },
+          modal: { maxWidth: 'initial', width: '100%', height: '100%' },
           overlay: { padding: 0 }
         }}
       >
