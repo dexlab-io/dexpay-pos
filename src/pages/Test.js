@@ -17,6 +17,12 @@ const query = gql`
   }
 `;
 
+const counterQuery = gql`
+  {
+    counter @client
+  }
+`;
+
 const loginMutation = gql`
   mutation login($email: String!, $password: String!) {
     login(input: { email: $email, password: $password }) @client {
@@ -29,6 +35,23 @@ const logoutMutation = gql`
     logout @client
   }
 `;
+const counterMutation = gql`
+  mutation updateCounter($number: Int!) {
+    updateCounter(number: $number) @client
+  }
+`;
+
+const CounterDataComponent = props => (
+  <Query query={counterQuery} fetchPolicy="cache-and-network">
+    {({ data, loading, error }) => {
+      console.log('counter', data, loading, error);
+      if (loading) return <div>loading...</div>;
+      if (error) return <div>Error: {error}</div>;
+
+      return props.children(data);
+    }}
+  </Query>
+);
 
 const Logout = () => (
   <Mutation mutation={logoutMutation}>
@@ -49,7 +72,8 @@ const Logout = () => (
 
 class Test extends React.Component {
   state = {
-    pos: {}
+    pos: {},
+    counter: 0
   };
 
   async componentDidMount() {
@@ -63,8 +87,11 @@ class Test extends React.Component {
   }
 
   render() {
-    console.log('state', this.state);
     const { store } = this.props;
+    console.log('counter state', this.state.counter);
+    const counterMutation2 = apolloClient.mutate({ mutation: counterMutation });
+    // counterMutation2.updateCounter({variables:123});
+
     return (
       <Layout>
         <Seo title="Test page" description="A Test page" />
@@ -120,6 +147,26 @@ class Test extends React.Component {
                   {error && <p>Error: {error.message}</p>}
                 </React.Fragment>
               )}
+            </Mutation>
+            <hr />
+            <CounterDataComponent>
+              {data => {
+                return <div>Counter: {data.counter}</div>;
+              }}
+            </CounterDataComponent>
+            <br />
+            <Mutation mutation={counterMutation}>
+              {(updateCounter, { data, loading, error }) => {
+                console.log('updateCounter', data, loading, error);
+                return (
+                  <button
+                    type="button"
+                    onClick={() => updateCounter({ variables: { number: 10 } })}
+                  >
+                    update counter
+                  </button>
+                );
+              }}
             </Mutation>
           </div>
         </div>

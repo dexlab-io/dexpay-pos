@@ -54,6 +54,14 @@ const resolvers = {
       await timeout(600);
 
       return true;
+    },
+    updateCounter: (_, variables, { cache }) => {
+      // update cache
+      console.log('variables', variables);
+      // const data = cache.readyData({ gql`counter` });
+      cache.writeData({ data: { counter: variables.number } });
+
+      return true;
     }
   }
 };
