@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { QRCode } from 'react-qrcode-logo';
+
 import { store } from '../../../store';
 
 const Container = styled.div`
@@ -26,20 +28,13 @@ class QrCode extends React.Component {
     return `ethereum:${address}?amount=${value}`;
   }
 
-  genQrCode(total) {
-    const payload = this.getQrData(total);
-    return `http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=${escape(
-      payload
-    )}&qzone=1&margin=0&size=250x250&ecc=L`;
-  }
-
   render() {
     const { valueCrypto } = this.props;
-    const qrImage = this.genQrCode(valueCrypto);
+    const qrPayload = this.getQrData(valueCrypto);
 
     return (
       <Container>
-        {qrImage ? <img src={qrImage} alt="Qr code payment" /> : null}
+        <QRCode value={escape(qrPayload)} size={250} />
       </Container>
     );
   }
