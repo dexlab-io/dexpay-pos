@@ -5,12 +5,9 @@ import { withClientState } from 'apollo-link-state';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 
-import defaults from '../store/defaults';
-import typeDefs from '../store/schema';
-import resolvers from '../store/resolvers';
+import { defaults, resolvers, typeDefs } from '../store';
 
 const cache = new InMemoryCache();
-
 const debug = true;
 
 export const persistor = new CachePersistor({
