@@ -65,7 +65,7 @@ class PaymentDetails extends React.Component {
                   }
                 />
               ) : null}
-              <button
+              {/* <button
                 type="button"
                 className="button is-black is-uppercase is-large is-fullwidth"
                 href={`ethereum:${data.pos.address}?amount=${
@@ -73,7 +73,7 @@ class PaymentDetails extends React.Component {
                 }`}
               >
                 Open in wallet
-              </button>
+              </button> */}
             </div>
           )}
         </Query>

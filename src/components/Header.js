@@ -7,9 +7,9 @@ import backImg from '../assets/images/back.png';
 import logoImg from '../assets/images/logo.png';
 
 const Container = styled.section`
-  padding: 4rem 1.5rem;
+  padding: 2rem 1.5rem;
   @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
-    padding: 1rem 1.5rem;
+    padding: 2rem 1.5rem;
   }
 `;
 const LeftSide = styled.div`
@@ -67,7 +67,7 @@ const Header = ({ leftIcon, hideNav, title, leftBtnClick, onNavItemClick }) => (
             <div className="column is-one-fifth" />
           </React.Fragment>
         ) : (
-          <div className="column">
+          <React.Fragment>
             <Nav
               className="navbar"
               role="navigation"
@@ -76,24 +76,22 @@ const Header = ({ leftIcon, hideNav, title, leftBtnClick, onNavItemClick }) => (
               <LogoContainer className="navbar-brand">
                 <Logo src={logoImg} alt="Dexpay logo" />
               </LogoContainer>
-              <div className="navbar-menu">
-                <div className="navbar-start">
-                  <MenuItem
-                    className="navbar-item is-active"
-                    onClick={() => onNavItemClick('numberPad')}
-                  >
-                    Number Pad
-                  </MenuItem>
-                  <MenuItem
-                    className="navbar-item"
-                    onClick={() => onNavItemClick('recentPayments')}
-                  >
-                    Recent Transactions
-                  </MenuItem>
-                </div>
-              </div>
             </Nav>
-          </div>
+            <div className="column is-hidden-mobile">
+              <MenuItem
+                className=" is-active"
+                onClick={() => onNavItemClick('numberPad')}
+              >
+                Number Pad
+              </MenuItem>
+              <MenuItem
+                className=""
+                onClick={() => onNavItemClick('recentPayments')}
+              >
+                Recent Transactions
+              </MenuItem>
+            </div>
+          </React.Fragment>
         )}
       </div>
     </div>

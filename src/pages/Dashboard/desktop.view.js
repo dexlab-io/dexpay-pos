@@ -14,7 +14,7 @@ const Columns = styled.div`
   min-height: 500px;
 `;
 const RightSide = styled.div`
-  padding-top: 80px;
+  padding-top: 20px;
 `;
 const LeftSide = styled.div`
   padding-top: 80px;
