@@ -6,6 +6,7 @@ import Sidebar from 'react-sidebar';
 
 import config from '../config';
 import Header from './Header';
+import MySidebar from './Sidebar';
 
 const Container = styled.div``;
 
@@ -28,18 +29,21 @@ class Layout extends React.Component {
     return (
       <Container>
         <Helmet title={config.siteName} />
-        <Header {...header} />
         <Sidebar
-          sidebar={<b>Sidebar content</b>}
+          sidebar={<MySidebar />}
+          shadow={false}
           open={sidebarOpen}
           onSetOpen={this.onSetSidebarOpen}
-          styles={{ sidebar: { background: 'white' } }}
+          styles={{ sidebar: { background: 'white', minWidth: ' 340px' } }}
         >
-          <button type="button" onClick={() => this.onSetSidebarOpen(true)}>
-            Open sidebar
-          </button>
+          <React.Fragment>
+            <Header
+              leftBtnClick={() => this.onSetSidebarOpen(true)}
+              {...header}
+            />
+            {children}
+          </React.Fragment>
         </Sidebar>
-        {children}
       </Container>
     );
   }
