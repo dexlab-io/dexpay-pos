@@ -53,18 +53,30 @@ class PaymentDetails extends React.Component {
 
         <Query query={store.queries.pos} fetchPolicy="cache">
           {({ data }) => (
-            <AddressClipboard
-              address={data.pos.address ? data.pos.address : data.pos.error}
-            />
+            <div>
+              <AddressClipboard
+                address={data.pos.address ? data.pos.address : data.pos.error}
+              />
+              {watchers ? (
+                <NetworkStatus
+                  label={watchers.xdai.conf.label}
+                  status={
+                    watchers.xdai.isConnected() ? 'connected' : 'not connected'
+                  }
+                />
+              ) : null}
+              <button
+                type="button"
+                className="button is-black is-uppercase is-large is-fullwidth"
+                href={`ethereum:${data.pos.address}?amount=${
+                  valueCrypto[selectedCurrency]
+                }`}
+              >
+                Open in wallet
+              </button>
+            </div>
           )}
         </Query>
-
-        {watchers ? (
-          <NetworkStatus
-            label={watchers.xdai.conf.label}
-            status={watchers.xdai.isConnected() ? 'connected' : 'not connected'}
-          />
-        ) : null}
       </React.Fragment>
     );
   }
