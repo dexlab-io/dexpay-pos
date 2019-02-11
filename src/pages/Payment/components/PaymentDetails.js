@@ -12,7 +12,7 @@ import { Divider } from '../../../components/elements';
 
 class PaymentDetails extends React.Component {
   state = {
-    selectedCurrency: 'eth'
+    selectedCurrency: 'dai'
   };
 
   render() {
@@ -31,7 +31,7 @@ class PaymentDetails extends React.Component {
     return (
       <React.Fragment>
         <CryptoAmount
-          cryptoCurrency="ETH"
+          cryptoCurrency={selectedCurrency}
           cryptoValue={valueCrypto}
           fiatAmount={parseFloat(valueFiat)}
           hasSelection={status === 'pending'}
