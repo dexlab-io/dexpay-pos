@@ -1,5 +1,5 @@
-import { timeout } from '../utils/helpers';
-import { persistor } from '../utils/apolloClient';
+import { timeout } from '../../utils/helpers';
+import { persistor } from '../../utils/apolloClient';
 
 const resolvers = {
   Mutation: {

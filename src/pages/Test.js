@@ -71,19 +71,23 @@ const Logout = () => (
 );
 
 class Test extends React.Component {
-  state = { counter: 0 };
+  state = {
+    pos: {},
+    counter: 0
+  };
 
   async componentDidMount() {
+    const { store } = this.props;
+
+    store.fetch.posSub(this, 'pos');
+
     apolloClient.watchQuery({ query }).subscribe(result => {
       console.log('result', result);
-    });
-    apolloClient.watchQuery({ query: counterQuery }).subscribe(result => {
-      console.log('result', result);
-      this.setState({ counter: result.data.counter });
     });
   }
 
   render() {
+    const { store } = this.props;
     console.log('counter state', this.state.counter);
     const counterMutation2 = apolloClient.mutate({ mutation: counterMutation });
     // counterMutation2.updateCounter({variables:123});
@@ -118,6 +122,14 @@ class Test extends React.Component {
               }}
             </Query>
             <hr />
+            <button
+              type="submit"
+              onClick={() =>
+                store.update.pos.address(`afd ${Math.random() * 100}`)
+              }
+            >
+              Change {this.state.pos.address}
+            </button>
             <Mutation mutation={loginMutation}>
               {(login, { loading, error }) => (
                 <React.Fragment>

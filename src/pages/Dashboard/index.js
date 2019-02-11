@@ -16,15 +16,21 @@ class Dashboard extends Component {
       isMobile: checkWindowSize(),
       activeTab: 'numberPad',
       totalAmount: 0,
-      paymentModalOpen: false
+      paymentModalOpen: false,
+      setupModalOpen: false,
+      pos: { address: null }
     };
   }
 
   componentDidMount() {
+    const { store } = this.props;
+
     // on screen resize
     checkWindowSize(false, isMobile => {
       this.setState({ isMobile });
     });
+
+    store.fetch.posSub(this, 'pos');
   }
 
   handlePay = () => {
@@ -41,7 +47,6 @@ class Dashboard extends Component {
 
   render() {
     const { isMobile, totalAmount, paymentModalOpen } = this.state;
-
     return (
       <Layout header={{ onNavItemClick: this.handleNavItemChange }}>
         <Seo title="POS" description="POS System" />
