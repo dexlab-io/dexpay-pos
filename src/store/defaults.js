@@ -1,5 +1,6 @@
 export default {
   isOnline: true,
   isLoggedIn: false,
-  user: undefined
+  user: undefined,
+  counter: 0
 };

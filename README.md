@@ -4,6 +4,9 @@
 
 > `Dexpay: POS`, a modularized and extensible point of sale which enables Merchants to accept payments in cryptocurrencies without being exposed to the volatility of the specific currency used during the transaction, in a completely decentralized matter.
 
+- [Nightly Version](https://dexpay-nightly.netlify.com/)
+- [Stable Version](https://dexpay-pos.netlify.com)
+
 ## Table of contents
 
 - [1. Motivation](#motivation)
