@@ -10,6 +10,7 @@ const typeDefs = `
     user: User
     isOnline: Boolean!
     isLoggedIn: Boolean!
+    counter: Int
   }
 
   input LoginInput {
@@ -22,6 +23,7 @@ const typeDefs = `
     toggleLoggedIn(isLoggedIn: Boolean!): Boolean
     login(input: LoginInput): User
     logout: Boolean!
+    updateCounter(number: Int!): Int
   }
 `;
 

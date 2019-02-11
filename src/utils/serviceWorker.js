@@ -1,3 +1,4 @@
+import swal from 'sweetalert';
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -73,6 +74,25 @@ function registerValidSW(swUrl, config) {
                 'New content is available and will be used when all ' +
                   'tabs for this page are closed. See http://bit.ly/CRA-PWA.'
               );
+
+              // force reload
+              setTimeout(() => {
+                swal({
+                  icon: 'info',
+                  title: 'New update available.',
+                  button: {
+                    text: 'Get update!'
+                  }
+                }).then(getUpdate => {
+                  if (getUpdate) {
+                    const win = window.open(window.location.href, '_blank');
+                    win.focus();
+                  }
+                });
+                // window.location.reload(true);
+                // const win = window.open(window.location.href, '_blank');
+                // win.focus();
+              }, 200);
 
               // Execute callback
               if (config && config.onUpdate) {
