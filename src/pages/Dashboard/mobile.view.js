@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import NavTabs from './components/NavTabs';
 import GenerateBillBtn from './components/GenerateBillBtn';
@@ -6,10 +7,14 @@ import NumberInput from './components/Keypad/NumberInput';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
 
+const Section = styled.div`
+  padding: 0.5rem 1.5rem;
+`;
+
 export default function() {
   const { activeTab, totalAmount, pos } = this.state;
   return (
-    <section className="section">
+    <Section className="section">
       <div className="container is-fluid">
         <NavTabs
           activeTab={activeTab}
@@ -33,6 +38,6 @@ export default function() {
           <div>Pos address is empty</div>
         )}
       </div>
-    </section>
+    </Section>
   );
 }
