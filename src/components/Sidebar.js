@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import logoImg from '../assets/images/dex-logo.png';
 
@@ -24,7 +25,7 @@ const Sidebar = () => (
       <Logo src={logoImg} alt="Dexpay logo" />
       <ItemsList className="menu-list">
         <Item>
-          <a>Account Settings</a>
+          <Link to="settings">Account Settings</Link>
         </Item>
         <Item>
           <a>About Dexpay</a>
