@@ -49,58 +49,76 @@ const Nav = styled.nav`
   z-index: 0;
 `;
 
-const Header = ({ leftIcon, hideNav, title, leftBtnClick, onNavItemClick }) => (
-  <Container className="section">
-    <div className="container is-fluid">
-      <div className="columns is-mobile">
-        <LeftSide className="column is-one-fifth">
-          <LeftLink onClick={leftBtnClick}>
-            {leftIcon === 'menu' && <img src={barsImg} alt="side menu" />}
-            {leftIcon === 'back' && <img src={backImg} alt="back button" />}
-          </LeftLink>
-        </LeftSide>
-        {hideNav ? (
-          <React.Fragment>
-            <div className="column is-four-fifths has-text-centered">
-              <span className="is-family-secondary">{title}</span>
-            </div>
-            <div className="column is-one-fifth" />
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <Nav
-              className="navbar"
-              role="navigation"
-              aria-label="main navigation"
-            >
-              <LogoContainer className="navbar-brand">
-                <Logo src={logoImg} alt="Dexpay logo" />
-              </LogoContainer>
-            </Nav>
-            <div className="column is-hidden-mobile">
-              <MenuItem
-                className=" is-active"
-                onClick={() => onNavItemClick('numberPad')}
+const Header = props => {
+  const {
+    leftIcon,
+    hideNav,
+    isVisible,
+    title,
+    leftBtnClick,
+    onNavItemClick
+  } = props;
+
+  if (!isVisible) {
+    return null;
+  }
+
+  return (
+    <Container className="section">
+      <div className="container">
+        <div className="columns is-mobile">
+          <LeftSide className="column is-one-fifth">
+            <LeftLink onClick={leftBtnClick}>
+              {leftIcon === 'menu' && <img src={barsImg} alt="side menu" />}
+              {leftIcon === 'back' && <img src={backImg} alt="back button" />}
+            </LeftLink>
+          </LeftSide>
+          {hideNav ? (
+            <React.Fragment>
+              <div className="column is-four-fifths has-text-centered">
+                <span className="is-family-secondary">{title}</span>
+              </div>
+              <div className="column is-one-fifth" />
+            </React.Fragment>
+          ) : (
+            <div className="column">
+              <Nav
+                className="navbar"
+                role="navigation"
+                aria-label="main navigation"
               >
-                Number Pad
-              </MenuItem>
-              <MenuItem
-                className=""
-                onClick={() => onNavItemClick('recentPayments')}
-              >
-                Recent Transactions
-              </MenuItem>
+                <LogoContainer className="navbar-brand">
+                  <Logo src={logoImg} alt="Dexpay logo" />
+                </LogoContainer>
+                <div className="navbar-menu">
+                  <div className="navbar-start">
+                    <MenuItem
+                      className="navbar-item is-active"
+                      onClick={() => onNavItemClick('numberPad')}
+                    >
+                      Number Pad
+                    </MenuItem>
+                    <MenuItem
+                      className="navbar-item"
+                      onClick={() => onNavItemClick('recentPayments')}
+                    >
+                      Recent Transactions
+                    </MenuItem>
+                  </div>
+                </div>
+              </Nav>
             </div>
-          </React.Fragment>
-        )}
+          )}
+        </div>
       </div>
-    </div>
-  </Container>
-);
+    </Container>
+  );
+};
 
 Header.defaultProps = {
   leftIcon: 'menu',
   hideNav: false,
+  isVisible: true,
   title: undefined,
   leftBtnClick: () => {},
   onNavItemClick: () => {}
@@ -109,6 +127,7 @@ Header.defaultProps = {
 Header.propTypes = {
   leftIcon: PropTypes.string,
   hideNav: PropTypes.bool,
+  isVisible: PropTypes.bool,
   title: PropTypes.string,
   leftBtnClick: PropTypes.func,
   onNavItemClick: PropTypes.func

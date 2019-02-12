@@ -1,3 +1,4 @@
 import Divider from './Divider';
+import TextGroup from './TextGroup';
 
-export { Divider };
+export { Divider, TextGroup };

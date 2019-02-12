@@ -8,7 +8,7 @@ import './localization'; // load i18n
 import apolloClient from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import { Error404, Dashboard, Test } from './pages';
+import { Error404, Dashboard, Settings, WalletAddress, Test } from './pages';
 
 import { store } from './store';
 
@@ -46,6 +46,16 @@ class App extends Component {
                   path="/"
                   exact
                   render={() => <Dashboard store={store} />}
+                />
+                <Route
+                  path="/settings"
+                  exact
+                  render={() => <Settings store={store} />}
+                />
+                <Route
+                  path="/settings/wallet-address"
+                  exact
+                  render={() => <WalletAddress store={store} />}
                 />
                 <Route
                   path="/test"
