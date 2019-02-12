@@ -27,9 +27,7 @@ const PaymentItem = ({ payment }) => (
       </div>
     </div>
     <div className="media-right">
-      <small className="has-text-weight-light">
-        {formatCurrency(payment.amount)}
-      </small>
+      <small>{formatCurrency(payment.amount)}</small>
     </div>
   </Container>
 );

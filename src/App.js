@@ -1,26 +1,38 @@
 import React, { Component } from 'react';
+import qs from 'qs';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
 import apolloClient from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
-import config from './config';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import { Error404, Dashboard, Settings, WalletAddress, Test } from './pages';
 
+import { store } from './store';
+
 class App extends Component {
-  componentDidMount() {
-    this.init();
+  async componentDidMount() {
+    await this.init();
   }
 
   async init() {
-    this.wallet = new EthereumHDWallet(false, config.posAddress);
+    const params = qs.parse(window.location.search.slice(1));
+    this.wallet = new EthereumHDWallet();
     await this.wallet.setWeb3();
-    await this.wallet.fetchBalance();
-    await this.wallet.getNetworkID();
+
+    if (this.wallet.getAddress()) {
+      store.update.pos.address(
+        this.wallet.getAddress(),
+        null,
+        'Injected Provider'
+      );
+    } else if (!this.wallet.getAddress() && params.posAddress) {
+      store.update.pos.address(params.posAddress, null, 'GET');
+    } else {
+      store.update.pos.address(null, 'Pos address is empty', null);
+    }
   }
 
   render() {
@@ -30,14 +42,26 @@ class App extends Component {
           <React.Fragment>
             <BrowserRouter>
               <Switch>
-                <Route path="/" exact component={Dashboard} />
-                <Route path="/settings" exact component={Settings} />
+                <Route
+                  path="/"
+                  exact
+                  render={() => <Dashboard store={store} />}
+                />
+                <Route
+                  path="/settings"
+                  exact
+                  render={() => <Settings store={store} />}
+                />
                 <Route
                   path="/settings/wallet-address"
                   exact
-                  component={WalletAddress}
+                  render={() => <WalletAddress store={store} />}
                 />
-                <Route path="/test" exact component={Test} />
+                <Route
+                  path="/test"
+                  exact
+                  render={() => <Test store={store} />}
+                />
                 <Route component={Error404} />
               </Switch>
             </BrowserRouter>

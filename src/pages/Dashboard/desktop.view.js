@@ -14,7 +14,7 @@ const Columns = styled.div`
   min-height: 500px;
 `;
 const RightSide = styled.div`
-  padding-top: 80px;
+  padding-top: 20px;
 `;
 const LeftSide = styled.div`
   padding-top: 80px;
@@ -30,26 +30,31 @@ const LeftSide = styled.div`
 `;
 
 export default function() {
-  const { activeTab, totalAmount } = this.state;
-
+  const { activeTab, totalAmount, pos } = this.state;
   return (
     <Section className="section">
       <div className="container">
         <Columns className="columns">
-          <RightSide className="column is-two-thirds">
-            {activeTab === 'numberPad' && (
-              <React.Fragment>
-                <Keypad
-                  handleChange={val => this.setState({ totalAmount: val })}
-                />
-              </React.Fragment>
-            )}
-            {activeTab === 'recentPayments' && <RecentPayments />}
-          </RightSide>
-          <LeftSide className="column">
-            <NumberInput value={parseFloat(totalAmount)} />
-            <GenerateBillBtn handlePay={this.handlePay} />
-          </LeftSide>
+          {pos.address ? (
+            <React.Fragment>
+              <RightSide className="column is-two-thirds">
+                {activeTab === 'numberPad' && (
+                  <React.Fragment>
+                    <Keypad
+                      handleChange={val => this.setState({ totalAmount: val })}
+                    />
+                  </React.Fragment>
+                )}
+                {activeTab === 'recentPayments' && <RecentPayments />}
+              </RightSide>
+              <LeftSide className="column">
+                <NumberInput value={parseFloat(totalAmount)} />
+                <GenerateBillBtn handlePay={this.handlePay} />
+              </LeftSide>
+            </React.Fragment>
+          ) : (
+            <div>{pos.error}</div>
+          )}
         </Columns>
       </div>
     </Section>

@@ -4,12 +4,12 @@ import styled from 'styled-components';
 
 import barsImg from '../assets/images/bars.png';
 import backImg from '../assets/images/back.png';
-import logoImg from '../assets/images/dex-logo.png';
+import logoImg from '../assets/images/logo.png';
 
 const Container = styled.section`
-  padding: 4rem 1.5rem;
+  padding: 2rem 1.5rem;
   @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
-    padding: 1rem 1.5rem;
+    padding: 2rem 1.5rem;
   }
 `;
 const LeftSide = styled.div`
@@ -33,7 +33,7 @@ const LogoContainer = styled.div`
   }
 `;
 const Logo = styled.img`
-  width: 158px;
+  width: 58px;
   height: auto;
 `;
 

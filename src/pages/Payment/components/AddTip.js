@@ -9,8 +9,6 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 30px;
 `;
 
 const Title = styled.span`

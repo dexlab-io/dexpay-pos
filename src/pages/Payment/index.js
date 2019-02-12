@@ -63,16 +63,15 @@ class Payment extends Component {
   calculateCryptoValue = async () => {
     const { valueFiat, tipValue } = this.state;
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
-
     const pricesEth = await getTokenPrice();
     const pricesDai = await getTokenPrice('dai');
 
     const ethValue = (
       parseFloat(totalIncludingTip) / parseFloat(pricesEth[config.currency.id])
-    ).toPrecision(4);
+    ).toFixed(4);
     const daiValue = (
       parseFloat(totalIncludingTip) / parseFloat(pricesDai[config.currency.id])
-    ).toPrecision(2);
+    ).toFixed(2);
 
     await this.setState({
       valueCrypto: {
@@ -143,7 +142,7 @@ class Payment extends Component {
         center
         showCloseIcon={false}
         styles={{
-          modal: { maxWidth: 'initial', width: '100%' },
+          modal: { maxWidth: 'initial', width: '100%', height: '100%' },
           overlay: { padding: 0 }
         }}
       >
