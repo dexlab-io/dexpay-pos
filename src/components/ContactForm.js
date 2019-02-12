@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
-import Yup from 'yup';
+import * as yup from 'yup';
 
 const ContactForm = props => {
   const {
@@ -95,12 +95,13 @@ export default withFormik({
     email: '',
     message: ''
   }),
-  validationSchema: Yup.object().shape({
-    name: Yup.string().required('Full name is required!'),
-    email: Yup.string()
+  validationSchema: yup.object().shape({
+    name: yup.string().required('Full name is required!'),
+    email: yup
+      .string()
       .email('Invalid email address')
       .required('Email is required!'),
-    message: Yup.string().required('Message is required!')
+    message: yup.string().required('Message is required!')
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
     // console.log('handle submit', values, props);
