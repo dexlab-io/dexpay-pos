@@ -3,18 +3,19 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 
-const NavItem = styled.div`
+const NavItem = styled(Link)`
   display: flex;
   align-items: center;
   padding: 30px 0;
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
 `;
-const ItemTitle = styled.a``;
+const ItemTitle = styled.span``;
 const ItemIcon = styled.img`
   width: 40px;
   height: 40px;
@@ -30,20 +31,27 @@ const items = [
   { id: 2, title: 'Shop Items', linkTo: '', icon: 'shop-icon.png' },
   { id: 3, title: 'Account Info & Password', linkTo: '', icon: 'key-icon.png' },
   { id: 4, title: 'Accepted Tokens', linkTo: '', icon: 'token-icon.png' },
-  { id: 5, title: 'Wallet Address', linkTo: '', icon: 'wallet-icon.png' },
+  {
+    id: 5,
+    title: 'Wallet Address',
+    linkTo: '/settings/wallet-address',
+    icon: 'wallet-icon.png'
+  },
   { id: 6, title: 'Required Confirmations', linkTo: '', icon: 'link-icon.png' },
   { id: 7, title: 'Base Currency', linkTo: '', icon: 'currency-icon.png' }
 ];
 
-const Settings = () => {
+const Settings = props => {
+  const { history } = props;
+
   return (
     <Layout header={{ isVisible: false }}>
       <Seo title="Settings" description="POS System" />
       <div className="section">
         <div className="container">
-          <SettingsHeader />
+          <SettingsHeader history={history} />
           {items.map(item => (
-            <NavItem key={item.id}>
+            <NavItem key={item.id} to="/settings/wallet-address">
               <ItemIcon
                 alt={item.title}
                 src={require(`../../assets/images/${item.icon}`)}

@@ -9,7 +9,7 @@ import apolloClient from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import config from './config';
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import { Error404, Dashboard, Settings, Test } from './pages';
+import { Error404, Dashboard, Settings, WalletAddress, Test } from './pages';
 
 class App extends Component {
   componentDidMount() {
@@ -32,6 +32,11 @@ class App extends Component {
               <Switch>
                 <Route path="/" exact component={Dashboard} />
                 <Route path="/settings" exact component={Settings} />
+                <Route
+                  path="/settings/wallet-address"
+                  exact
+                  component={WalletAddress}
+                />
                 <Route path="/test" exact component={Test} />
                 <Route component={Error404} />
               </Switch>
