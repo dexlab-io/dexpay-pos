@@ -4,31 +4,26 @@ import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
-import WalletAddressForm from './components/WalletAddressForm';
 
-const WalletAddress = props => {
+const RequiredConfirmations = props => {
   const { history } = props;
 
   return (
     <Layout header={{ isVisible: false }}>
-      <Seo title="Wallet Address" />
+      <Seo title="Required Confirmations" />
       <div className="section">
         <div className="container">
           <SettingsHeader history={history} />
           <Breadcrumb
             history={history}
-            title="Wallet Address"
-            icon="wallet-icon.png"
+            title="Required Confirmations"
+            icon="link-icon.png"
           />
-          <WalletAddressForm
-            handleSubmit={values =>
-              console.log('WalletAddressForm submit', values)
-            }
-          />
+          <p>RequiredConfirmations slider here</p>
         </div>
       </div>
     </Layout>
   );
 };
 
-export default WalletAddress;
+export default RequiredConfirmations;

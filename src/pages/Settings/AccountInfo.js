@@ -4,25 +4,25 @@ import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
-import WalletAddressForm from './components/WalletAddressForm';
+import AccountInfoForm from './components/AccountInfoForm';
 
-const WalletAddress = props => {
+const AccountInfo = props => {
   const { history } = props;
 
   return (
     <Layout header={{ isVisible: false }}>
-      <Seo title="Wallet Address" />
+      <Seo title="Account Info" />
       <div className="section">
         <div className="container">
           <SettingsHeader history={history} />
           <Breadcrumb
             history={history}
-            title="Wallet Address"
-            icon="wallet-icon.png"
+            title="Account Info & Password"
+            icon="key-icon.png"
           />
-          <WalletAddressForm
+          <AccountInfoForm
             handleSubmit={values =>
-              console.log('WalletAddressForm submit', values)
+              console.log('AccountInfoForm submit', values)
             }
           />
         </div>
@@ -31,4 +31,4 @@ const WalletAddress = props => {
   );
 };
 
-export default WalletAddress;
+export default AccountInfo;

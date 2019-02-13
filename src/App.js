@@ -8,7 +8,17 @@ import './localization'; // load i18n
 import apolloClient from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import { Error404, Dashboard, Settings, WalletAddress, Test } from './pages';
+import {
+  Error404,
+  Dashboard,
+  Settings,
+  AccountInfo,
+  AcceptedTokens,
+  BaseCurrency,
+  RequiredConfirmations,
+  WalletAddress,
+  Test
+} from './pages';
 
 import { store } from './store';
 
@@ -42,26 +52,34 @@ class App extends Component {
           <React.Fragment>
             <BrowserRouter>
               <Switch>
+                <Route path="/" exact component={Dashboard} />
+                <Route path="/settings" exact component={Settings} />
                 <Route
-                  path="/"
+                  path="/settings/account-info"
                   exact
-                  render={() => <Dashboard store={store} />}
+                  component={AccountInfo}
                 />
                 <Route
-                  path="/settings"
+                  path="/settings/accepted-tokens"
                   exact
-                  render={() => <Settings store={store} />}
+                  component={AcceptedTokens}
+                />
+                <Route
+                  path="/settings/base-currency"
+                  exact
+                  component={BaseCurrency}
+                />
+                <Route
+                  path="/settings/required-confirmations"
+                  exact
+                  component={RequiredConfirmations}
                 />
                 <Route
                   path="/settings/wallet-address"
                   exact
-                  render={() => <WalletAddress store={store} />}
+                  component={WalletAddress}
                 />
-                <Route
-                  path="/test"
-                  exact
-                  render={() => <Test store={store} />}
-                />
+                <Route path="/test" exact component={Test} />
                 <Route component={Error404} />
               </Switch>
             </BrowserRouter>
