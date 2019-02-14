@@ -1,5 +1,5 @@
 import { timeout } from '../../utils/helpers';
-import { persistor } from '../../utils/apolloClient';
+// import { persistor } from '../../utils/apolloClient';
 
 const resolvers = {
   Mutation: {
@@ -47,7 +47,7 @@ const resolvers = {
       await cache.writeData({ data: { user: null, isLoggedIn: false } });
       await timeout(600);
 
-      await persistor.purge();
+      // await persistor.purge();
       await timeout(600);
 
       window.localStorage.clear();

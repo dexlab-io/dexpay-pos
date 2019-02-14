@@ -5,7 +5,7 @@ import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
-import apolloClient from './utils/apolloClient';
+import client, { persistor } from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import {
@@ -23,8 +23,13 @@ import {
 import { store } from './store';
 
 class App extends Component {
+  state = { loaded: false };
+
   async componentDidMount() {
     await this.init();
+    await persistor.restore();
+    this.client = client;
+    this.setState({ loaded: true });
   }
 
   async init() {
@@ -46,8 +51,12 @@ class App extends Component {
   }
 
   render() {
+    if (!this.state.loaded) {
+      return <div>loading</div>;
+    }
+
     return (
-      <ApolloProvider client={apolloClient}>
+      <ApolloProvider client={this.client}>
         <ThemeProvider theme={theme}>
           <React.Fragment>
             <BrowserRouter>

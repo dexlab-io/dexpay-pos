@@ -3,7 +3,6 @@ const typeDefs = `
     id: ID!
     fullName: String
     email: String!
-    currency: String!
   }
 
   type Query {

@@ -1,10 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
+import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
+
+const query = gql`
+  {
+    currency @client
+  }
+`;
+
+const mutation = gql`
+  mutation updateCurrency($currency: String!) {
+    updateCurrency(currency: $currency) @client
+  }
+`;
 
 const ItemContainer = styled.div`
   padding: 20px;
@@ -32,7 +47,8 @@ class BaseCurrency extends React.Component {
   state = { activeCurrency: 'EUR' };
 
   handleCurrencyChange = currency => {
-    this.setState({ activeCurrency: currency.id });
+    // this.setState({ activeCurrency: currency.id });
+    apolloClient.mutate({ mutation, variables: { currency: currency.id } });
   };
 
   render() {
@@ -50,17 +66,27 @@ class BaseCurrency extends React.Component {
               title="Base Currency"
               icon="currency-icon.png"
             />
-            {currencies.map(item => (
-              <ItemContainer
-                key={item.id}
-                active={activeCurrency === item.id}
-                onClick={() => this.handleCurrencyChange(item)}
-              >
-                <span>
-                  {item.id} ({item.symbol}) {item.name}
-                </span>
-              </ItemContainer>
-            ))}
+
+            <Query query={query} fetchPolicy="cache-and-network">
+              {({ data, loading, error }) => {
+                if (loading && !data.currency) return <p>loading...</p>;
+                if (error) return <p>Error: {error.message}</p>;
+                // console.log('data.currency', data);
+
+                return currencies.map(item => (
+                  <ItemContainer
+                    key={item.id}
+                    active={data.currency === item.id}
+                    onClick={() => this.handleCurrencyChange(item)}
+                  >
+                    <span>
+                      {item.id} ({item.symbol}) {item.name}
+                    </span>
+                  </ItemContainer>
+                ));
+              }}
+            </Query>
+            {}
           </div>
         </div>
       </Layout>
