@@ -2,6 +2,7 @@ const typeDefs = `
   type User {
     id: ID!
     fullName: String
+    shopName: String
     email: String!
   }
 
@@ -17,12 +18,18 @@ const typeDefs = `
     password: String!
   }
 
+  input UserInput {
+    shopName: String!
+    email: String!
+  }
+
   type Mutation {
     toggleOnline(isOnline: Boolean!): Boolean
     toggleLoggedIn(isLoggedIn: Boolean!): Boolean
     login(input: LoginInput): User
     logout: Boolean!
     updateCounter(number: Int!): Int
+    updateUser(input: UserInput!): User
   }
 `;
 

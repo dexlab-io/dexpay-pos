@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Query, Mutation } from 'react-apollo';
+import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import apolloClient from '../../utils/apolloClient';
@@ -44,8 +44,6 @@ const currencies = [
 ];
 
 class BaseCurrency extends React.Component {
-  state = { activeCurrency: 'EUR' };
-
   handleCurrencyChange = currency => {
     // this.setState({ activeCurrency: currency.id });
     apolloClient.mutate({ mutation, variables: { currency: currency.id } });
@@ -53,7 +51,6 @@ class BaseCurrency extends React.Component {
 
   render() {
     const { history } = this.props;
-    const { activeCurrency } = this.state;
 
     return (
       <Layout header={{ isVisible: false }}>
