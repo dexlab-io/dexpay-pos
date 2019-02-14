@@ -1,3 +1,4 @@
 export default {
-  currency: 'EUR'
+  currency: 'EUR',
+  acceptedTokens: []
 };

@@ -55,6 +55,9 @@ const AccountInfoForm = props => {
         onBlur={handleBlur}
         error={errors.confirmNewPassword}
       />
+      <button type="submit" className="button is-primary is-fullwidth">
+        Primary
+      </button>
     </form>
   );
 };
@@ -68,9 +71,9 @@ AccountInfoForm.propTypes = {
 };
 
 export default withFormik({
-  mapPropsToValues: () => ({
-    shopName: '',
-    email: '',
+  mapPropsToValues: props => ({
+    shopName: props.initialValues.shopName || '',
+    email: props.initialValues.email || '',
     currentPassword: '',
     newPassword: '',
     confirmNewPassword: ''
