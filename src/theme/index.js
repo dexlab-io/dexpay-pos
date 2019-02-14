@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
+export const elements = { mobileBreakpoint: 800 };
+
 // http://chir.ag/projects/name-that-color/
 export const colors = {
   black: '#000000',
@@ -7,7 +9,7 @@ export const colors = {
 };
 
 const theme = {
-  mobileBreakpoint: '700px',
+  mobileBreakpoint: `${elements.mobileBreakpoint}px`,
   primaryColor: colors.black,
   secondaryColor: colors.riptide,
   primaryFontFamily: '"Quicksand", sans-serif',
@@ -29,5 +31,16 @@ export const GlobalStyle = createGlobalStyle`
   }
   a {
     color: ${theme.primaryColor};
+  }
+  @media screen and (min-width: 800px) {
+    .navbar, .navbar-menu, .navbar-start, .navbar-end {
+      align-items: stretch;
+      display: flex;
+    }
+    .navbar-menu {
+      flex-grow: 1;
+      flex-shrink: 0;
+      box-shadow: none;
+    }
   }
 `;

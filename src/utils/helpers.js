@@ -1,6 +1,7 @@
 import { debounce } from 'lodash';
 import currency from 'currency.js';
 import config from '../config';
+import { elements } from '../theme';
 
 export const formatCurrency = value => {
   return currency(parseFloat(value), {
@@ -19,7 +20,7 @@ export const truncateHash = (hash, length = 22) => {
 };
 
 export const checkWindowSize = (init = true, cb) => {
-  const maxMobileWidth = 700;
+  const maxMobileWidth = elements.mobileBreakpoint;
   let isMobile = window.innerWidth < maxMobileWidth;
   if (init) {
     return isMobile;

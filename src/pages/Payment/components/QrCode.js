@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { QRCode } from 'react-qrcode-logo';
-import logo from '../../../assets/images/logo.png';
 import { store } from '../../../store';
 
 const Container = styled.div`
@@ -34,12 +33,7 @@ class QrCode extends React.Component {
 
     return (
       <Container>
-        <QRCode
-          value={escape(qrPayload)}
-          // logoImage={logo}
-          padding={5}
-          size={250}
-        />
+        <QRCode value={escape(qrPayload)} padding={5} size={250} />
       </Container>
     );
   }
