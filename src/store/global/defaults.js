@@ -1,4 +1,4 @@
 export default {
   currency: 'EUR',
-  acceptedTokens: []
+  acceptedTokens: ['ether', 'dai', 'xdai', 'wbtc']
 };

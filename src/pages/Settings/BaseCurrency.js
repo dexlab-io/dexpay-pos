@@ -45,7 +45,6 @@ const currencies = [
 
 class BaseCurrency extends React.Component {
   handleCurrencyChange = currency => {
-    // this.setState({ activeCurrency: currency.id });
     apolloClient.mutate({ mutation, variables: { currency: currency.id } });
   };
 

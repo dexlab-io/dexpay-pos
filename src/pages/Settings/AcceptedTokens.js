@@ -3,12 +3,27 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
+import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
 import { SwitchGroup } from '../../components/elements';
+
+const query = gql`
+  {
+    acceptedTokens @client
+  }
+`;
+
+const mutation = gql`
+  mutation toggleAcceptedTokens($token: String!, $isAccepted: Boolean!) {
+    toggleAcceptedTokens(token: $token, isAccepted: $isAccepted) @client
+  }
+`;
 
 const ItemContainer = styled.div`
   display: flex;
@@ -27,15 +42,15 @@ const SwitchContainer = styled.div`
 `;
 
 const networksList = [
-  { id: 1, name: 'Ether', image: 'crypto-icon.png' },
-  { id: 2, name: 'DAI', image: 'crypto-icon.png' },
-  { id: 3, name: 'xDAI', image: 'crypto-icon.png' },
-  { id: 4, name: 'WBTC (comming soon)', image: 'crypto-icon.png' }
+  { id: 'ether', name: 'Ether', image: 'crypto-icon.png' },
+  { id: 'dai', name: 'DAI', image: 'crypto-icon.png' },
+  { id: 'xdai', name: 'xDAI', image: 'crypto-icon.png' },
+  { id: 'wbtc', name: 'WBTC (comming soon)', image: 'crypto-icon.png' }
 ];
 
 class AcceptedTokens extends React.Component {
-  handleSwitch = item => {
-    console.log('handleSwitch', item);
+  handleSwitch = (token, isAccepted) => {
+    apolloClient.mutate({ mutation, variables: { token, isAccepted } });
   };
 
   render() {
@@ -52,23 +67,31 @@ class AcceptedTokens extends React.Component {
               title="Accepted Tokens"
               icon="token-icon.png"
             />
-            {networksList.map(item => (
-              <ItemContainer key={item.id}>
-                <img
-                  src={require(`../../assets/dummy/${item.image}`)}
-                  alt={item.name}
-                />
-                <ItemName className="has-text-weight-semibold">
-                  {item.name}
-                </ItemName>
-                <SwitchContainer>
-                  <SwitchGroup
-                    checked="checked"
-                    onChange={() => this.handleSwitch(item)}
-                  />
-                </SwitchContainer>
-              </ItemContainer>
-            ))}
+            <Query query={query} fetchPolicy="cache-and-network">
+              {({ data, loading, error }) => {
+                if (loading && !data.acceptedTokens) return <p>loading...</p>;
+                if (error) return <p>Error: {error.message}</p>;
+
+                return networksList.map(item => (
+                  <ItemContainer key={item.id}>
+                    <img
+                      src={require(`../../assets/dummy/${item.image}`)}
+                      alt={item.name}
+                    />
+                    <ItemName className="has-text-weight-semibold">
+                      {item.name}
+                    </ItemName>
+                    <SwitchContainer>
+                      <SwitchGroup
+                        name="123-3"
+                        checked="checked"
+                        onChange={() => this.handleSwitch(item, true)}
+                      />
+                    </SwitchContainer>
+                  </ItemContainer>
+                ));
+              }}
+            </Query>
           </div>
         </div>
       </Layout>
