@@ -1,6 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { find } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
@@ -8,6 +9,7 @@ import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
 import AccountInfoForm from './components/AccountInfoForm';
+import settingsItems from './components/settingsItems';
 
 const query = gql`
   {
@@ -36,6 +38,9 @@ class AccountInfo extends React.Component {
 
   render() {
     const { history } = this.props;
+    const settingItem = find(settingsItems, {
+      linkTo: '/settings/account-info'
+    });
 
     return (
       <Layout header={{ isVisible: false }}>
@@ -43,16 +48,12 @@ class AccountInfo extends React.Component {
         <div className="section">
           <div className="container">
             <SettingsHeader history={history} />
-            <Breadcrumb
-              history={history}
-              title="Account Info & Password"
-              icon="key-icon.png"
-            />
+            <Breadcrumb history={history} {...settingItem} />
             <Query query={query} fetchPolicy="cache-and-network">
               {({ data, loading, error }) => {
                 if (loading && !data.user) return <p>loading...</p>;
                 if (error) return <p>Error: {error.message}</p>;
-                console.log('data', data);
+                // console.log('data', data);
 
                 return (
                   <AccountInfoForm

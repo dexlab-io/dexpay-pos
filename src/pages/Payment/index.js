@@ -140,7 +140,6 @@ class Payment extends Component {
         open={isModalOpen}
         onClose={onCloseModal}
         center
-        showCloseIcon={false}
         styles={{
           modal: { maxWidth: 'initial', width: '100%', height: '100%' },
           overlay: { padding: 0 }
@@ -148,10 +147,9 @@ class Payment extends Component {
       >
         <Layout
           header={{
-            leftIcon: 'back',
+            leftIcon: null,
             title: this.title,
-            hideNav: true,
-            leftBtnClick: onCloseModal
+            hideNav: true
           }}
         >
           <Seo title={this.title} description="Payment transaction details." />
