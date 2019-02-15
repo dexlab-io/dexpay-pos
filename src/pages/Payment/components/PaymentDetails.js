@@ -26,7 +26,7 @@ class PaymentDetails extends React.Component {
       addTipPayment
     } = this.props;
     const { selectedCurrency } = this.state;
-    console.log('here', this.props);
+    // console.log('here', this.props);
 
     return (
       <React.Fragment>

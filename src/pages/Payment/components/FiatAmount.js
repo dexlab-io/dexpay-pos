@@ -1,30 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Textfit } from 'react-textfit';
 
 import { formatCurrency } from '../../../utils/helpers';
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Amount = styled.span`
-  font-size: 72px;
+  display: block;
+  margin: 0 auto;
+  max-width: 400px;
+  font-weight: 300;
+  text-align: center;
 `;
 
 const FiatAmount = ({ fiatAmount }) => {
   return (
     <Container>
-      <Amount className="has-text-weight-light">
+      <Textfit mode="single" max={72}>
         {formatCurrency(fiatAmount)}
-      </Amount>
+      </Textfit>
     </Container>
   );
 };
 
-FiatAmount.propTypes = {
+FiatAmount.defaultProps = {
   fiatAmount: 0
 };
 

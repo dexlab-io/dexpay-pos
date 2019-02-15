@@ -3,9 +3,11 @@ import qs from 'qs';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
 import client, { persistor } from './utils/apolloClient';
+import { store } from './store';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import {
@@ -19,8 +21,6 @@ import {
   WalletAddress,
   Test
 } from './pages';
-
-import { store } from './store';
 
 class App extends Component {
   state = { loaded: false };
@@ -51,7 +51,8 @@ class App extends Component {
   }
 
   render() {
-    if (!this.state.loaded) {
+    const { loaded } = this.state;
+    if (!loaded) {
       return <div>loading</div>;
     }
 

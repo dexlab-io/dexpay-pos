@@ -2,17 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import currency from 'currency.js';
+import { Textfit } from 'react-textfit';
 
-import AutoScalingText from './AutoScalingText';
 import config from '../../../../config';
 
 const Container = styled.div`
-  position: relative;
-  height: 4rem;
+  height: auto;
   margin-top: 3rem;
-`;
-const Text = styled.span`
-  font-size: 72px;
+  display: block;
+  width: 100%;
+  max-width: 540px;
+  text-align: center;
+  font-weight: 300;
 `;
 
 const NumberInput = ({ value }) => {
@@ -34,9 +35,9 @@ const NumberInput = ({ value }) => {
 
   return (
     <Container>
-      <AutoScalingText>
-        <Text className="has-text-weight-light">{formattedValue}</Text>
-      </AutoScalingText>
+      <Textfit mode="single" max={72}>
+        {formattedValue}
+      </Textfit>
     </Container>
   );
 };
