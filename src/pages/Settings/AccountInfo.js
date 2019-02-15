@@ -31,7 +31,6 @@ const mutation = gql`
 
 class AccountInfo extends React.Component {
   handleUpdate = data => {
-    // this.setState({ activeCurrency: currency.id });
     apolloClient.mutate({ mutation, variables: data });
   };
 

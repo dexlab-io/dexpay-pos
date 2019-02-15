@@ -1,34 +1,67 @@
 import React from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
+import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
 import WalletAddressForm from './components/WalletAddressForm';
 
-const WalletAddress = props => {
-  const { history } = props;
+const query = gql`
+  {
+    walletAddress @client
+  }
+`;
 
-  return (
-    <Layout header={{ isVisible: false }}>
-      <Seo title="Wallet Address" />
-      <div className="section">
-        <div className="container">
-          <SettingsHeader history={history} />
-          <Breadcrumb
-            history={history}
-            title="Wallet Address"
-            icon="wallet-icon.png"
-          />
-          <WalletAddressForm
-            handleSubmit={values =>
-              console.log('WalletAddressForm submit', values)
-            }
-          />
+const mutation = gql`
+  mutation updateWalletAddress($address: String!) {
+    updateWalletAddress(address: $address) @client
+  }
+`;
+
+class WalletAddress extends React.Component {
+  handleUpdate = data => {
+    apolloClient.mutate({
+      mutation,
+      variables: { address: data.walletAddress }
+    });
+  };
+
+  render() {
+    const { history } = this.props;
+
+    return (
+      <Layout header={{ isVisible: false }}>
+        <Seo title="Wallet Address" />
+        <div className="section">
+          <div className="container">
+            <SettingsHeader history={history} />
+            <Breadcrumb
+              history={history}
+              title="Wallet Address"
+              icon="wallet-icon.png"
+            />
+            <Query query={query} fetchPolicy="cache-and-network">
+              {({ data, loading, error }) => {
+                if (loading && !data.currency) return <p>loading...</p>;
+                if (error) return <p>Error: {error.message}</p>;
+                console.log('data', data.walletAddress);
+
+                return (
+                  <WalletAddressForm
+                    initialValues={{ walletAddress: data.walletAddress || '' }}
+                    handleSubmit={this.handleUpdate}
+                  />
+                );
+              }}
+            </Query>
+          </div>
         </div>
-      </div>
-    </Layout>
-  );
-};
+      </Layout>
+    );
+  }
+}
 
 export default WalletAddress;

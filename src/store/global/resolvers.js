@@ -33,13 +33,22 @@ const resolvers = {
       return tokens;
     },
     updateRequiredConfirmations: (_, variables, { cache }) => {
-      console.log('variables', variables);
+      // console.log('variables', variables);
       // update cache
       cache.writeData({
         data: { requiredConfirmations: variables.confirmation }
       });
 
       return variables.confirmation;
+    },
+    updateWalletAddress: (_, variables, { cache }) => {
+      // console.log('variables', variables);
+      // update cache
+      cache.writeData({
+        data: { walletAddress: variables.address }
+      });
+
+      return variables.address;
     }
   }
 };
