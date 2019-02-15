@@ -1,9 +1,9 @@
 import React from 'react';
-import '../../../node_modules/bulma-extensions/bulma-switch/dist/css/bulma-switch.min.css';
+import Switch from 'react-switch';
 
-const SwitchGroup = ({ label, placeholder, error, ...otherProps }) => (
+const SwitchGroup = ({ label, ...otherProps }) => (
   <div className="field">
-    <input type="checkbox" className="switch is-rounded" {...otherProps} />
+    <Switch uncheckedIcon={false} checkedIcon={false} {...otherProps} />
     <label htmlFor="switchRoundedOutlinedDefault">{label}</label>
   </div>
 );

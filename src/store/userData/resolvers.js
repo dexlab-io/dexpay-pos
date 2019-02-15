@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { timeout } from '../../utils/helpers';
-// import { persistor } from '../../utils/apolloClient';
+import { persistor } from '../../utils/apolloClient';
 
 const resolvers = {
   Mutation: {
@@ -48,7 +48,7 @@ const resolvers = {
       await cache.writeData({ data: { user: null, isLoggedIn: false } });
       await timeout(600);
 
-      // await persistor.purge();
+      await persistor.purge();
       await timeout(600);
 
       window.localStorage.clear();
@@ -66,7 +66,6 @@ const resolvers = {
     },
     updateUser: async (_, variables, { cache }) => {
       // update cache
-      console.log('variables', variables);
       const data = cache.readQuery({
         query: gql`
           query User {
@@ -79,10 +78,8 @@ const resolvers = {
           }
         `
       });
-      console.log('data', data);
 
       const user = { ...data.user, ...variables.input };
-      console.log('user', user);
       cache.writeData({
         data: { user }
       });

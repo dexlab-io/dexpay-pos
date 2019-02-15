@@ -1,17 +1,14 @@
-/* eslint global-require: 0 */
-/* eslint import/no-dynamic-require: 0 */
-
 import React from 'react';
-import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { indexOf } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
-import { SwitchGroup } from '../../components/elements';
+import TokenItem from './components/TokenItem';
 
 const query = gql`
   {
@@ -25,22 +22,6 @@ const mutation = gql`
   }
 `;
 
-const ItemContainer = styled.div`
-  display: flex;
-  flex: 1;
-  align-items: center;
-  padding: 20px;
-  border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
-`;
-const ItemName = styled.span`
-  margin: 0 15px;
-`;
-const SwitchContainer = styled.div`
-  display: flex;
-  flex: 1;
-  justify-content: flex-end;
-`;
-
 const networksList = [
   { id: 'ether', name: 'Ether', image: 'crypto-icon.png' },
   { id: 'dai', name: 'DAI', image: 'crypto-icon.png' },
@@ -50,7 +31,10 @@ const networksList = [
 
 class AcceptedTokens extends React.Component {
   handleSwitch = (token, isAccepted) => {
-    apolloClient.mutate({ mutation, variables: { token, isAccepted } });
+    apolloClient.mutate({
+      mutation,
+      variables: { token: token.id, isAccepted }
+    });
   };
 
   render() {
@@ -73,22 +57,12 @@ class AcceptedTokens extends React.Component {
                 if (error) return <p>Error: {error.message}</p>;
 
                 return networksList.map(item => (
-                  <ItemContainer key={item.id}>
-                    <img
-                      src={require(`../../assets/dummy/${item.image}`)}
-                      alt={item.name}
-                    />
-                    <ItemName className="has-text-weight-semibold">
-                      {item.name}
-                    </ItemName>
-                    <SwitchContainer>
-                      <SwitchGroup
-                        name="123-3"
-                        checked="checked"
-                        onChange={() => this.handleSwitch(item, true)}
-                      />
-                    </SwitchContainer>
-                  </ItemContainer>
+                  <TokenItem
+                    key={item.id}
+                    isAccepted={indexOf(data.acceptedTokens, item.id) !== -1}
+                    token={item}
+                    handleChange={this.handleSwitch}
+                  />
                 ));
               }}
             </Query>
