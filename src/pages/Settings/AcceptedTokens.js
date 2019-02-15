@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { indexOf } from 'lodash';
+import { indexOf, find } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
@@ -9,6 +9,7 @@ import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
 import TokenItem from './components/TokenItem';
+import settingsItems from './components/settingsItems';
 
 const query = gql`
   {
@@ -39,6 +40,9 @@ class AcceptedTokens extends React.Component {
 
   render() {
     const { history } = this.props;
+    const settingItem = find(settingsItems, {
+      linkTo: '/settings/accepted-tokens'
+    });
 
     return (
       <Layout header={{ isVisible: false }}>
@@ -46,11 +50,7 @@ class AcceptedTokens extends React.Component {
         <div className="section">
           <div className="container">
             <SettingsHeader history={history} />
-            <Breadcrumb
-              history={history}
-              title="Accepted Tokens"
-              icon="token-icon.png"
-            />
+            <Breadcrumb history={history} {...settingItem} />
             <Query query={query} fetchPolicy="cache-and-network">
               {({ data, loading, error }) => {
                 if (loading && !data.acceptedTokens) return <p>loading...</p>;

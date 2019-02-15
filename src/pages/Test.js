@@ -89,7 +89,7 @@ class Test extends React.Component {
   render() {
     const { store } = this.props;
     console.log('counter state', this.state.counter);
-    const counterMutation2 = apolloClient.mutate({ mutation: counterMutation });
+    // const counterMutation2 = apolloClient.mutate({ mutation: counterMutation });
     // counterMutation2.updateCounter({variables:123});
 
     return (

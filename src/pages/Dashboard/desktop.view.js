@@ -17,20 +17,21 @@ const RightSide = styled.div`
   padding-top: 20px;
 `;
 const LeftSide = styled.div`
-  padding-top: 80px;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-bottom: 0.75rem;
-  border-left: ${props => `1px solid ${props.theme.borderColor}`};
-
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+  padding: 80px 2rem 0.75rem 2rem;
+  border-left: ${props => `1px solid ${props.theme.borderColor}`};
+`;
+const NumberWrapper = styled.div`
+  max-width: 100%;
+  margin-top: -30px;
 `;
 
 export default function() {
   const { activeTab, totalAmount, pos } = this.state;
+
   return (
     <Section className="section">
       <div className="container">
@@ -48,8 +49,10 @@ export default function() {
                 )}
                 {activeTab === 'recentPayments' && <RecentPayments />}
               </RightSide>
-              <LeftSide className="column">
-                <NumberInput value={totalAmount} />
+              <LeftSide className="column is-one-third">
+                <NumberWrapper>
+                  <NumberInput value={totalAmount} />
+                </NumberWrapper>
                 <GenerateBillBtn handlePay={this.handlePay} />
               </LeftSide>
             </React.Fragment>

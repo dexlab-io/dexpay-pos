@@ -1,3 +1,5 @@
+/* eslint jsx-a11y/accessible-emoji: 0 */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';

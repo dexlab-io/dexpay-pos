@@ -1,6 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { find } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
@@ -8,6 +9,7 @@ import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
 import WalletAddressForm from './components/WalletAddressForm';
+import settingsItems from './components/settingsItems';
 
 const query = gql`
   {
@@ -31,6 +33,9 @@ class WalletAddress extends React.Component {
 
   render() {
     const { history } = this.props;
+    const settingItem = find(settingsItems, {
+      linkTo: '/settings/wallet-address'
+    });
 
     return (
       <Layout header={{ isVisible: false }}>
@@ -38,11 +43,7 @@ class WalletAddress extends React.Component {
         <div className="section">
           <div className="container">
             <SettingsHeader history={history} />
-            <Breadcrumb
-              history={history}
-              title="Wallet Address"
-              icon="wallet-icon.png"
-            />
+            <Breadcrumb history={history} {...settingItem} />
             <Query query={query} fetchPolicy="cache-and-network">
               {({ data, loading, error }) => {
                 if (loading && !data.currency) return <p>loading...</p>;

@@ -13,6 +13,8 @@ const Section = styled.div`
 
 export default function() {
   const { activeTab, totalAmount, pos } = this.state;
+  // console.log('totalAmount', totalAmount);
+
   return (
     <Section className="section">
       <div className="container is-fluid">

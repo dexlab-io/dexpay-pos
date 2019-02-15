@@ -25,7 +25,7 @@ const InnerSelect = styled.div`
   position: relative;
   border: 1px solid #383838;
   border-radius: 4px;
-  width: 210px;
+  max-width: 265px;
   padding-top: 14px;
   padding-bottom: 7px;
   margin: 0 auto;

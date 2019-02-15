@@ -8,7 +8,7 @@ const KeysContainer = styled.div`
   margin-bottom: 2rem !important;
 `;
 
-const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, ',', 0, 'C'];
+const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, '.', 0, 'C'];
 
 class Keypad extends React.Component {
   constructor(props) {
@@ -66,11 +66,16 @@ class Keypad extends React.Component {
     if (valueString === '0') {
       valueString = '';
     }
+    const afterDot = valueString.split('.')[1];
+    if (afterDot && afterDot.length === 2) {
+      return null;
+    }
     const valueAdded = `${valueString}${digit}`;
 
     this.setState({
       value: valueAdded
     });
+    return true;
   };
 
   inputDot() {
