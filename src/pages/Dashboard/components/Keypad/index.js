@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import KeypadKey from './KeypadKey';
 
@@ -10,7 +11,11 @@ const KeysContainer = styled.div`
 const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, ',', 0, 'C'];
 
 class Keypad extends React.Component {
-  state = { value: 0 };
+  constructor(props) {
+    super(props);
+
+    this.state = { value: props.value };
+  }
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
@@ -57,25 +62,32 @@ class Keypad extends React.Component {
 
   inputDigit = digit => {
     const { value } = this.state;
+    let valueString = value;
+    if (valueString === '0') {
+      valueString = '';
+    }
+    const valueAdded = `${valueString}${digit}`;
 
     this.setState({
-      value: value === 0 ? String(digit) : value + digit
+      value: valueAdded
     });
   };
 
   inputDot() {
     const { value } = this.state;
+    const valueString = value;
 
-    if (!/\./.test(value)) {
+    if (!/\./.test(valueString)) {
+      const valueAdded = `${valueString}.`;
       this.setState({
-        value: `${value}.`
+        value: valueAdded
       });
     }
   }
 
   clearAll() {
     this.setState({
-      value: 0
+      value: '0'
     });
   }
 
@@ -88,8 +100,6 @@ class Keypad extends React.Component {
   }
 
   render() {
-    const { value } = this.state;
-
     return (
       <div>
         <KeysContainer className="columns is-mobile is-multiline">
@@ -113,5 +123,13 @@ class Keypad extends React.Component {
     );
   }
 }
+
+Keypad.defaultProps = {
+  value: '0'
+};
+
+Keypad.propTypes = {
+  value: PropTypes.string
+};
 
 export default Keypad;

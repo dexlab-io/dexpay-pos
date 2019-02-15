@@ -3,18 +3,33 @@ import qs from 'qs';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
-import apolloClient from './utils/apolloClient';
+import client, { persistor } from './utils/apolloClient';
+import { store } from './store';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
-import { Error404, Dashboard, Settings, WalletAddress, Test } from './pages';
-
-import { store } from './store';
+import {
+  Error404,
+  Dashboard,
+  Settings,
+  AccountInfo,
+  AcceptedTokens,
+  BaseCurrency,
+  RequiredConfirmations,
+  WalletAddress,
+  Test
+} from './pages';
 
 class App extends Component {
+  state = { loaded: false };
+
   async componentDidMount() {
     await this.init();
+    await persistor.restore();
+    this.client = client;
+    this.setState({ loaded: true });
   }
 
   async init() {
@@ -36,32 +51,45 @@ class App extends Component {
   }
 
   render() {
+    const { loaded } = this.state;
+    if (!loaded) {
+      return <div>loading</div>;
+    }
+
     return (
-      <ApolloProvider client={apolloClient}>
+      <ApolloProvider client={this.client}>
         <ThemeProvider theme={theme}>
           <React.Fragment>
             <BrowserRouter>
               <Switch>
+                <Route path="/" exact component={Dashboard} />
+                <Route path="/settings" exact component={Settings} />
                 <Route
-                  path="/"
+                  path="/settings/account-info"
                   exact
-                  render={() => <Dashboard store={store} />}
+                  component={AccountInfo}
                 />
                 <Route
-                  path="/settings"
+                  path="/settings/accepted-tokens"
                   exact
-                  render={() => <Settings store={store} />}
+                  component={AcceptedTokens}
+                />
+                <Route
+                  path="/settings/base-currency"
+                  exact
+                  component={BaseCurrency}
+                />
+                <Route
+                  path="/settings/required-confirmations"
+                  exact
+                  component={RequiredConfirmations}
                 />
                 <Route
                   path="/settings/wallet-address"
                   exact
-                  render={() => <WalletAddress store={store} />}
+                  component={WalletAddress}
                 />
-                <Route
-                  path="/test"
-                  exact
-                  render={() => <Test store={store} />}
-                />
+                <Route path="/test" exact component={Test} />
                 <Route component={Error404} />
               </Switch>
             </BrowserRouter>

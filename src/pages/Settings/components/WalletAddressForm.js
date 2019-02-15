@@ -11,13 +11,13 @@ const WalletAddressForm = props => {
   return (
     <form onSubmit={handleSubmit}>
       <TextGroup
-        name="pasAddress"
+        name="walletAddress"
         label="Address"
         placeholder="Paste or Scan your public address"
-        value={values.pasAddress}
+        value={values.walletAddress}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={errors.pasAddress}
+        error={errors.walletAddress}
       />
     </form>
   );
@@ -32,11 +32,11 @@ WalletAddressForm.propTypes = {
 };
 
 export default withFormik({
-  mapPropsToValues: () => ({
-    pasAddress: ''
+  mapPropsToValues: props => ({
+    walletAddress: props.initialValues.walletAddress || ''
   }),
   validationSchema: yup.object().shape({
-    pasAddress: yup.string().required('Wallet Adress is required!')
+    walletAddress: yup.string().required('Wallet Adress is required!')
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
     // console.log('handle submit', values, props);

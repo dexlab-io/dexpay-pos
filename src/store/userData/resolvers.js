@@ -1,3 +1,4 @@
+import gql from 'graphql-tag';
 import { timeout } from '../../utils/helpers';
 import { persistor } from '../../utils/apolloClient';
 
@@ -62,6 +63,28 @@ const resolvers = {
       cache.writeData({ data: { counter: variables.number } });
 
       return true;
+    },
+    updateUser: async (_, variables, { cache }) => {
+      // update cache
+      const data = cache.readQuery({
+        query: gql`
+          query User {
+            user @client {
+              id
+              fullName
+              shopName
+              email
+            }
+          }
+        `
+      });
+
+      const user = { ...data.user, ...variables.input };
+      cache.writeData({
+        data: { user }
+      });
+
+      return user;
     }
   }
 };

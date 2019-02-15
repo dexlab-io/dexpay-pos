@@ -1,22 +1,25 @@
 import { mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
-import { fetchPosData, updatePosAddress, posQuery } from './posData/queries';
-import { fetchInvoices, invoicesQuery } from './invoiceData/queries';
 
-import invoiceData from './invoiceData/resolvers';
+import globalType from './global/schema';
+import globalData from './global/resolvers';
+import globalDefaults from './global/defaults';
 import invoiceType from './invoiceData/schema';
+import invoiceData from './invoiceData/resolvers';
 import invoiceDefaults from './invoiceData/defaults';
-
 import posData from './posData/resolvers';
 import posType from './posData/schema';
 import posDefaults from './posData/defaults';
 import userData from './userData/resolvers';
 import userType from './userData/schema';
 import userDefaults from './userData/defaults';
+import { fetchPosData, updatePosAddress, posQuery } from './posData/queries';
+import { fetchInvoices, invoicesQuery } from './invoiceData/queries';
 
-const resolvers = mergeResolvers([posData, userData, invoiceData]);
-const typeDefs = mergeTypes([posType, userType, invoiceType]);
+const resolvers = mergeResolvers([globalData, posData, userData, invoiceData]);
+const typeDefs = mergeTypes([globalType, posType, userType, invoiceType]);
 
 const defaults = {
+  ...globalDefaults,
   ...posDefaults,
   ...userDefaults,
   ...invoiceDefaults

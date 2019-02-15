@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { checkWindowSize } from '../../utils/helpers';
+import { store } from '../../store';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
 import Layout from '../../components/Layout';
@@ -15,7 +16,7 @@ class Dashboard extends Component {
     this.state = {
       isMobile: checkWindowSize(),
       activeTab: 'numberPad',
-      totalAmount: 0,
+      totalAmount: '0',
       paymentModalOpen: false,
       setupModalOpen: false,
       pos: { address: null }
@@ -23,8 +24,6 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const { store } = this.props;
-
     // on screen resize
     checkWindowSize(false, isMobile => {
       this.setState({ isMobile });
