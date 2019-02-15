@@ -19,7 +19,7 @@ class RecentPayments extends React.Component {
     store.fetch.pos().subscribe(async result => {
       // eslint-disable-next-line new-cap
       this.wallet = new xDAIHDWallet(null, result.data.pos.address);
-      this.wallet.setWeb3();
+      await this.wallet.setWeb3();
       await this.wallet.fetchEthTransactions();
       this.setState({
         // eslint-disable-next-line react/no-unused-state
