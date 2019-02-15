@@ -27,6 +27,7 @@ export default function() {
               <React.Fragment>
                 <NumberInput value={parseFloat(totalAmount)} />
                 <Keypad
+                  value={parseFloat(totalAmount)}
                   handleChange={val => this.setState({ totalAmount: val })}
                 />
                 <GenerateBillBtn handlePay={this.handlePay} />

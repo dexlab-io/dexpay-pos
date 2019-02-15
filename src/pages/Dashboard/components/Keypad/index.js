@@ -12,6 +12,12 @@ const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, ',', 0, 'C'];
 class Keypad extends React.Component {
   state = { value: 0 };
 
+  constructor(props) {
+    super(props);
+
+    this.state = { value: props.value };
+  }
+
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
   }
@@ -88,8 +94,6 @@ class Keypad extends React.Component {
   }
 
   render() {
-    const { value } = this.state;
-
     return (
       <div>
         <KeysContainer className="columns is-mobile is-multiline">
@@ -98,6 +102,7 @@ class Keypad extends React.Component {
               key={item}
               text={item.toString()}
               onClick={input => {
+                console.log('input', input);
                 if (input === ',') {
                   this.inputDot();
                 } else if (input === 'C') {
