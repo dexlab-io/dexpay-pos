@@ -27,7 +27,7 @@ class App extends Component {
 
   async componentDidMount() {
     await this.init();
-    await persistor.restore();
+    // /await persistor.restore();
     this.client = client;
     this.setState({ loaded: true });
   }
