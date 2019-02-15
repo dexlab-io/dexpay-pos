@@ -31,6 +31,15 @@ const resolvers = {
       cache.writeData({ data: { acceptedTokens: tokens } });
 
       return tokens;
+    },
+    updateRequiredConfirmations: (_, variables, { cache }) => {
+      console.log('variables', variables);
+      // update cache
+      cache.writeData({
+        data: { requiredConfirmations: variables.confirmation }
+      });
+
+      return variables.confirmation;
     }
   }
 };

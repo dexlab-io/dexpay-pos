@@ -1,16 +1,11 @@
 import React from 'react';
-import '../../../node_modules/bulma-extensions/bulma-slider/dist/css/bulma-slider.min.css';
-import '../../../node_modules/bulma-extensions/bulma-slider/dist/js/bulma-slider';
+import Slider from 'rc-slider';
+import '../../../node_modules/rc-slider/assets/index.css';
 
-const Slider = props => (
-  <input
-    className="slider is-fullwidth"
-    step="1"
-    min="0"
-    max="100"
-    type="range"
-    {...props}
-  />
+const MySlider = props => (
+  <React.Fragment>
+    <Slider {...props} />
+  </React.Fragment>
 );
 
-export default Slider;
+export default MySlider;
