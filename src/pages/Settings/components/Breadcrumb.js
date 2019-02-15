@@ -22,7 +22,7 @@ const ItemLeftIcon = styled.i``;
 
 const Breadcrumb = ({ history, title, icon }) => {
   return (
-    <Container onClick={() => history.goBack()}>
+    <Container onClick={() => history.push('/settings')}>
       <ItemLeftIcon className="fas fa-angle-left" />
       <ItemIcon alt={title} src={require(`../../../assets/images/${icon}`)} />
       <ItemTitle>{title}</ItemTitle>
