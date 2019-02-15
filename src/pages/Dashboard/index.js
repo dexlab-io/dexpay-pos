@@ -16,7 +16,7 @@ class Dashboard extends Component {
     this.state = {
       isMobile: checkWindowSize(),
       activeTab: 'numberPad',
-      totalAmount: 0,
+      totalAmount: '0',
       paymentModalOpen: false,
       setupModalOpen: false,
       pos: { address: null }

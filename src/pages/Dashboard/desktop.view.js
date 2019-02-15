@@ -41,6 +41,7 @@ export default function() {
                 {activeTab === 'numberPad' && (
                   <React.Fragment>
                     <Keypad
+                      value={totalAmount.toString()}
                       handleChange={val => this.setState({ totalAmount: val })}
                     />
                   </React.Fragment>
@@ -48,7 +49,7 @@ export default function() {
                 {activeTab === 'recentPayments' && <RecentPayments />}
               </RightSide>
               <LeftSide className="column">
-                <NumberInput value={parseFloat(totalAmount)} />
+                <NumberInput value={totalAmount} />
                 <GenerateBillBtn handlePay={this.handlePay} />
               </LeftSide>
             </React.Fragment>
