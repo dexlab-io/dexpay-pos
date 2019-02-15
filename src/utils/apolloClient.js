@@ -1,6 +1,6 @@
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { CachePersistor, persistCache } from 'apollo-cache-persist';
+import { CachePersistor } from 'apollo-cache-persist';
 import { withClientState } from 'apollo-link-state';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
