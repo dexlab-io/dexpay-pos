@@ -7,26 +7,31 @@ import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
-import WalletAddressForm from './components/WalletAddressForm';
+import AccountInfoForm from './components/AccountInfoForm';
 
 const query = gql`
   {
-    walletAddress @client
+    user @client {
+      id
+      shopName
+      email
+    }
   }
 `;
 
 const mutation = gql`
-  mutation updateWalletAddress($address: String!) {
-    updateWalletAddress(address: $address) @client
+  mutation updateUser($shopName: String!, $email: String!) {
+    updateUser(input: { shopName: $shopName, email: $email }) @client {
+      id
+      shopName
+      email
+    }
   }
 `;
 
-class WalletAddress extends React.Component {
+class AccountInfo extends React.Component {
   handleUpdate = data => {
-    apolloClient.mutate({
-      mutation,
-      variables: { address: data.walletAddress }
-    });
+    apolloClient.mutate({ mutation, variables: data });
   };
 
   render() {
@@ -34,24 +39,24 @@ class WalletAddress extends React.Component {
 
     return (
       <Layout header={{ isVisible: false }}>
-        <Seo title="Wallet Address" />
+        <Seo title="Account Info" />
         <div className="section">
           <div className="container">
             <SettingsHeader history={history} />
             <Breadcrumb
               history={history}
-              title="Wallet Address"
-              icon="wallet-icon.png"
+              title="Account Info & Password"
+              icon="key-icon.png"
             />
             <Query query={query} fetchPolicy="cache-and-network">
               {({ data, loading, error }) => {
-                if (loading && !data.currency) return <p>loading...</p>;
+                if (loading && !data.user) return <p>loading...</p>;
                 if (error) return <p>Error: {error.message}</p>;
-                console.log('data', data.walletAddress);
+                console.log('data', data);
 
                 return (
-                  <WalletAddressForm
-                    initialValues={{ walletAddress: data.walletAddress || '' }}
+                  <AccountInfoForm
+                    initialValues={data.user || {}}
                     handleSubmit={this.handleUpdate}
                   />
                 );
@@ -64,4 +69,4 @@ class WalletAddress extends React.Component {
   }
 }
 
-export default WalletAddress;
+export default AccountInfo;

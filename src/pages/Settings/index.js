@@ -27,18 +27,43 @@ const ItemRightIcon = styled.i`
 `;
 
 const items = [
-  { id: 1, title: 'Update account', linkTo: '', icon: 'account-icon.png' },
-  { id: 2, title: 'Shop Items', linkTo: '', icon: 'shop-icon.png' },
-  { id: 3, title: 'Account Info & Password', linkTo: '', icon: 'key-icon.png' },
-  { id: 4, title: 'Accepted Tokens', linkTo: '', icon: 'token-icon.png' },
+  {
+    id: 1,
+    title: 'Update account',
+    linkTo: '/settings',
+    icon: 'account-icon.png'
+  },
+  { id: 2, title: 'Shop Items', linkTo: '/settings', icon: 'shop-icon.png' },
+  {
+    id: 3,
+    title: 'Account Info & Password',
+    linkTo: '/settings/account-info',
+    icon: 'key-icon.png'
+  },
+  {
+    id: 4,
+    title: 'Accepted Tokens',
+    linkTo: '/settings/accepted-tokens',
+    icon: 'token-icon.png'
+  },
   {
     id: 5,
     title: 'Wallet Address',
     linkTo: '/settings/wallet-address',
     icon: 'wallet-icon.png'
   },
-  { id: 6, title: 'Required Confirmations', linkTo: '', icon: 'link-icon.png' },
-  { id: 7, title: 'Base Currency', linkTo: '', icon: 'currency-icon.png' }
+  {
+    id: 6,
+    title: 'Required Confirmations',
+    linkTo: '/settings/required-confirmations',
+    icon: 'link-icon.png'
+  },
+  {
+    id: 7,
+    title: 'Base Currency',
+    linkTo: '/settings/base-currency',
+    icon: 'currency-icon.png'
+  }
 ];
 
 const Settings = props => {
@@ -51,7 +76,7 @@ const Settings = props => {
         <div className="container">
           <SettingsHeader history={history} />
           {items.map(item => (
-            <NavItem key={item.id} to="/settings/wallet-address">
+            <NavItem key={item.id} to={item.linkTo}>
               <ItemIcon
                 alt={item.title}
                 src={require(`../../assets/images/${item.icon}`)}
