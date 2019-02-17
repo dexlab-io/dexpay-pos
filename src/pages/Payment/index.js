@@ -10,6 +10,7 @@ import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
+import { store } from '../../store';
 
 class Payment extends Component {
   state = {
@@ -18,6 +19,7 @@ class Payment extends Component {
       eth: '0',
       dai: '0'
     },
+    posAddress: null,
     watchers: null,
     valueFiat: 0,
     tipPercentage: 0,
@@ -32,7 +34,12 @@ class Payment extends Component {
       this.setState({ isMobile });
     });
 
-    this.updateFiatValue();
+    store.fetch.pos().subscribe(async result => {
+      this.setState({
+        posAddress: result.data.pos.address
+      });
+      await this.updateFiatValue();
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -40,6 +47,11 @@ class Payment extends Component {
     if (total !== prevProps.total) {
       this.updateFiatValue();
     }
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
+    this.watcherXdai.pollingOn = false;
   }
 
   addTipPayment = async percentage => {
@@ -61,7 +73,7 @@ class Payment extends Component {
   };
 
   calculateCryptoValue = async () => {
-    const { valueFiat, tipValue } = this.state;
+    const { valueFiat, tipValue, posAddress } = this.state;
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
     const pricesEth = await getTokenPrice();
     const pricesDai = await getTokenPrice('dai');
@@ -81,9 +93,9 @@ class Payment extends Component {
     });
 
     // const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
-    const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
-
-    watcherXdai.xdaiTransfer(config.posAddress, daiValue, data => {
+    this.watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
+    console.log('posAddress', posAddress);
+    this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
       this.setState({
         txState: data.state,
         txHash: data.txHash
@@ -92,7 +104,7 @@ class Payment extends Component {
 
     this.setState({
       watchers: {
-        xdai: watcherXdai
+        xdai: this.watcherXdai
       }
     });
 

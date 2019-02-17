@@ -52,11 +52,13 @@ class Dashboard extends Component {
         {isMobile
           ? MobileView.call(this, this.props, this.state)
           : DesktopView.call(this, this.props, this.state)}
-        <Payment
-          isModalOpen={paymentModalOpen}
-          onCloseModal={this.onClosePaymentModal}
-          total={totalAmount}
-        />
+        {paymentModalOpen ? (
+          <Payment
+            isModalOpen={paymentModalOpen}
+            onCloseModal={this.onClosePaymentModal}
+            total={totalAmount}
+          />
+        ) : null}
       </Layout>
     );
   }
