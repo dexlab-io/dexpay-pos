@@ -30,9 +30,9 @@ export default class WatcherTx {
     switch (this.selectedNetwork) {
       case WatcherTx.NETWORKS.XDAI:
         return {
-          avgBlockTime: 5000,
+          avgBlockTime: 500,
           rpc: 'https://dai.poa.network',
-          label: 'XDAI Poa Network',
+          label: 'xDAI Poa Network',
           confirmationNeeded: 1,
           ws: null
         };
