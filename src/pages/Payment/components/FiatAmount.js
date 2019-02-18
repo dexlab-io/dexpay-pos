@@ -6,9 +6,6 @@ import { Textfit } from 'react-textfit';
 import { formatCurrency } from '../../../utils/helpers';
 
 const Container = styled.div`
-  display: block;
-  margin: 0 auto;
-  max-width: 400px;
   font-weight: 300;
   text-align: center;
 `;

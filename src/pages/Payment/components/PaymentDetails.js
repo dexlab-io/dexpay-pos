@@ -1,5 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
+import styled from 'styled-components';
+
 import { store } from '../../../store';
 import CryptoAmount from './CryptoAmount';
 import FiatAmount from './FiatAmount';
@@ -9,6 +11,12 @@ import AddressClipboard from './AddressClipboard';
 import NetworkStatus from './NetworkStatus';
 import InProgressBlocks from './InProgressBlocks';
 import { Divider } from '../../../components/elements';
+
+const Header = styled.div`
+  padding: 44px 0;
+  text-align: center;
+`;
+const Title = styled.span``;
 
 class PaymentDetails extends React.Component {
   state = {
@@ -23,12 +31,16 @@ class PaymentDetails extends React.Component {
       tipValue,
       watchers,
       status,
-      addTipPayment
+      addTipPayment,
+      title
     } = this.props;
     const { selectedCurrency } = this.state;
 
     return (
       <React.Fragment>
+        <Header>
+          <Title className="is-family-secondary">{title}</Title>
+        </Header>
         <CryptoAmount
           cryptoCurrency={selectedCurrency}
           cryptoValue={valueCrypto}

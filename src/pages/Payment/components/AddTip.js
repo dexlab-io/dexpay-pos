@@ -8,13 +8,16 @@ const Container = styled.div`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 const Title = styled.span`
   margin-right: 15px;
 `;
 
+const Items = styled.div`
+  display: flex;
+`;
 const ItemContainer = styled.div`
   background-color: ${props => (props.active ? '#000000' : '#737373')};
   padding: 10px 17px 10px 17px;
@@ -56,15 +59,17 @@ class AddTip extends React.Component {
         <Title>
           <Trans>Add a tip</Trans>
         </Title>
-        {tipOptions.map(item => (
-          <ItemContainer
-            key={item.id}
-            active={value === item.value}
-            onClick={() => this.handleChange(item.value)}
-          >
-            <Text>{item.text}</Text>
-          </ItemContainer>
-        ))}
+        <Items>
+          {tipOptions.map(item => (
+            <ItemContainer
+              key={item.id}
+              active={value === item.value}
+              onClick={() => this.handleChange(item.value)}
+            >
+              <Text>{item.text}</Text>
+            </ItemContainer>
+          ))}
+        </Items>
       </Container>
     );
   }

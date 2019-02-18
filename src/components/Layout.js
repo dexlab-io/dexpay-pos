@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  display: grid;
+  display: ${props => (props.hasHeader ? 'grid' : 'block')};
   grid-template-areas:
     'header'
     'content';
@@ -48,7 +48,7 @@ class Layout extends React.Component {
           onSetOpen={this.onSetSidebarOpen}
           styles={{ sidebar: { background: 'white', minWidth: ' 340px' } }}
         >
-          <Wrapper>
+          <Wrapper hasHeader={header.isVisible || true}>
             <Header
               leftBtnClick={() => this.onSetSidebarOpen(true)}
               {...header}

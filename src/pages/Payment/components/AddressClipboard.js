@@ -15,7 +15,6 @@ const ClipboardBtn = styled(Clipboard)`
   background: none;
   border: none;
   padding: 0;
-  margin-left: 10px;
   cursor: pointer;
 `;
 const Input = styled.input`
