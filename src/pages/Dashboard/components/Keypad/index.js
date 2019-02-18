@@ -21,6 +21,13 @@ class Keypad extends React.Component {
     document.addEventListener('keydown', this.handleKeyDown);
   }
 
+  // eslint-disable-next-line react/sort-comp
+  UNSAFE_componentWillReceiveProps(nextProps, nextState) {
+    this.setState({
+      value: nextProps.value
+    });
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { handleChange } = this.props;
     const { value } = this.state;
@@ -62,7 +69,13 @@ class Keypad extends React.Component {
 
   inputDigit = digit => {
     const { value } = this.state;
+
     let valueString = value;
+
+    if (valueString === '.' && digit === '.') {
+      return null;
+    }
+
     if (valueString === '0') {
       valueString = '';
     }

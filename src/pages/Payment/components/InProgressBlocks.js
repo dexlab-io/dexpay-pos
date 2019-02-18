@@ -48,7 +48,7 @@ const InProgressBlocks = ({ blocksCount, status, txHash }) => {
         <Trans>Blocks Verified</Trans>
       </div>
       <a
-        href={`https://ropsten.etherscan.io/tx/${txHash}`}
+        href={`https://blockscout.com/poa/dai/tx/${txHash}`}
         target="_blank"
         rel="noopener noreferrer"
         className="has-text-weight-semibold"

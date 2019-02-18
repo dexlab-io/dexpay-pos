@@ -100,6 +100,11 @@ class Payment extends Component {
         txState: data.state,
         txHash: data.txHash
       });
+
+      if (data.state === WatcherTx.STATES.CONFIRMED) {
+        console.log('calling onPaymentReceived');
+        this.props.onPaymentReceived();
+      }
     });
 
     this.setState({
