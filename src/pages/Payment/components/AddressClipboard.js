@@ -16,18 +16,17 @@ const ClipboardBtn = styled(Clipboard)`
   border: none;
   padding: 0;
   margin-left: 10px;
+  cursor: pointer;
 `;
 const Input = styled.input`
   background-color: #000000;
   color: #ffffff;
+  width: 350px;
 `;
 
 const AddressClipboard = ({ address }) => {
   return (
     <Container>
-      <span>
-        <Trans>To</Trans>:
-      </span>
       <ClipboardBtn data-clipboard-text={address}>
         <Input
           className="input"

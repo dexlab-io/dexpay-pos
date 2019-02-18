@@ -7,9 +7,9 @@ import backImg from '../assets/images/back.png';
 import logoImg from '../assets/images/logo.png';
 
 const Container = styled.section`
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
-    padding: 2rem 1.5rem;
+    padding: 0rem 1.5rem;
   }
 `;
 const LeftSide = styled.div`

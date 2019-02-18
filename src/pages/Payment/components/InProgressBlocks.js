@@ -1,3 +1,5 @@
+/* eslint jsx-a11y/accessible-emoji: 0 */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -46,7 +48,7 @@ const InProgressBlocks = ({ blocksCount, status, txHash }) => {
         <Trans>Blocks Verified</Trans>
       </div>
       <a
-        href={`https://ropsten.etherscan.io/tx/${txHash}`}
+        href={`https://blockscout.com/poa/dai/tx/${txHash}`}
         target="_blank"
         rel="noopener noreferrer"
         className="has-text-weight-semibold"
@@ -59,7 +61,11 @@ const InProgressBlocks = ({ blocksCount, status, txHash }) => {
 
 InProgressBlocks.propTypes = {
   blocksCount: PropTypes.number.isRequired,
-  status: PropTypes.string.isRequired
+  status: PropTypes.string
+};
+
+InProgressBlocks.defaultProps = {
+  status: 'pending'
 };
 
 export default InProgressBlocks;

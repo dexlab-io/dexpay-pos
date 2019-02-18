@@ -37,7 +37,17 @@ class Dashboard extends Component {
   };
 
   onClosePaymentModal = () => {
-    this.setState({ paymentModalOpen: false });
+    this.setState({
+      paymentModalOpen: false,
+      activeTab: 'numberPad',
+      totalAmount: '0'
+    });
+  };
+
+  onPaymentReceived = () => {
+    setTimeout(() => {
+      this.onClosePaymentModal();
+    }, 5000);
   };
 
   handleNavItemChange = activeTab => {
@@ -52,11 +62,14 @@ class Dashboard extends Component {
         {isMobile
           ? MobileView.call(this, this.props, this.state)
           : DesktopView.call(this, this.props, this.state)}
-        <Payment
-          isModalOpen={paymentModalOpen}
-          onCloseModal={this.onClosePaymentModal}
-          total={totalAmount}
-        />
+        {paymentModalOpen ? (
+          <Payment
+            onPaymentReceived={this.onPaymentReceived}
+            isModalOpen={paymentModalOpen}
+            onCloseModal={this.onClosePaymentModal}
+            total={totalAmount}
+          />
+        ) : null}
       </Layout>
     );
   }

@@ -1,3 +1,5 @@
+/* eslint jsx-a11y/anchor-is-valid: 0 */
+
 import React from 'react';
 import styled from 'styled-components';
 

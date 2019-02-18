@@ -30,9 +30,9 @@ export default class WatcherTx {
     switch (this.selectedNetwork) {
       case WatcherTx.NETWORKS.XDAI:
         return {
-          avgBlockTime: 5000,
+          avgBlockTime: 500,
           rpc: 'https://dai.poa.network',
-          label: 'XDAI Poa Network',
+          label: 'xDAI Poa Network',
           confirmationNeeded: 1,
           ws: null
         };
@@ -115,11 +115,16 @@ export default class WatcherTx {
     const web3 = this.getWeb3Http();
     const currentBlock = await web3.eth.getBlockNumber();
 
-    // console.log(currentBlock, this.pollingOn);
+    console.log(currentBlock, this.pollingOn);
+    console.log('lastBlockChecked', this.lastBlockChecked);
 
     if (currentBlock > this.lastBlockChecked) {
+      console.log('Checking block', currentBlock);
       const block = await web3.eth.getBlock(currentBlock);
       this.lastBlockChecked = currentBlock;
+      console.log('Block', block);
+      console.log('recipient', recipient);
+      console.log('total', total);
 
       if (block.transactions.length) {
         block.transactions.forEach(async txHash => {

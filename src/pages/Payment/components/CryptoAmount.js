@@ -25,7 +25,7 @@ const InnerSelect = styled.div`
   position: relative;
   border: 1px solid #383838;
   border-radius: 4px;
-  width: 210px;
+  max-width: 265px;
   padding-top: 14px;
   padding-bottom: 7px;
   margin: 0 auto;
@@ -38,8 +38,8 @@ const SelectIcon = styled.i`
 `;
 
 const options = [
-  { value: 'dai', label: 'Dai' },
-  { value: 'eth', label: 'Ethereum' }
+  { value: 'dai', label: 'xDai' }
+  // { value: 'eth', label: 'Ethereum' }
 ];
 
 class CryptoAmount extends React.Component {
@@ -62,7 +62,7 @@ class CryptoAmount extends React.Component {
     const activeItem = (
       <Container>
         <Image src={cryptoIcon} alt={selectedCrypto} />
-        <span>{selectedCrypto.toUpperCase()}&nbsp;</span>
+        <span>x{selectedCrypto.toUpperCase()}&nbsp;</span>
         <span className="has-text-weight-light">
           {cryptoValue[selectedCrypto.toLowerCase()]}
         </span>

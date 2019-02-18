@@ -78,7 +78,7 @@ export default class EthereumHDWallet extends HDWallet {
     return new Promise(async (resolve, reject) => {
       // for modern dapp browsers
       if (ethereum) {
-        console.log(ethereum);
+        // console.log(ethereum);
         ethereum
           .enable()
           .then(async () => {

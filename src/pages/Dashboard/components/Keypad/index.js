@@ -8,7 +8,7 @@ const KeysContainer = styled.div`
   margin-bottom: 2rem !important;
 `;
 
-const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, ',', 0, 'C'];
+const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, '.', 0, 'C'];
 
 class Keypad extends React.Component {
   constructor(props) {
@@ -19,6 +19,13 @@ class Keypad extends React.Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  // eslint-disable-next-line react/sort-comp
+  UNSAFE_componentWillReceiveProps(nextProps, nextState) {
+    this.setState({
+      value: nextProps.value
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -62,15 +69,26 @@ class Keypad extends React.Component {
 
   inputDigit = digit => {
     const { value } = this.state;
+
     let valueString = value;
+
+    if (valueString === '.' && digit === '.') {
+      return null;
+    }
+
     if (valueString === '0') {
       valueString = '';
+    }
+    const afterDot = valueString.split('.')[1];
+    if (afterDot && afterDot.length === 2) {
+      return null;
     }
     const valueAdded = `${valueString}${digit}`;
 
     this.setState({
       value: valueAdded
     });
+    return true;
   };
 
   inputDot() {

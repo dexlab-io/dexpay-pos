@@ -10,6 +10,7 @@ import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
+import { store } from '../../store';
 
 class Payment extends Component {
   state = {
@@ -18,6 +19,7 @@ class Payment extends Component {
       eth: '0',
       dai: '0'
     },
+    posAddress: null,
     watchers: null,
     valueFiat: 0,
     tipPercentage: 0,
@@ -32,7 +34,12 @@ class Payment extends Component {
       this.setState({ isMobile });
     });
 
-    this.updateFiatValue();
+    store.fetch.pos().subscribe(async result => {
+      this.setState({
+        posAddress: result.data.pos.address
+      });
+      await this.updateFiatValue();
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -40,6 +47,10 @@ class Payment extends Component {
     if (total !== prevProps.total) {
       this.updateFiatValue();
     }
+  }
+
+  componentWillUnmount() {
+    this.watcherXdai.pollingOn = false;
   }
 
   addTipPayment = async percentage => {
@@ -61,7 +72,8 @@ class Payment extends Component {
   };
 
   calculateCryptoValue = async () => {
-    const { valueFiat, tipValue } = this.state;
+    const { valueFiat, tipValue, posAddress } = this.state;
+    const { onPaymentReceived } = this.props;
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
     const pricesEth = await getTokenPrice();
     const pricesDai = await getTokenPrice('dai');
@@ -80,28 +92,24 @@ class Payment extends Component {
       }
     });
 
-    // const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
-    const watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
-
-    watcherXdai.xdaiTransfer(config.posAddress, daiValue, data => {
+    this.watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
+    this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
       this.setState({
         txState: data.state,
         txHash: data.txHash
       });
+
+      if (data.state === WatcherTx.STATES.CONFIRMED) {
+        this.watcherXdai.pollingOn = false;
+        onPaymentReceived();
+      }
     });
 
     this.setState({
       watchers: {
-        xdai: watcherXdai
+        xdai: this.watcherXdai
       }
     });
-
-    // watcherEth.etherTransfers(config.posAddress, ethValue, data => {
-    //   this.setState({
-    //     txState: data.state,
-    //     txHash: data.txHash
-    //   });
-    // });
   };
 
   async updateFiatValue() {
@@ -140,7 +148,6 @@ class Payment extends Component {
         open={isModalOpen}
         onClose={onCloseModal}
         center
-        showCloseIcon={false}
         styles={{
           modal: { maxWidth: 'initial', width: '100%', height: '100%' },
           overlay: { padding: 0 }
@@ -148,10 +155,9 @@ class Payment extends Component {
       >
         <Layout
           header={{
-            leftIcon: 'back',
+            leftIcon: null,
             title: this.title,
-            hideNav: true,
-            leftBtnClick: onCloseModal
+            hideNav: true
           }}
         >
           <Seo title={this.title} description="Payment transaction details." />

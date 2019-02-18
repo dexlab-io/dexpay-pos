@@ -1,13 +1,13 @@
 export default {
   debug: process.env.NODE_ENV === 'development',
   ENABLE_LOGS: true,
-  APP_VERSION: '0.2.12-b2',
+  APP_VERSION: '0.0.1',
   siteName: 'Dexpay',
-  siteUrl: '',
+  siteUrl: 'https://dexpay.me',
   logo: '',
   fbAppID: '',
   twitter: '',
-  posAddress: '0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139',
+  posAddress: '',
 
   currency: {
     symbol: '€',
