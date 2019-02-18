@@ -1,25 +1,25 @@
 export default [
-  {
-    id: 1,
-    title: 'Update account',
-    linkTo: '/settings',
-    bgColor: '#FFEF66',
-    emoji: '👋'
-  },
-  {
-    id: 2,
-    title: 'Shop Items',
-    linkTo: '/settings',
-    bgColor: '#83E8DF',
-    emoji: '👚'
-  },
-  {
-    id: 3,
-    title: 'Account Info & Password',
-    linkTo: '/settings/account-info',
-    bgColor: '#4455BB',
-    emoji: '🔑'
-  },
+  // {
+  //   id: 1,
+  //   title: 'Update account',
+  //   linkTo: '/settings',
+  //   bgColor: '#FFEF66',
+  //   emoji: '👋'
+  // },
+  // {
+  //   id: 2,
+  //   title: 'Shop Items',
+  //   linkTo: '/settings',
+  //   bgColor: '#83E8DF',
+  //   emoji: '👚'
+  // },
+  // {
+  //   id: 3,
+  //   title: 'Account Info & Password',
+  //   linkTo: '/settings/account-info',
+  //   bgColor: '#4455BB',
+  //   emoji: '🔑'
+  // },
   {
     id: 4,
     title: 'Accepted Tokens',
