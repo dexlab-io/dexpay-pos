@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import KeypadKey from './KeypadKey';
 
 const KeysContainer = styled.div`
-  margin-top: 2rem;
-  margin-bottom: 2rem !important;
+  display: grid;
+  grid-template-columns: 33.3% 33.3% 33.3%;
+  margin: 2rem 0;
+  height: 93%;
 `;
 
 const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, '.', 0, 'C'];
@@ -119,25 +121,23 @@ class Keypad extends React.Component {
 
   render() {
     return (
-      <div>
-        <KeysContainer className="columns is-mobile is-multiline">
-          {keyNumbers.map(item => (
-            <KeypadKey
-              key={item}
-              text={item.toString()}
-              onClick={input => {
-                if (input === ',') {
-                  this.inputDot();
-                } else if (input === 'C') {
-                  this.clearAll();
-                } else {
-                  this.inputDigit(input);
-                }
-              }}
-            />
-          ))}
-        </KeysContainer>
-      </div>
+      <KeysContainer>
+        {keyNumbers.map(item => (
+          <KeypadKey
+            key={item}
+            text={item.toString()}
+            onClick={input => {
+              if (input === ',') {
+                this.inputDot();
+              } else if (input === 'C') {
+                this.clearAll();
+              } else {
+                this.inputDigit(input);
+              }
+            }}
+          />
+        ))}
+      </KeysContainer>
     );
   }
 }

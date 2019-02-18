@@ -6,11 +6,19 @@ import barsImg from '../assets/images/bars.png';
 import backImg from '../assets/images/back.png';
 import logoImg from '../assets/images/logo.png';
 
-const Container = styled.section`
+const Section = styled.section`
+  grid-area: header;
   padding: 1rem 1.5rem;
   @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
     padding: 0rem 1.5rem;
   }
+`;
+const Container = styled.div`
+  height: 120px;
+`;
+
+const Columns = styled.div`
+  height: 100%;
 `;
 const LeftSide = styled.div`
   &&&&& {
@@ -47,6 +55,8 @@ const MenuItem = styled.a`
 
 const Nav = styled.nav`
   z-index: 0;
+  height: 93%;
+  align-items: center;
 `;
 
 const Header = props => {
@@ -64,9 +74,9 @@ const Header = props => {
   }
 
   return (
-    <Container className="section">
-      <div className="container">
-        <div className="columns is-mobile">
+    <Section className="section">
+      <Container className="container">
+        <Columns className="columns is-mobile">
           <LeftSide className="column is-one-fifth">
             <LeftLink onClick={leftBtnClick}>
               {leftIcon === 'menu' && <img src={barsImg} alt="side menu" />}
@@ -109,9 +119,9 @@ const Header = props => {
               </Nav>
             </div>
           )}
-        </div>
-      </div>
-    </Container>
+        </Columns>
+      </Container>
+    </Section>
   );
 };
 

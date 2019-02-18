@@ -8,7 +8,19 @@ import config from '../config';
 import Header from './Header';
 import MySidebar from './Sidebar';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+  height: 100vh;
+`;
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-areas:
+    'header'
+    'content';
+  grid-template-rows: 120px auto;
+  height: 100%;
+`;
 
 class Layout extends React.Component {
   constructor(props) {
@@ -36,13 +48,13 @@ class Layout extends React.Component {
           onSetOpen={this.onSetSidebarOpen}
           styles={{ sidebar: { background: 'white', minWidth: ' 340px' } }}
         >
-          <React.Fragment>
+          <Wrapper>
             <Header
               leftBtnClick={() => this.onSetSidebarOpen(true)}
               {...header}
             />
             {children}
-          </React.Fragment>
+          </Wrapper>
         </Sidebar>
       </Container>
     );
