@@ -30,7 +30,12 @@ const Sidebar = () => (
           <Link to="settings">Account Settings</Link>
         </Item>
         <Item>
-          <a>About Dexpay</a>
+          <a
+            href="https://medium.com/dexlab-io/introducing-dexpay-and-makerdao-grant-announcement-f437f2e87da3"
+            target="_blank"
+          >
+            About Dexpay
+          </a>
         </Item>
         <Item>
           <a>Send a Feedback</a>
