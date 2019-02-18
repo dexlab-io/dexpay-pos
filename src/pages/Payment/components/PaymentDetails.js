@@ -64,7 +64,7 @@ class PaymentDetails extends React.Component {
 
         <Query query={store.queries.pos} fetchPolicy="cache">
           {({ data }) => (
-            <div>
+            <div style={{ flex: 2 }}>
               <AddressClipboard
                 address={data.pos.address ? data.pos.address : data.pos.error}
               />

@@ -20,6 +20,9 @@ const Wrapper = styled.div`
     'content';
   grid-template-rows: 120px auto;
   height: 100%;
+  @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
+    grid-template-rows: 90px auto;
+  }
 `;
 
 class Layout extends React.Component {

@@ -15,6 +15,9 @@ const Section = styled.section`
 `;
 const Container = styled.div`
   height: 120px;
+  @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
+    height: 90px;
+  }
 `;
 
 const Columns = styled.div`
@@ -57,6 +60,9 @@ const Nav = styled.nav`
   z-index: 0;
   height: 93%;
   align-items: center;
+  @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
+    margin-top: 10px;
+  }
 `;
 
 const Header = props => {

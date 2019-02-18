@@ -8,6 +8,7 @@ const KeysContainer = styled.div`
   grid-template-columns: 33.3% 33.3% 33.3%;
   margin: 2rem 0;
   height: 93%;
+  min-height: 400px;
 `;
 
 const keyNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, '.', 0, 'C'];
