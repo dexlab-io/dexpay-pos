@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import PointTarget from 'react-point';
 
 const Container = styled.div`
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 `;
 const Text = styled.span`
@@ -14,7 +16,7 @@ const Text = styled.span`
 
 const KeypadKey = ({ text, onClick }) => (
   <PointTarget onPoint={() => onClick(text)}>
-    <Container className="column is-one-third is-one-third-mobile has-text-centered">
+    <Container className="has-text-centered">
       <Text className="has-text-weight-light">{text}</Text>
     </Container>
   </PointTarget>

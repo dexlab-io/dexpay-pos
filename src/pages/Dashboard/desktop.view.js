@@ -7,11 +7,14 @@ import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
 
 const Section = styled.div`
+  grid-area: content;
   border-top: ${props => `1px solid ${props.theme.borderColor}`};
-  padding-top: 9px;
+  padding: 0 1.5rem;
 `;
-const Columns = styled.div`
-  min-height: 500px;
+const Container = styled.div`
+  height: 100%;
+  display: grid;
+  grid-template-columns: 70% 30%;
 `;
 const RightSide = styled.div`
   padding-top: 20px;
@@ -21,7 +24,7 @@ const LeftSide = styled.div`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-  padding: 80px 2rem 0.75rem 2rem;
+  padding: 80px 2rem 4.5rem 2rem;
   border-left: ${props => `1px solid ${props.theme.borderColor}`};
 `;
 const NumberWrapper = styled.div`
@@ -34,33 +37,29 @@ export default function() {
 
   return (
     <Section className="section">
-      <div className="container">
-        <Columns className="columns">
-          {pos.address ? (
-            <React.Fragment>
-              <RightSide className="column is-two-thirds">
-                {activeTab === 'numberPad' && (
-                  <React.Fragment>
-                    <Keypad
-                      value={totalAmount.toString()}
-                      handleChange={val => this.setState({ totalAmount: val })}
-                    />
-                  </React.Fragment>
-                )}
-                {activeTab === 'recentPayments' && <RecentPayments />}
-              </RightSide>
-              <LeftSide className="column is-one-third">
-                <NumberWrapper>
-                  <NumberInput value={totalAmount} />
-                </NumberWrapper>
-                <GenerateBillBtn handlePay={this.handlePay} />
-              </LeftSide>
-            </React.Fragment>
-          ) : (
-            <div>{pos.error}</div>
-          )}
-        </Columns>
-      </div>
+      <Container className="container">
+        {pos.address ? (
+          <React.Fragment>
+            <RightSide>
+              {activeTab === 'numberPad' && (
+                <Keypad
+                  value={totalAmount.toString()}
+                  handleChange={val => this.setState({ totalAmount: val })}
+                />
+              )}
+              {activeTab === 'recentPayments' && <RecentPayments />}
+            </RightSide>
+            <LeftSide>
+              <NumberWrapper>
+                <NumberInput value={totalAmount} />
+              </NumberWrapper>
+              <GenerateBillBtn handlePay={this.handlePay} />
+            </LeftSide>
+          </React.Fragment>
+        ) : (
+          <div>{pos.error}</div>
+        )}
+      </Container>
     </Section>
   );
 }

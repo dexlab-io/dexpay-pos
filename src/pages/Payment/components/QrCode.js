@@ -6,7 +6,7 @@ import { store } from '../../../store';
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
+  flex: 5;
   align-items: center;
   justify-content: center;
 `;

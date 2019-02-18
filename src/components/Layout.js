@@ -8,7 +8,22 @@ import config from '../config';
 import Header from './Header';
 import MySidebar from './Sidebar';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+  height: 100vh;
+`;
+
+const Wrapper = styled.div`
+  display: ${props => (props.hasHeader ? 'grid' : 'block')};
+  grid-template-areas:
+    'header'
+    'content';
+  grid-template-rows: 120px auto;
+  height: 100%;
+  @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
+    grid-template-rows: 90px auto;
+  }
+`;
 
 class Layout extends React.Component {
   constructor(props) {
@@ -36,13 +51,13 @@ class Layout extends React.Component {
           onSetOpen={this.onSetSidebarOpen}
           styles={{ sidebar: { background: 'white', minWidth: ' 340px' } }}
         >
-          <React.Fragment>
+          <Wrapper hasHeader={header.isVisible || true}>
             <Header
               leftBtnClick={() => this.onSetSidebarOpen(true)}
               {...header}
             />
             {children}
-          </React.Fragment>
+          </Wrapper>
         </Sidebar>
       </Container>
     );

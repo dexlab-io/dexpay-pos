@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Clipboard from 'react-clipboard.js';
-import { Trans } from 'react-i18next';
 
 const Container = styled.div`
   display: flex;
@@ -15,13 +14,13 @@ const ClipboardBtn = styled(Clipboard)`
   background: none;
   border: none;
   padding: 0;
-  margin-left: 10px;
   cursor: pointer;
+  width: 100%;
 `;
 const Input = styled.input`
   background-color: #000000;
   color: #ffffff;
-  width: 350px;
+  width: 100%;
 `;
 
 const AddressClipboard = ({ address }) => {

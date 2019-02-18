@@ -153,13 +153,7 @@ class Payment extends Component {
           overlay: { padding: 0 }
         }}
       >
-        <Layout
-          header={{
-            leftIcon: null,
-            title: this.title,
-            hideNav: true
-          }}
-        >
+        <Layout header={{ isVisible: false }}>
           <Seo title={this.title} description="Payment transaction details." />
           {isMobile
             ? MobileView.call(
