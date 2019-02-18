@@ -50,7 +50,6 @@ class Payment extends Component {
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount');
     this.watcherXdai.pollingOn = false;
   }
 
@@ -74,6 +73,7 @@ class Payment extends Component {
 
   calculateCryptoValue = async () => {
     const { valueFiat, tipValue, posAddress } = this.state;
+    const { onPaymentReceived } = this.props;
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
     const pricesEth = await getTokenPrice();
     const pricesDai = await getTokenPrice('dai');
@@ -92,9 +92,7 @@ class Payment extends Component {
       }
     });
 
-    // const watcherEth = new WatcherTx(WatcherTx.NETWORKS.ROPSTEN);
     this.watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
-    console.log('posAddress', posAddress);
     this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
       this.setState({
         txState: data.state,
@@ -102,8 +100,8 @@ class Payment extends Component {
       });
 
       if (data.state === WatcherTx.STATES.CONFIRMED) {
-        console.log('calling onPaymentReceived');
-        this.props.onPaymentReceived();
+        this.watcherXdai.pollingOn = false;
+        onPaymentReceived();
       }
     });
 
@@ -112,13 +110,6 @@ class Payment extends Component {
         xdai: this.watcherXdai
       }
     });
-
-    // watcherEth.etherTransfers(config.posAddress, ethValue, data => {
-    //   this.setState({
-    //     txState: data.state,
-    //     txHash: data.txHash
-    //   });
-    // });
   };
 
   async updateFiatValue() {

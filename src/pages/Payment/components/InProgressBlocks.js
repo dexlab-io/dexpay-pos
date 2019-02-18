@@ -61,7 +61,11 @@ const InProgressBlocks = ({ blocksCount, status, txHash }) => {
 
 InProgressBlocks.propTypes = {
   blocksCount: PropTypes.number.isRequired,
-  status: PropTypes.string.isRequired
+  status: PropTypes.string
+};
+
+InProgressBlocks.defaultProps = {
+  status: 'pending'
 };
 
 export default InProgressBlocks;

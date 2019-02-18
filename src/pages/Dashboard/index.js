@@ -47,7 +47,7 @@ class Dashboard extends Component {
   onPaymentReceived = () => {
     setTimeout(() => {
       this.onClosePaymentModal();
-    }, 2000);
+    }, 5000);
   };
 
   handleNavItemChange = activeTab => {
