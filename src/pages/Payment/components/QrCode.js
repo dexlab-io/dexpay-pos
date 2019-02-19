@@ -33,7 +33,7 @@ class QrCode extends React.Component {
 
     return (
       <Container>
-        <QRCode value={escape(qrPayload)} padding={5} size={250} />
+        <QRCode value={qrPayload} padding={5} size={250} />
       </Container>
     );
   }
