@@ -36,6 +36,9 @@ export const GlobalStyle = createGlobalStyle`
   a {
     color: ${theme.primaryColor};
   }
+  a.navbar-item.is-active, .navbar-link.is-active {
+    background: transparent;
+  }
   @media screen and (min-width: 800px) {
     .navbar, .navbar-menu, .navbar-start, .navbar-end {
       align-items: stretch;
