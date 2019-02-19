@@ -13,7 +13,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 80px 0;
+  padding: 18px 75px;
+  border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
 `;
 const LoadingImage = styled.img`
   width: 120px;

@@ -8,7 +8,6 @@ import config from '../../config';
 import { getTokenPrice } from '../../utils/Coingecko';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
-import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import { store } from '../../store';
 
@@ -148,29 +147,35 @@ class Payment extends Component {
         open={isModalOpen}
         onClose={onCloseModal}
         center
+        showCloseIcon={false}
         styles={{
-          modal: { maxWidth: 'initial', width: '100%', height: '100%' },
-          overlay: { padding: 0 }
+          modal: {
+            maxWidth: 'initial',
+            width: '414px',
+            maxHight: '770px',
+            height: 'auto',
+            borderRadius: '12px',
+            padding: 0
+          },
+          overlay: { background: 'rgba(0, 0, 0, 0.89)' }
         }}
       >
-        <Layout header={{ isVisible: false }}>
-          <Seo title={this.title} description="Payment transaction details." />
-          {isMobile
-            ? MobileView.call(
-                this,
-                this.props,
-                this.state,
-                this.title,
-                this.status
-              )
-            : DesktopView.call(
-                this,
-                this.props,
-                this.state,
-                this.title,
-                this.status
-              )}
-        </Layout>
+        <Seo title={this.title} description="Payment transaction details." />
+        {isMobile
+          ? MobileView.call(
+              this,
+              this.props,
+              this.state,
+              this.title,
+              this.status
+            )
+          : DesktopView.call(
+              this,
+              this.props,
+              this.state,
+              this.title,
+              this.status
+            )}
       </Modal>
     );
   }

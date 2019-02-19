@@ -5,16 +5,16 @@ import Select from 'react-select';
 
 import cryptoIcon from '../../../assets/dummy/crypto-icon.png';
 
+const Wrapper = styled.div`
+  padding: 18px 75px;
+  border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
+`;
 const Container = styled.div`
   display: flex;
+  flex: 1;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 6px;
 `;
-const SelectContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
+
 const Image = styled.img`
   margin-right: 12px;
   width: 32px;
@@ -22,20 +22,12 @@ const Image = styled.img`
 `;
 
 const InnerSelect = styled.div`
-  position: relative;
-  border: 1px solid #383838;
-  border-radius: 4px;
-  max-width: 265px;
-  padding-top: 14px;
-  padding-bottom: 7px;
-  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
 `;
 
-const SelectIcon = styled.i`
-  position: absolute;
-  top: 22px;
-  right: 22px;
-`;
+const SelectIcon = styled.div``;
 
 const options = [
   { value: 'dai', label: 'xDai' }
@@ -71,25 +63,25 @@ class CryptoAmount extends React.Component {
 
     if (hasSelection) {
       return (
-        <SelectContainer>
-          <div style={{ width: '280px' }}>
-            {selectOpen ? (
-              <Select
-                value={selectedCrypto}
-                onChange={this.handleChange}
-                options={options}
-                menuIsOpen={selectOpen}
-              />
-            ) : (
-              <InnerSelect
-                onClick={() => this.setState({ selectOpen: !selectOpen })}
-              >
-                {activeItem}
-                <SelectIcon className="fas fa-angle-down" />
-              </InnerSelect>
-            )}
-          </div>
-        </SelectContainer>
+        <Wrapper>
+          {selectOpen ? (
+            <Select
+              value={selectedCrypto}
+              onChange={this.handleChange}
+              options={options}
+              menuIsOpen={selectOpen}
+            />
+          ) : (
+            <InnerSelect
+              onClick={() => this.setState({ selectOpen: !selectOpen })}
+            >
+              {activeItem}
+              <SelectIcon>
+                <i className="fas fa-angle-down" />
+              </SelectIcon>
+            </InnerSelect>
+          )}
+        </Wrapper>
       );
     }
 

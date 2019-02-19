@@ -9,6 +9,8 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  padding: 18px 75px;
+  border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
 `;
 
 const Title = styled.span`
@@ -20,12 +22,13 @@ const Items = styled.div`
 `;
 const ItemContainer = styled.div`
   background-color: ${props => (props.active ? '#000000' : '#737373')};
-  padding: 10px 17px 10px 17px;
+  padding: 3px 8px;
   border-radius: 4px;
-  margin: 6px 3px;
+  margin: 0px 3px;
 `;
 const Text = styled.span`
   color: #ffffff;
+  font-size: 12px;
 `;
 
 const tipOptions = [

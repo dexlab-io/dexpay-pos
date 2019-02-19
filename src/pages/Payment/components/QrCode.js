@@ -6,9 +6,10 @@ import { store } from '../../../store';
 
 const Container = styled.div`
   display: flex;
-  flex: 5;
   align-items: center;
   justify-content: center;
+  padding: 18px 0;
+  border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
 `;
 
 class QrCode extends React.Component {

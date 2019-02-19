@@ -7,8 +7,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 25px;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 `;
 const ClipboardBtn = styled(Clipboard)`
   background: none;
