@@ -17,6 +17,9 @@ const LeftSide = styled.div`
   justify-content: space-between;
   padding: 0 1.5rem;
   border-left: ${props => `1px solid ${props.theme.borderColor}`};
+  @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
+    padding: 0;
+  }
 `;
 
 class RecentPayments extends React.Component {
@@ -42,17 +45,15 @@ class RecentPayments extends React.Component {
   render() {
     const { transactions, isLoading } = this.state;
     return (
-      <LeftSide>
-        <Container>
-          {isLoading && <p>Loading recent transactions.</p>}
-          {transactions.length === 0 && !isLoading && (
-            <p>No recent transactions found.</p>
-          )}
-          {transactions.map(item => (
-            <PaymentItem key={item.transactionHash} payment={item} />
-          ))}
-        </Container>
-      </LeftSide>
+      <Container>
+        {isLoading && <p>Loading recent transactions.</p>}
+        {transactions.length === 0 && !isLoading && (
+          <p>No recent transactions found.</p>
+        )}
+        {transactions.map(item => (
+          <PaymentItem key={item.transactionHash} payment={item} />
+        ))}
+      </Container>
     );
   }
 }
