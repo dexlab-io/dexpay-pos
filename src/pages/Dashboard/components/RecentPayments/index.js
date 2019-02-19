@@ -21,7 +21,8 @@ const LeftSide = styled.div`
 
 class RecentPayments extends React.Component {
   state = {
-    transactions: []
+    transactions: [],
+    isLoading: true
   };
 
   componentDidMount() {
@@ -32,17 +33,21 @@ class RecentPayments extends React.Component {
       await this.wallet.fetchEthTransactions();
       this.setState({
         // eslint-disable-next-line react/no-unused-state
-        transactions: this.wallet.transactions
+        transactions: this.wallet.transactions,
+        isLoading: false
       });
     });
   }
 
   render() {
-    const { transactions } = this.state;
+    const { transactions, isLoading } = this.state;
     return (
       <LeftSide>
         <Container>
-                {transactions.length === 0 && <p>No recent transactions found.</p>}
+          {isLoading && <p>Loading recent transactions.</p>}
+          {transactions.length === 0 && !isLoading && (
+            <p>No recent transactions found.</p>
+          )}
           {transactions.map(item => (
             <PaymentItem key={item.transactionHash} payment={item} />
           ))}
