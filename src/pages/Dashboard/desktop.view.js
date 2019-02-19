@@ -10,7 +10,7 @@ import ProductItems from './components/ProductItems';
 const Section = styled.div`
   grid-area: content;
   border-top: ${props => `1px solid ${props.theme.borderColor}`};
-  padding: 0 1.5rem;
+  padding: 0;
 `;
 const Container = styled.div`
   height: 100%;
