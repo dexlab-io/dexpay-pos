@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import qs from 'qs';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, matchPath } from 'react-router-dom';
 
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
@@ -33,6 +33,16 @@ class App extends Component {
   }
 
   async init() {
+    const t = matchPath(window.location.pathname, {
+      path: '/address/:id'
+    });
+
+    if (t && t.params && t.params.id) {
+      const address = t.params.id;
+      store.update.pos.address(address, null, 'GET');
+      return;
+    }
+
     const params = qs.parse(window.location.search.slice(1));
     this.wallet = new EthereumHDWallet();
     await this.wallet.setWeb3();
@@ -69,6 +79,9 @@ class App extends Component {
                   exact
                   component={AccountInfo}
                 />
+
+                <Route path="/address/:id" component={Dashboard} />
+
                 <Route
                   path="/settings/accepted-tokens"
                   exact
