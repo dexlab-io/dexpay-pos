@@ -8,7 +8,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 0;
+  padding: 10px 0;
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
 `;
 
@@ -34,7 +34,7 @@ class QrCode extends React.Component {
 
     return (
       <Container>
-        <QRCode value={escape(qrPayload)} padding={5} size={250} />
+        <QRCode value={qrPayload} padding={5} size={230} />
       </Container>
     );
   }

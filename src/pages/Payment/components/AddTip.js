@@ -9,7 +9,7 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 75px;
+  padding: 10px 55px;
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
 `;
 
@@ -32,9 +32,9 @@ const Text = styled.span`
 `;
 
 const tipOptions = [
-  { id: 1, text: '15 %', value: 15 },
-  { id: 2, text: '20 %', value: 20 },
-  { id: 3, text: '30 %', value: 30 }
+  { id: 1, text: '5 %', value: 5 },
+  { id: 2, text: '10 %', value: 10 },
+  { id: 3, text: '25 %', value: 25 }
 ];
 
 class AddTip extends React.Component {

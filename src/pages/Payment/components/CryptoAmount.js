@@ -6,7 +6,7 @@ import Select from 'react-select';
 import cryptoIcon from '../../../assets/dummy/crypto-icon.png';
 
 const Wrapper = styled.div`
-  padding: 18px 75px;
+  padding: 10px 75px;
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
 `;
 const Container = styled.div`

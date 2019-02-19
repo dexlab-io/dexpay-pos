@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-  height: 83px;
+  height: 63px;
   background-color: #000;
   border-radius: 12px 12px 0 0;
   display: flex;
@@ -32,7 +32,7 @@ const Logo = styled.img`
 `;
 
 const FiatContainer = styled.div`
-  padding: 18px 75px 0px 75px;
+  padding: 10px 75px 0px 75px;
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
   text-align: center;
 `;
@@ -63,7 +63,7 @@ class PaymentDetails extends React.Component {
     return (
       <Container>
         <Header>
-          <Logo src={dexLogo} alt="Dex logo" />
+          <Logo src={dexLogo} alt="Dexpay logo" />
         </Header>
         {status === 'pending' && (
           <AddTip value={0} handleChange={addTipPayment} />
