@@ -39,7 +39,7 @@ const Sidebar = () => (
           </a>
         </Item>
         <Item>
-          <a>Send a Feedback</a>
+          <a href="mailto:dev@dexlab.io">Send a Feedback</a>
         </Item>
         <Item>
           <a>Logout</a>
