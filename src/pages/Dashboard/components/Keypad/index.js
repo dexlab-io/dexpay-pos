@@ -25,17 +25,25 @@ class Keypad extends React.Component {
   }
 
   // eslint-disable-next-line react/sort-comp
-  UNSAFE_componentWillReceiveProps(nextProps, nextState) {
-    this.setState({
-      value: nextProps.value
-    });
-  }
+  // UNSAFE_componentWillReceiveProps(nextProps, nextState) {
+  //   this.setState({
+  //     value: nextProps.value
+  //   });
+  // }
 
   componentDidUpdate(prevProps, prevState) {
     const { handleChange } = this.props;
     const { value } = this.state;
 
+    // // eslint-disable-next-line
+    // if (this.props.value !== prevProps.value) {
+    //   // eslint-disable-next-line
+    //   this.setState({ value });
+    // }
+
     if (value !== prevState.value) {
+      // eslint-disable-next-line
+      this.setState({ value });
       handleChange(value);
     }
   }

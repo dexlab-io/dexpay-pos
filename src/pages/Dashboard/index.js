@@ -51,6 +51,15 @@ class Dashboard extends Component {
   };
 
   handleNavItemChange = activeTab => {
+    // eslint-disable-next-line
+    const currentTab = this.state.activeTab;
+    const nextTab = activeTab;
+    if (
+      (currentTab === 'productItems' && nextTab === 'numberPad') ||
+      (currentTab === 'numberPad' && nextTab === 'productItems')
+    ) {
+      this.setState({ totalAmount: '0' });
+    }
     this.setState({ activeTab });
   };
 

@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
-import client, { persistor } from './utils/apolloClient';
+import client from './utils/apolloClient';
 import { store } from './store';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';

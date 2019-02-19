@@ -35,6 +35,7 @@ const NumberWrapper = styled.div`
 
 export default function() {
   const { activeTab, totalAmount, pos } = this.state;
+  console.log('totalAmount', totalAmount);
 
   return (
     <Section className="section">
