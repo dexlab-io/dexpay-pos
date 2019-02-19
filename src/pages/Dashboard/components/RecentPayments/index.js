@@ -10,6 +10,15 @@ const Container = styled.div`
   max-height: 620px;
 `;
 
+const LeftSide = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  border-left: ${props => `1px solid ${props.theme.borderColor}`};
+`;
+
 class RecentPayments extends React.Component {
   state = {
     transactions: []
@@ -31,11 +40,13 @@ class RecentPayments extends React.Component {
   render() {
     const { transactions } = this.state;
     return (
-      <Container>
-        {transactions.map(item => (
-          <PaymentItem key={item.transactionHash} payment={item} />
-        ))}
-      </Container>
+      <LeftSide>
+        <Container>
+          {transactions.map(item => (
+            <PaymentItem key={item.transactionHash} payment={item} />
+          ))}
+        </Container>
+      </LeftSide>
     );
   }
 }
