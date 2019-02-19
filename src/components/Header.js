@@ -116,6 +116,12 @@ const Header = props => {
                     </MenuItem>
                     <MenuItem
                       className="navbar-item"
+                      onClick={() => onNavItemClick('productItems')}
+                    >
+                      Product Items
+                    </MenuItem>
+                    <MenuItem
+                      className="navbar-item"
                       onClick={() => onNavItemClick('recentPayments')}
                     >
                       Recent Transactions

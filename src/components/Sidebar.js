@@ -33,6 +33,7 @@ const Sidebar = () => (
           <a
             href="https://medium.com/dexlab-io/introducing-dexpay-and-makerdao-grant-announcement-f437f2e87da3"
             target="_blank"
+            rel="noopener noreferrer"
           >
             About Dexpay
           </a>
