@@ -32,6 +32,7 @@ class RecentPayments extends React.Component {
     const { transactions } = this.state;
     return (
       <Container>
+        {transactions.length === 0 && <p>No recent transactions found.</p>}
         {transactions.map(item => (
           <PaymentItem key={item.transactionHash} payment={item} />
         ))}

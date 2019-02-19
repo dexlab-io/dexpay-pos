@@ -55,9 +55,13 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { isMobile, totalAmount, paymentModalOpen } = this.state;
+    const { isMobile, totalAmount, paymentModalOpen, activeTab } = this.state;
+
     return (
-      <Layout header={{ onNavItemClick: this.handleNavItemChange }}>
+      <Layout
+        header={{ onNavItemClick: this.handleNavItemChange }}
+        activeNavItem={activeTab}
+      >
         <Seo title="POS" description="POS System" />
         {isMobile
           ? MobileView.call(this, this.props, this.state)

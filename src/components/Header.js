@@ -72,7 +72,8 @@ const Header = props => {
     isVisible,
     title,
     leftBtnClick,
-    onNavItemClick
+    onNavItemClick,
+    activeNavItem
   } = props;
 
   if (!isVisible) {
@@ -109,19 +110,22 @@ const Header = props => {
                 <div className="navbar-menu">
                   <div className="navbar-start">
                     <MenuItem
-                      className="navbar-item is-active"
+                      className={`navbar-item ${activeNavItem === 'numberPad' &&
+                        'is-active'}`}
                       onClick={() => onNavItemClick('numberPad')}
                     >
                       Number Pad
                     </MenuItem>
                     <MenuItem
-                      className="navbar-item"
+                      className={`navbar-item ${activeNavItem ===
+                        'productItems' && 'is-active'}`}
                       onClick={() => onNavItemClick('productItems')}
                     >
                       Product Items
                     </MenuItem>
                     <MenuItem
-                      className="navbar-item"
+                      className={`navbar-item ${activeNavItem ===
+                        'recentPayments' && 'is-active'}`}
                       onClick={() => onNavItemClick('recentPayments')}
                     >
                       Recent Transactions

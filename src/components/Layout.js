@@ -38,7 +38,7 @@ class Layout extends React.Component {
   };
 
   render() {
-    const { children, header } = this.props;
+    const { children, header, activeNavItem } = this.props;
     const { sidebarOpen } = this.state;
 
     return (
@@ -54,6 +54,7 @@ class Layout extends React.Component {
           <Wrapper hasHeader={header.isVisible || true}>
             <Header
               leftBtnClick={() => this.onSetSidebarOpen(true)}
+              activeNavItem={activeNavItem}
               {...header}
             />
             {children}
@@ -65,12 +66,14 @@ class Layout extends React.Component {
 }
 
 Layout.defaultProps = {
-  header: {}
+  header: {},
+  activeNavItem: ''
 };
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-  header: PropTypes.object
+  header: PropTypes.object,
+  activeNavItem: PropTypes.string
 };
 
 export default Layout;
