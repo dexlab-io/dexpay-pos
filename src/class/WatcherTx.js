@@ -32,7 +32,7 @@ export default class WatcherTx {
         return {
           avgBlockTime: 500,
           rpc: 'https://dai.poa.network',
-          label: 'xDAI Poa Network',
+          label: 'xDAI Poa',
           confirmationNeeded: 1,
           ws: null
         };
