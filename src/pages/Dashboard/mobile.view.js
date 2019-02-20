@@ -22,7 +22,6 @@ export default function() {
           activeTab={activeTab}
           onChange={tab => this.setState({ activeTab: tab })}
         />
-
         {pos.address ? (
           <div>
             {activeTab === 'numberPad' && (

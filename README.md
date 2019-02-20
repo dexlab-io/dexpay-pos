@@ -27,7 +27,7 @@ Furthermore, merchants may benefit from reduced fees when compared to the curren
 
 **:no_good: Centralized payment gateways**
 
-All cryptocurrency payment gateways today leverage on a centralized architecture to keep track of Ether and other ERC20 token payments like DAI. On the other end, DexPOS leverages on an innovative payment gateway solely operated by smart contracts on the ethereum blockchain: this new approach removes the central point of failure of existing gateways, while delivering a truly permissionless and decentralized solution to accept payment in Ether and ERC20 token.
+All cryptocurrency payment gateways today leverage on a centralized architecture to keep track of Ether and other ERC20 token payments like DAI. On the other end, Dexpay leverages on an innovative payment gateway solely operated by smart contracts on the ethereum blockchain: this new approach removes the central point of failure of existing gateways, while delivering a truly permissionless and decentralized solution to accept payment in Ether and ERC20 token.
 
 The implications are extremely important: our payment gateway cannot be stopped. No external company will have the chance to reject or censor any transaction.
 
@@ -54,7 +54,7 @@ Reference UI for tablet POS.
 Please contribute! [Have a look to the issues](https://github.com/dexlab-io/dexpay-pos/issues)!
 
 ## License
-[MIT](https://opensource.org/licenses/MIT) License - Copyright 2018 Dexlab.io
+[MIT](https://opensource.org/licenses/MIT) License - Copyright 2018/ 2019 Dexlab.io
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

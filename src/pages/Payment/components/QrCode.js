@@ -6,9 +6,10 @@ import { store } from '../../../store';
 
 const Container = styled.div`
   display: flex;
-  flex: 5;
   align-items: center;
   justify-content: center;
+  padding: 10px 0;
+  border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
 `;
 
 class QrCode extends React.Component {
@@ -24,7 +25,7 @@ class QrCode extends React.Component {
 
   getQrData(value) {
     const { address } = this.state;
-    return `ethereum:${address}?amount=${value}`;
+    return `ethereum:${address}@100?value=${value}e18`;
   }
 
   render() {
@@ -33,7 +34,7 @@ class QrCode extends React.Component {
 
     return (
       <Container>
-        <QRCode value={escape(qrPayload)} padding={5} size={250} />
+        <QRCode value={qrPayload} padding={5} size={230} />
       </Container>
     );
   }
