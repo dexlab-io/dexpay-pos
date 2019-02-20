@@ -4,7 +4,9 @@ import moment from 'moment';
 import { truncateHash, formatCurrency } from '../../../../utils/helpers';
 import cryptoIcon from '../../../../assets/dummy/crypto-icon.png';
 
-const Container = styled.a``;
+const Container = styled.a`
+  padding-left: 1.5rem;
+`;
 const Image = styled.img`
   margin-top: 6px;
 `;

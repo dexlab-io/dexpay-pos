@@ -10,7 +10,7 @@ import ProductItems from './components/ProductItems';
 const Section = styled.div`
   grid-area: content;
   border-top: ${props => `1px solid ${props.theme.borderColor}`};
-  padding: 0 1.5rem;
+  padding: 0;
 `;
 const Container = styled.div`
   height: 100%;
@@ -34,8 +34,8 @@ const NumberWrapper = styled.div`
 `;
 
 export default function() {
-  const { activeTab, totalAmount, pos } = this.state;
-  console.log('totalAmount', totalAmount);
+  const { activeTab, totalAmount, pos, paymentModalOpen } = this.state;
+  console.log('this.state', this.state);
 
   return (
     <Section className="section">
@@ -52,6 +52,7 @@ export default function() {
               {activeTab === 'recentPayments' && <RecentPayments />}
               {activeTab === 'productItems' && (
                 <ProductItems
+                  paymentModalOpen={paymentModalOpen}
                   handleChange={({ cartTotal }) =>
                     this.setState({ totalAmount: cartTotal })
                   }
