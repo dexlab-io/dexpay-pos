@@ -38,9 +38,7 @@ class Dashboard extends Component {
 
   onClosePaymentModal = () => {
     this.setState({
-      paymentModalOpen: false,
-      activeTab: 'numberPad',
-      totalAmount: '0'
+      paymentModalOpen: false
     });
   };
 
