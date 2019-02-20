@@ -25,7 +25,7 @@ class QrCode extends React.Component {
 
   getQrData(value) {
     const { address } = this.state;
-    return `ethereum:${address}?amount=${value}`;
+    return `ethereum:${address}@100?value=${value}e18`;
   }
 
   render() {
