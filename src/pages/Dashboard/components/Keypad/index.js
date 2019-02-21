@@ -35,6 +35,12 @@ class Keypad extends React.Component {
     const { handleChange } = this.props;
     const { value } = this.state;
 
+    // // eslint-disable-next-line
+    if (this.props.value !== prevProps.value) {
+      // eslint-disable-next-line
+      this.setState({ value });
+    }
+
     if (value !== prevState.value) {
       handleChange(value);
     }

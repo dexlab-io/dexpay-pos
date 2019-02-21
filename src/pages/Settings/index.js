@@ -28,7 +28,7 @@ const Settings = props => {
       <Seo title="Settings" description="POS System" />
       <div className="section">
         <div className="container">
-          <SettingsHeader history={history} />
+          <SettingsHeader history={history} onClose={() => history.push('/')} />
           {settingsItems.map(item => (
             <NavItem key={item.id} to={item.linkTo}>
               <SettingsEmoji bgColor={item.bgColor} emoji={item.emoji} />

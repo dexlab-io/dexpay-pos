@@ -38,26 +38,41 @@ class Dashboard extends Component {
 
   onClosePaymentModal = () => {
     this.setState({
-      paymentModalOpen: false,
-      activeTab: 'numberPad',
-      totalAmount: '0'
+      paymentModalOpen: false
     });
   };
 
   onPaymentReceived = () => {
     setTimeout(() => {
       this.onClosePaymentModal();
+      this.setState({
+        totalAmount: '0'
+      });
+      this.productItems.resetItems();
     }, 5000);
   };
 
   handleNavItemChange = activeTab => {
+    // eslint-disable-next-line
+    const currentTab = this.state.activeTab;
+    const nextTab = activeTab;
+    if (
+      (currentTab === 'productItems' && nextTab === 'numberPad') ||
+      (currentTab === 'numberPad' && nextTab === 'productItems')
+    ) {
+      this.setState({ totalAmount: '0' });
+    }
     this.setState({ activeTab });
   };
 
   render() {
-    const { isMobile, totalAmount, paymentModalOpen } = this.state;
+    const { isMobile, totalAmount, paymentModalOpen, activeTab } = this.state;
+
     return (
-      <Layout header={{ onNavItemClick: this.handleNavItemChange }}>
+      <Layout
+        header={{ onNavItemClick: this.handleNavItemChange }}
+        activeNavItem={activeTab}
+      >
         <Seo title="POS" description="POS System" />
         {isMobile
           ? MobileView.call(this, this.props, this.state)

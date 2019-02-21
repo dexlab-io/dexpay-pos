@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Trans } from 'react-i18next';
 
-import loadingImg from '../../../assets/images/loading.png';
+import loadingImg from '../../../assets/images/loading.gif';
 import checkImg from '../../../assets/images/checkmark.png';
 
 const Container = styled.div`

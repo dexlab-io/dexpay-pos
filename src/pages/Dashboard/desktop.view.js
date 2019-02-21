@@ -5,6 +5,7 @@ import NumberInput from './components/Keypad/NumberInput';
 import GenerateBillBtn from './components/GenerateBillBtn';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
+import ProductItems from './components/ProductItems';
 
 const Section = styled.div`
   grid-area: content;
@@ -33,7 +34,8 @@ const NumberWrapper = styled.div`
 `;
 
 export default function() {
-  const { activeTab, totalAmount, pos } = this.state;
+  const { activeTab, totalAmount, pos, paymentModalOpen } = this.state;
+  // console.log('this.state', this.state);
 
   return (
     <Section className="section">
@@ -48,6 +50,17 @@ export default function() {
                 />
               )}
               {activeTab === 'recentPayments' && <RecentPayments />}
+              {activeTab === 'productItems' && (
+                <ProductItems
+                  ref={el => {
+                    this.productItems = el;
+                  }}
+                  paymentModalOpen={paymentModalOpen}
+                  handleChange={({ cartTotal }) =>
+                    this.setState({ totalAmount: cartTotal })
+                  }
+                />
+              )}
             </RightSide>
             <LeftSide>
               <NumberWrapper>

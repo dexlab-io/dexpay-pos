@@ -33,12 +33,13 @@ const Sidebar = () => (
           <a
             href="https://medium.com/dexlab-io/introducing-dexpay-and-makerdao-grant-announcement-f437f2e87da3"
             target="_blank"
+            rel="noopener noreferrer"
           >
             About Dexpay
           </a>
         </Item>
         <Item>
-          <a>Send a Feedback</a>
+          <a href="mailto:dev@dexlab.io">Send a Feedback</a>
         </Item>
         <Item>
           <a>Logout</a>

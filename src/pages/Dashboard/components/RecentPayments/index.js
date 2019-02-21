@@ -17,11 +17,15 @@ const LeftSide = styled.div`
   justify-content: space-between;
   padding: 0 1.5rem;
   border-left: ${props => `1px solid ${props.theme.borderColor}`};
+  @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
+    padding: 0;
+  }
 `;
 
 class RecentPayments extends React.Component {
   state = {
-    transactions: []
+    transactions: [],
+    isLoading: true
   };
 
   componentDidMount() {
@@ -32,21 +36,24 @@ class RecentPayments extends React.Component {
       await this.wallet.fetchEthTransactions();
       this.setState({
         // eslint-disable-next-line react/no-unused-state
-        transactions: this.wallet.transactions
+        transactions: this.wallet.transactions,
+        isLoading: false
       });
     });
   }
 
   render() {
-    const { transactions } = this.state;
+    const { transactions, isLoading } = this.state;
     return (
-      <LeftSide>
-        <Container>
-          {transactions.map(item => (
-            <PaymentItem key={item.transactionHash} payment={item} />
-          ))}
-        </Container>
-      </LeftSide>
+      <Container>
+        {isLoading && <p>Loading recent transactions.</p>}
+        {transactions.length === 0 && !isLoading && (
+          <p>No recent transactions found.</p>
+        )}
+        {transactions.map(item => (
+          <PaymentItem key={item.transactionHash} payment={item} />
+        ))}
+      </Container>
     );
   }
 }
