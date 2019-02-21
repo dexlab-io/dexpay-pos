@@ -1,3 +1,5 @@
+/* eslint react/no-did-update-set-state: 0 */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -36,6 +38,15 @@ class NumberIncrementer extends React.Component {
     this.state = { counter: props.value };
   }
 
+  componentDidUpdate(prevProps) {
+    const { value } = this.props;
+
+    // reset counter
+    if (value !== prevProps.value && value === 1) {
+      this.setState({ counter: 0 });
+    }
+  }
+
   handleChange = type => {
     const { counter } = this.state;
     const { handleChange } = this.props;
@@ -50,6 +61,11 @@ class NumberIncrementer extends React.Component {
     this.setState({ counter: newValue });
     handleChange(newValue);
   };
+
+  resetCounter() {
+    console.log('resetCounter');
+    this.setState({ counter: 0 });
+  }
 
   render() {
     const { counter } = this.state;

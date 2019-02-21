@@ -45,6 +45,10 @@ class Dashboard extends Component {
   onPaymentReceived = () => {
     setTimeout(() => {
       this.onClosePaymentModal();
+      this.setState({
+        totalAmount: '0'
+      });
+      this.productItems.resetItems();
     }, 5000);
   };
 

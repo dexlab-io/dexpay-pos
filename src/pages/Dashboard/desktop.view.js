@@ -35,7 +35,7 @@ const NumberWrapper = styled.div`
 
 export default function() {
   const { activeTab, totalAmount, pos, paymentModalOpen } = this.state;
-  console.log('this.state', this.state);
+  // console.log('this.state', this.state);
 
   return (
     <Section className="section">
@@ -52,6 +52,9 @@ export default function() {
               {activeTab === 'recentPayments' && <RecentPayments />}
               {activeTab === 'productItems' && (
                 <ProductItems
+                  ref={el => {
+                    this.productItems = el;
+                  }}
                   paymentModalOpen={paymentModalOpen}
                   handleChange={({ cartTotal }) =>
                     this.setState({ totalAmount: cartTotal })

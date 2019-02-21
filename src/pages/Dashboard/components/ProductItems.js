@@ -37,7 +37,14 @@ const products = [
 ];
 
 class ProductItems extends React.Component {
-  state = { cartItems: [] };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      cartItems: [],
+      initValue: 0
+    };
+  }
 
   handleUpdateItem = (product, newValue) => {
     const { cartItems } = this.state;
@@ -68,7 +75,17 @@ class ProductItems extends React.Component {
     handleChange({ cartTotal: parseFloat(cartTotal).toFixed(2) });
   };
 
+  resetItems() {
+    // to reset counter for all items
+    this.setState({ cartItems: [], initValue: 1 });
+    setTimeout(() => {
+      this.setState({ initValue: 0 });
+    }, 2000);
+  }
+
   render() {
+    const { initValue } = this.state;
+
     return (
       <Container>
         <Items>
@@ -81,6 +98,7 @@ class ProductItems extends React.Component {
                 <ItemPrice>{formatCurrency(item.price)}</ItemPrice>
                 <ItemQuantitiy>
                   <NumberIncrementer
+                    value={initValue}
                     handleChange={newValue =>
                       this.handleUpdateItem(item, newValue)
                     }
