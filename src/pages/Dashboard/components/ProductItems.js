@@ -31,13 +31,9 @@ const ItemQuantitiy = styled.div`
 `;
 
 const products = [
-  { id: 1, name: 'Coffee', price: 3.2 },
-  { id: 2, name: 'Cappuccino', price: 4.2 },
-  { id: 3, name: 'Croissant', price: 1.8 },
-  { id: 4, name: 'Avocado & Salmon Toas', price: 8.0 },
-  { id: 5, name: 'Sparklin Water', price: 1.2 },
-  { id: 6, name: 'Cheescake', price: 6.5 },
-  { id: 7, name: 'Iced Tea', price: 2.8 }
+  { id: 1, name: '🍺 Beer', price: 2.0 },
+  { id: 2, name: '🍷 Wine', price: 2.0 },
+  { id: 3, name: '🥤 Soft drink', price: 1.0 }
 ];
 
 class ProductItems extends React.Component {
