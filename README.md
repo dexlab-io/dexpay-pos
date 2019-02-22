@@ -1,3 +1,4 @@
+
 ![logo xpay vertical small](https://user-images.githubusercontent.com/10923247/52067516-095ff700-257b-11e9-824a-bcaec3d29e2c.png)
 
 # Dexpay POS
@@ -52,6 +53,10 @@ Reference UI for tablet POS.
 ## Contribute
 
 Please contribute! [Have a look to the issues](https://github.com/dexlab-io/dexpay-pos/issues)!
+
+<a href="https://gitcoin.co/explorer?q=dexlab-io">
+    <img src="https://gitcoin.co/funding/embed?repo=https://github.com/dexlab-io/dexpay-pos">
+</a>
 
 ## License
 [MIT](https://opensource.org/licenses/MIT) License - Copyright 2018/ 2019 Dexlab.io
