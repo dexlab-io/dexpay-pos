@@ -6,8 +6,9 @@ import xDAIHDWallet from '../../../../class/xdai/xDAIHDWallet';
 import { store } from '../../../../store';
 
 const Container = styled.div`
-  overflow: scroll;
+  overflow-y: scroll;
   max-height: 620px;
+  padding-right: 20px;
 `;
 
 const LeftSide = styled.div`
