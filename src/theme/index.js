@@ -5,7 +5,7 @@ export const elements = { mobileBreakpoint: 800 };
 // http://chir.ag/projects/name-that-color/
 export const colors = {
   black: '#000000',
-  riptide: '#83E8E1'
+  riptide: '#0AF9C4'
 };
 
 const theme = {
