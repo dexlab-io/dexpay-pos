@@ -52,7 +52,7 @@ const MenuItem = styled.a`
   font-size: 18px;
   padding: 0.5rem 2.75rem;
   &.is-active {
-    text-decoration: underline;
+    font-weight: 500;
   }
 `;
 
