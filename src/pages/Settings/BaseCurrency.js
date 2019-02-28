@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { find } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
+import config from '../../config';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
@@ -34,17 +35,6 @@ const ItemContainer = styled.div`
   }
 `;
 
-const currencies = [
-  { id: 'EUR', name: 'Euro', symbol: '€' },
-  { id: 'USD', name: 'United States Dollar', symbol: 'US$' },
-  { id: 'JPY', name: 'Japanese Yen', symbol: '¥' },
-  { id: 'GBP', name: 'Pound sterling', symbol: '£' },
-  { id: 'AUD', name: 'Australian dollar', symbol: 'A$' },
-  { id: 'CAD', name: 'Canadian dollar', symbol: 'C$' },
-  { id: 'CHF', name: 'Swiss franc', symbol: 'Fr' },
-  { id: 'CNY', name: 'Renminbi', symbol: '元' }
-];
-
 class BaseCurrency extends React.Component {
   handleCurrencyChange = currency => {
     apolloClient.mutate({ mutation, variables: { currency: currency.id } });
@@ -69,7 +59,7 @@ class BaseCurrency extends React.Component {
                 if (error) return <p>Error: {error.message}</p>;
                 // console.log('data.currency', data);
 
-                return currencies.map(item => (
+                return config.currencies.map(item => (
                   <ItemContainer
                     key={item.id}
                     active={data.currency === item.id}

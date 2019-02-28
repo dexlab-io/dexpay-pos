@@ -70,7 +70,7 @@ export default function() {
             </LeftSide>
           </React.Fragment>
         ) : (
-          <div>{pos.error}</div>
+          <div>POS address is empty</div>
         )}
       </Container>
     </Section>

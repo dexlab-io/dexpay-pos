@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { withNamespaces } from 'react-i18next';
 import Modal from 'react-responsive-modal';
+import gql from 'graphql-tag';
 
+import apolloClient from '../../utils/apolloClient';
 import WatcherTx from '../../class/WatcherTx';
 import { checkWindowSize } from '../../utils/helpers';
 import config from '../../config';
@@ -9,7 +11,13 @@ import { getTokenPrice } from '../../utils/Coingecko';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
 import Seo from '../../components/Seo';
-import { store } from '../../store';
+// import { store } from '../../store';
+
+const query = gql`
+  {
+    walletAddress @client
+  }
+`;
 
 class Payment extends Component {
   state = {
@@ -33,9 +41,9 @@ class Payment extends Component {
       this.setState({ isMobile });
     });
 
-    store.fetch.pos().subscribe(async result => {
+    apolloClient.watchQuery({ query }).subscribe(async result => {
       this.setState({
-        posAddress: result.data.pos.address
+        posAddress: result.data.walletAddress
       });
       await this.updateFiatValue();
     });
@@ -75,6 +83,7 @@ class Payment extends Component {
   calculateCryptoValue = async () => {
     const { valueFiat, tipValue, posAddress } = this.state;
     const { onPaymentReceived } = this.props;
+
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
     const pricesEth = await getTokenPrice();
     const pricesDai = await getTokenPrice('dai');

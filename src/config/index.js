@@ -41,5 +41,15 @@ export default {
       network: 'kovan',
       tokenEnabled: true
     }
-  }
+  },
+  currencies: [
+    { id: 'EUR', name: 'Euro', symbol: '€' },
+    { id: 'USD', name: 'United States Dollar', symbol: 'US$' },
+    { id: 'JPY', name: 'Japanese Yen', symbol: '¥' },
+    { id: 'GBP', name: 'Pound sterling', symbol: '£' },
+    { id: 'AUD', name: 'Australian dollar', symbol: 'A$' },
+    { id: 'CAD', name: 'Canadian dollar', symbol: 'C$' },
+    { id: 'CHF', name: 'Swiss franc', symbol: 'Fr' },
+    { id: 'CNY', name: 'Renminbi', symbol: '元' }
+  ]
 };

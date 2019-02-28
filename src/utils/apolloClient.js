@@ -27,7 +27,7 @@ const client = new ApolloClient({
     withClientState({
       resolvers,
       cache,
-      defaults: window.localStorage.length === 0 ? defaults : {},
+      defaults: window.localStorage.length === 0 ? defaults : undefined,
       typeDefs
     })
   ]),

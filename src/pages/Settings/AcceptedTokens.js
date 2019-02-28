@@ -24,10 +24,10 @@ const mutation = gql`
 `;
 
 const networksList = [
-  { id: 'ether', name: 'Ether', image: 'crypto-icon.png' },
-  { id: 'dai', name: 'DAI', image: 'crypto-icon.png' },
-  { id: 'xdai', name: 'xDAI', image: 'crypto-icon.png' },
-  { id: 'wbtc', name: 'WBTC (comming soon)', image: 'crypto-icon.png' }
+  // { id: 'ether', name: 'Ether', image: 'crypto-icon.png' },
+  // { id: 'dai', name: 'DAI', image: 'crypto-icon.png' },
+  { id: 'xdai', name: 'xDAI', image: 'crypto-icon.png' }
+  // { id: 'wbtc', name: 'WBTC (comming soon)', image: 'crypto-icon.png' }
 ];
 
 class AcceptedTokens extends React.Component {

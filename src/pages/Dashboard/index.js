@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import gql from 'graphql-tag';
 
 import { checkWindowSize } from '../../utils/helpers';
-import { store } from '../../store';
+import apolloClient from '../../utils/apolloClient';
+// import { store } from '../../store';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import Payment from '../Payment';
+
+const query = gql`
+  {
+    walletAddress @client
+  }
+`;
 
 class Dashboard extends Component {
   constructor(props) {
@@ -29,7 +37,13 @@ class Dashboard extends Component {
       this.setState({ isMobile });
     });
 
-    store.fetch.posSub(this, 'pos');
+    // store.fetch.posSub(this, 'pos');
+    apolloClient.watchQuery({ query }).subscribe(result => {
+      // const ns = {};
+      // ns.pos = result.data.pos;
+      // console.log('result', result);
+      this.setState({ pos: { address: result.data.walletAddress } });
+    });
   }
 
   handlePay = () => {

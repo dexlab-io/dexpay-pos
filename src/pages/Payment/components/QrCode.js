@@ -2,7 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { QRCode } from 'react-qrcode-logo';
-import { store } from '../../../store';
+import gql from 'graphql-tag';
+
+import apolloClient from '../../../utils/apolloClient';
+// import { store } from '../../../store';
+
+const query = gql`
+  {
+    walletAddress @client
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -18,8 +27,8 @@ class QrCode extends React.Component {
   };
 
   componentDidMount() {
-    store.fetch.pos().subscribe(res => {
-      this.setState({ address: res.data.pos.address });
+    apolloClient.watchQuery({ query }).subscribe(res => {
+      this.setState({ address: res.data.walletAddress });
     });
   }
 

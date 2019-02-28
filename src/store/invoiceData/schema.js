@@ -8,7 +8,7 @@ const typeDefs = `
   }
 
   type Query {
-      invoices: [Invoice]
+    invoices: [Invoice]
   }
 `;
 

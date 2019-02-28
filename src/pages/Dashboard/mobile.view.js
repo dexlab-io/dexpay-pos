@@ -37,7 +37,7 @@ export default function() {
             {activeTab === 'recentPayments' && <RecentPayments />}
           </div>
         ) : (
-          <div>Pos address is empty</div>
+          <div>POS address is empty</div>
         )}
       </div>
     </Section>

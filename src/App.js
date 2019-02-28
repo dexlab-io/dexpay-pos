@@ -6,8 +6,8 @@ import { BrowserRouter, Route, Switch, matchPath } from 'react-router-dom';
 
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
-import client from './utils/apolloClient';
-import { store } from './store';
+import client, { persistor } from './utils/apolloClient';
+// import { store } from './store';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import {
@@ -26,8 +26,8 @@ class App extends Component {
   state = { loaded: false };
 
   async componentDidMount() {
-    await this.init();
-    // /await persistor.restore();
+    // await this.init();
+    await persistor.restore();
     this.client = client;
     this.setState({ loaded: true });
   }
@@ -39,7 +39,7 @@ class App extends Component {
 
     if (t && t.params && t.params.id) {
       const address = t.params.id;
-      store.update.pos.address(address, null, 'GET');
+      // store.update.pos.address(address, null, 'GET');
       return;
     }
 
@@ -47,17 +47,17 @@ class App extends Component {
     this.wallet = new EthereumHDWallet();
     await this.wallet.setWeb3();
 
-    if (this.wallet.getAddress()) {
-      store.update.pos.address(
-        this.wallet.getAddress(),
-        null,
-        'Injected Provider'
-      );
-    } else if (!this.wallet.getAddress() && params.posAddress) {
-      store.update.pos.address(params.posAddress, null, 'GET');
-    } else {
-      store.update.pos.address(null, 'Pos address is empty', null);
-    }
+    // if (this.wallet.getAddress()) {
+    //   store.update.pos.address(
+    //     this.wallet.getAddress(),
+    //     null,
+    //     'Injected Provider'
+    //   );
+    // } else if (!this.wallet.getAddress() && params.posAddress) {
+    //   store.update.pos.address(params.posAddress, null, 'GET');
+    // } else {
+    //   store.update.pos.address(null, 'Pos address is empty', null);
+    // }
   }
 
   render() {

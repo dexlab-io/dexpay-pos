@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Textfit } from 'react-textfit';
 
-import { formatCurrency } from '../../../utils/helpers';
+import FormatCurrency from '../../../components/FormatCurrency';
 
 const Container = styled.div`
   font-weight: 300;
@@ -14,7 +14,7 @@ const FiatAmount = ({ fiatAmount }) => {
   return (
     <Container>
       <Textfit mode="single" max={72}>
-        {formatCurrency(fiatAmount)}
+        <FormatCurrency value={fiatAmount} />
       </Textfit>
     </Container>
   );

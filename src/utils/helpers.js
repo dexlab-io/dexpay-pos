@@ -1,14 +1,5 @@
 import { debounce } from 'lodash';
-import currency from 'currency.js';
-import config from '../config';
 import { elements } from '../theme';
-
-export const formatCurrency = value => {
-  return currency(parseFloat(value), {
-    symbol: `${config.currency.symbol} `,
-    formatWithSymbol: true
-  }).format();
-};
 
 // Usage: await timeout(3000);
 export const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));

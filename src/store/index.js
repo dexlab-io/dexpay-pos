@@ -15,12 +15,12 @@ import userDefaults from './userData/defaults';
 import { fetchPosData, updatePosAddress, posQuery } from './posData/queries';
 import { fetchInvoices, invoicesQuery } from './invoiceData/queries';
 
-const resolvers = mergeResolvers([globalData, posData, userData, invoiceData]);
-const typeDefs = mergeTypes([globalType, posType, userType, invoiceType]);
+const resolvers = mergeResolvers([globalData, userData, invoiceData]);
+const typeDefs = mergeTypes([globalType, userType, invoiceType]);
 
 const defaults = {
   ...globalDefaults,
-  ...posDefaults,
+  // ...posDefaults,
   ...userDefaults,
   ...invoiceDefaults
 };
@@ -30,31 +30,31 @@ const defaults = {
  * Collects functions to be shared across the application to interact with the state
  *
  */
-const store = {
-  queries: {
-    pos: posQuery,
-    invoices: invoicesQuery
-  },
-  fetch: {
-    pos: fetchPosData,
-    invoices: fetchInvoices,
-    /**
-     * {StateSegment}Sub:
-     * Automatically subscribe changes to the component state.
-     */
-    posSub: (context, key) => {
-      fetchPosData().subscribe(result => {
-        const ns = {};
-        ns[key] = result.data.pos;
-        context.setState(ns);
-      });
-    }
-  },
-  update: {
-    pos: {
-      address: updatePosAddress
-    }
-  }
-};
+// const store = {
+//   queries: {
+//     pos: posQuery,
+//     invoices: invoicesQuery
+//   },
+//   fetch: {
+//     pos: fetchPosData,
+//     invoices: fetchInvoices,
+//     /**
+//      * {StateSegment}Sub:
+//      * Automatically subscribe changes to the component state.
+//      */
+//     posSub: (context, key) => {
+//       fetchPosData().subscribe(result => {
+//         const ns = {};
+//         ns[key] = result.data.pos;
+//         context.setState(ns);
+//       });
+//     }
+//   },
+//   update: {
+//     pos: {
+//       address: updatePosAddress
+//     }
+//   }
+// };
 
-export { resolvers, typeDefs, defaults, store };
+export { resolvers, typeDefs, defaults };
