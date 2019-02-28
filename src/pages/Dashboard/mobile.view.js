@@ -6,6 +6,7 @@ import GenerateBillBtn from './components/GenerateBillBtn';
 import NumberInput from './components/Keypad/NumberInput';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
+import SetWalletAddress from './components/SetWalletAddress';
 
 const Section = styled.div`
   padding: 0.5rem 1.5rem;
@@ -37,7 +38,7 @@ export default function() {
             {activeTab === 'recentPayments' && <RecentPayments />}
           </div>
         ) : (
-          <div>POS address is empty</div>
+          <SetWalletAddress />
         )}
       </div>
     </Section>

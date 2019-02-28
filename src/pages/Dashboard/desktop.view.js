@@ -6,6 +6,7 @@ import GenerateBillBtn from './components/GenerateBillBtn';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
 import ProductItems from './components/ProductItems';
+import SetWalletAddress from './components/SetWalletAddress';
 
 const Section = styled.div`
   grid-area: content;
@@ -70,7 +71,7 @@ export default function() {
             </LeftSide>
           </React.Fragment>
         ) : (
-          <div>POS address is empty</div>
+          <SetWalletAddress />
         )}
       </Container>
     </Section>
