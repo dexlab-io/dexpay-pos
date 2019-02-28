@@ -6,6 +6,7 @@ import GenerateBillBtn from './components/GenerateBillBtn';
 import NumberInput from './components/Keypad/NumberInput';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
+import Tip from './components/Tip';
 
 const Section = styled.div`
   padding: 0.5rem 1.5rem;
@@ -35,6 +36,7 @@ export default function() {
               </React.Fragment>
             )}
             {activeTab === 'recentPayments' && <RecentPayments />}
+            {activeTab === 'tip' && <Tip onClose={this.onCloseTip} />}
           </div>
         ) : (
           <div>Pos address is empty</div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, matchPath } from 'react-router-dom';
 
 import { checkWindowSize } from '../../utils/helpers';
 import { store } from '../../store';
@@ -15,12 +15,23 @@ class Dashboard extends Component {
 
     this.state = {
       isMobile: checkWindowSize(),
-      activeTab: 'numberPad',
+      activeTab: this.getActiveTab(),
+      lastTab: 'numberPad',
       totalAmount: '0',
       paymentModalOpen: false,
       setupModalOpen: false,
       pos: { address: null }
     };
+  }
+
+  getActiveTab() {
+    const match = matchPath(window.location.pathname, {
+      path: '/address/:id/:activeTab'
+    });
+    if(match && match.params.activeTab === 'tip') {
+      return 'tip';
+    }
+    else return 'numberPad';
   }
 
   componentDidMount() {
@@ -62,7 +73,11 @@ class Dashboard extends Component {
     ) {
       this.setState({ totalAmount: '0' });
     }
-    this.setState({ activeTab });
+    this.setState({ activeTab, lastTab: currentTab });
+  };
+
+  onCloseTip = () => {
+    this.handleNavItemChange(this.state.lastTab);
   };
 
   render() {

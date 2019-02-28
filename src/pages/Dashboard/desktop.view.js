@@ -6,6 +6,7 @@ import GenerateBillBtn from './components/GenerateBillBtn';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
 import ProductItems from './components/ProductItems';
+import Tip from './components/Tip';
 
 const Section = styled.div`
   grid-area: content;
@@ -60,6 +61,9 @@ export default function() {
                     this.setState({ totalAmount: cartTotal })
                   }
                 />
+              )}
+              {activeTab === 'tip' && (
+                <Tip onClose={this.onCloseTip} />
               )}
             </RightSide>
             <LeftSide>
