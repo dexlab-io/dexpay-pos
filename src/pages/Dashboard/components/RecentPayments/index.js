@@ -5,7 +5,6 @@ import gql from 'graphql-tag';
 import PaymentItem from './PaymentItem';
 import xDAIHDWallet from '../../../../class/xdai/xDAIHDWallet';
 import apolloClient from '../../../../utils/apolloClient';
-// import { store } from '../../../../store';
 
 const query = gql`
   {

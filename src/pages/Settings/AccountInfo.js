@@ -2,6 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { find } from 'lodash';
+import swal from 'sweetalert';
 
 import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
@@ -34,6 +35,7 @@ const mutation = gql`
 class AccountInfo extends React.Component {
   handleUpdate = data => {
     apolloClient.mutate({ mutation, variables: data });
+    swal('Success!', 'Account info updated!', 'success');
   };
 
   render() {

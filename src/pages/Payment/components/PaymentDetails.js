@@ -3,7 +3,6 @@ import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 
-// import { store } from '../../../store';
 import CryptoAmount from './CryptoAmount';
 import FiatAmount from './FiatAmount';
 import AddTip from './AddTip';

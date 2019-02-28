@@ -5,7 +5,6 @@ import { QRCode } from 'react-qrcode-logo';
 import gql from 'graphql-tag';
 
 import apolloClient from '../../../utils/apolloClient';
-// import { store } from '../../../store';
 
 const query = gql`
   {

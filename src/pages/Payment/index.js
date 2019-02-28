@@ -11,7 +11,6 @@ import { getTokenPrice } from '../../utils/Coingecko';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
 import Seo from '../../components/Seo';
-// import { store } from '../../store';
 
 const query = gql`
   {

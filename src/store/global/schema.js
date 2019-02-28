@@ -12,6 +12,7 @@ const typeDefs = `
   }
 
   type Mutation {
+    initApp: Boolean!
     updateCurrency(currency: String!): String!
     toggleAcceptedTokens(token: String!, isAccepted: Boolean!): [String!]
     updateRequiredConfirmations(token: String!, confirmations: Int!): Confirmation!

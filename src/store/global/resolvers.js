@@ -1,8 +1,46 @@
 import gql from 'graphql-tag';
 import { indexOf, findIndex } from 'lodash';
+import Web3 from 'web3';
+import swal from 'sweetalert';
+import qs from 'qs';
+
+import EthereumHDWallet from '../../class/ethereum/EthereumHDWallet';
+
+const checkValidAddress = address => {
+  const web3 = new Web3();
+  const isValidAddress = web3.utils.isAddress(address);
+  if (!isValidAddress) {
+    // Provided Address is not a valid ethereum address
+    swal(
+      'Issue!',
+      'Provided Address is not a valid ethereum address',
+      'warning'
+    );
+  }
+  return isValidAddress;
+};
 
 const resolvers = {
   Mutation: {
+    initApp: async (_, variables, { cache }) => {
+      const params = qs.parse(window.location.search.slice(1));
+      const wallet = new EthereumHDWallet();
+      await wallet.setWeb3();
+
+      const metaMaskAddress = wallet.getAddress();
+      // update cache
+      if (metaMaskAddress && checkValidAddress(metaMaskAddress)) {
+        cache.writeData({
+          data: { walletAddress: metaMaskAddress }
+        });
+      } else if (params.posAddress && checkValidAddress(params.posAddress)) {
+        cache.writeData({
+          data: { walletAddress: params.posAddress }
+        });
+      }
+
+      return true;
+    },
     updateCurrency: (_, variables, { cache }) => {
       // update cache
       cache.writeData({ data: { currency: variables.currency } });
@@ -60,11 +98,14 @@ const resolvers = {
       return selected;
     },
     updateWalletAddress: (_, variables, { cache }) => {
-      // console.log('variables', variables);
       // update cache
-      cache.writeData({
-        data: { walletAddress: variables.address }
-      });
+      const { address } = variables;
+
+      if (checkValidAddress(address)) {
+        cache.writeData({
+          data: { walletAddress: variables.address }
+        });
+      }
 
       return variables.address;
     }

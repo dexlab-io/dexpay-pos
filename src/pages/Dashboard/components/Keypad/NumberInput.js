@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import currency from 'currency.js';
 import { Textfit } from 'react-textfit';
 import { isNaN } from 'lodash';
 
-// import config from '../../../../config';
 import FormatCurrency from '../../../../components/FormatCurrency';
 
 const Container = styled.div`
@@ -26,20 +24,9 @@ const NumberInput = ({ value }) => {
   //   maximumFractionDigits: 6
   // });
 
-  // Add back missing .0 in e.g. 12.0
-  // const val = parseFloat(value);
-  // const match = val.match(/\.\d*?(0*)$/);
-  // if (match) formattedValue += /[1-9]/.test(match[0]) ? match[1] : match[0];
-
-  // formattedValue = currency(formattedValue, {
-  //   symbol: `${config.currency.symbol}`,
-  //   formatWithSymbol: true
-  // }).format();
-
   return (
     <Container>
       <Textfit mode="single" max={72}>
-        {/* {formattedValue} */}
         <FormatCurrency value={parseFloat(formattedValue)} />
       </Textfit>
     </Container>

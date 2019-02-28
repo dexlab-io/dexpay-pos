@@ -50,7 +50,7 @@ class WalletAddress extends React.Component {
               {({ data, loading, error }) => {
                 if (loading && !data.currency) return <p>loading...</p>;
                 if (error) return <p>Error: {error.message}</p>;
-                console.log('data', data.walletAddress);
+                // console.log('data', data.walletAddress);
 
                 return (
                   <WalletAddressForm
