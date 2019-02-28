@@ -1,6 +1,19 @@
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
+import gql from 'graphql-tag';
+import { find } from 'lodash';
+
 import CONF from '../config';
+import apolloClient from '../utils/apolloClient';
+
+const confirmationsQuery = gql`
+  {
+    requiredConfirmations @client {
+      token
+      confirmations
+    }
+  }
+`;
 
 export const ethToWei = v => {
   const wei = new BigNumber(v).multipliedBy(1000000000000000000);
@@ -24,6 +37,14 @@ export default class WatcherTx {
     this.pollingOn = true;
     this.lastBlockChecked = null;
     this.conf = this.getConf();
+    this.loadConfirmations();
+  }
+
+  async loadConfirmations() {
+    const result = await apolloClient.query({
+      query: confirmationsQuery
+    });
+    this.confirmations = result.data.requiredConfirmations;
   }
 
   getConf() {
@@ -104,7 +125,8 @@ export default class WatcherTx {
       });
 
       // Initiate transaction confirmation
-      this.confirmTransaction(txHash, CONF.confirmationNeeded, cb);
+      const confirmationsNeeded = find(this.confirmations, { token: 'xdai' });
+      this.confirmTransaction(txHash, confirmationsNeeded.confirmations, cb);
     }
   }
 
@@ -197,6 +219,7 @@ export default class WatcherTx {
       }
 
       // Initiate transaction confirmation
+      console.log('debug confirmations 2', this.confirmations);
       this.confirmTransaction(
         event.transactionHash,
         CONF.confirmationNeeded,
@@ -236,7 +259,8 @@ export default class WatcherTx {
         );
       }
 
-      if (trxConfirmations >= confirmations) {
+      const confirmationsNeeded = find(this.confirmations, { token: 'xdai' });
+      if (trxConfirmations >= confirmationsNeeded.confirmations) {
         // Handle confirmation event according to your business logic
 
         if (CONF.ENABLE_LOGS) {

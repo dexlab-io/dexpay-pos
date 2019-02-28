@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import currency from 'currency.js';
 import { Textfit } from 'react-textfit';
+import { isNaN } from 'lodash';
 
 // import config from '../../../../config';
 import FormatCurrency from '../../../../components/FormatCurrency';
@@ -18,11 +19,12 @@ const Container = styled.div`
 `;
 
 const NumberInput = ({ value }) => {
-  const language = navigator.language || 'en-US';
-  const formattedValue = parseFloat(value).toLocaleString(language, {
-    useGrouping: true,
-    maximumFractionDigits: 6
-  });
+  const formattedValue = isNaN(value) || value === '.' ? '0' : value;
+  // const language = navigator.language || 'en-US';
+  // formattedValue = parseFloat(value).toLocaleString(language, {
+  //   useGrouping: true,
+  //   maximumFractionDigits: 6
+  // });
 
   // Add back missing .0 in e.g. 12.0
   // const val = parseFloat(value);

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { indexOf } from 'lodash';
+import { indexOf, findIndex } from 'lodash';
 
 const resolvers = {
   Mutation: {
@@ -33,13 +33,31 @@ const resolvers = {
       return tokens;
     },
     updateRequiredConfirmations: (_, variables, { cache }) => {
-      // console.log('variables', variables);
+      const data = cache.readQuery({
+        query: gql`
+          query RequiredConfirmations {
+            requiredConfirmations @client {
+              token
+              confirmations
+            }
+          }
+        `
+      });
+      const confirmations = data.requiredConfirmations;
+
+      const selectedIndex = findIndex(confirmations, {
+        token: variables.token
+      });
+      const selected = confirmations[selectedIndex];
+      selected.confirmations = variables.confirmations;
+      confirmations[selectedIndex] = selected;
+
       // update cache
       cache.writeData({
-        data: { requiredConfirmations: variables.confirmation }
+        data: { requiredConfirmations: confirmations }
       });
 
-      return variables.confirmation;
+      return selected;
     },
     updateWalletAddress: (_, variables, { cache }) => {
       // console.log('variables', variables);

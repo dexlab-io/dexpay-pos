@@ -62,7 +62,9 @@ class Dashboard extends Component {
       this.setState({
         totalAmount: '0'
       });
-      this.productItems.resetItems();
+      if (this.productItems) {
+        this.productItems.resetItems();
+      }
     }, 5000);
   };
 
