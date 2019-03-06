@@ -63,6 +63,10 @@ class Dashboard extends Component {
     }, 5000);
   };
 
+  onTipReceived = () => {
+    
+  }
+
   handleNavItemChange = activeTab => {
     // eslint-disable-next-line
     const currentTab = this.state.activeTab;

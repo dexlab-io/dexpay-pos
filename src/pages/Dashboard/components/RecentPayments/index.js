@@ -25,6 +25,7 @@ const LeftSide = styled.div`
 
 class RecentPayments extends React.Component {
   state = {
+    type: "transactions",
     transactions: [],
     isLoading: true
   };
@@ -41,15 +42,18 @@ class RecentPayments extends React.Component {
         isLoading: false
       });
     });
+    if(this.props.type) {
+      this.setState({ type: this.props.type });
+    }
   }
 
   render() {
     const { transactions, isLoading } = this.state;
     return (
       <Container>
-        {isLoading && <p>Loading recent transactions.</p>}
+        {isLoading && <p>Loading recent {this.state.type}.</p>}
         {transactions.length === 0 && !isLoading && (
-          <p>No recent transactions found.</p>
+          <p>No recent {this.state.type} found.</p>
         )}
         {transactions.map(item => (
           <PaymentItem key={item.transactionHash} payment={item} />

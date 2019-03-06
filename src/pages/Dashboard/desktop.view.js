@@ -62,15 +62,21 @@ export default function() {
                   }
                 />
               )}
-              {activeTab === 'tip' && (
-                <Tip onClose={this.onCloseTip} />
-              )}
+              {activeTab === 'tip' && <RecentPayments type="tips" />}
             </RightSide>
             <LeftSide>
+              {activeTab !== 'tip' && (
               <NumberWrapper>
                 <NumberInput value={totalAmount} />
               </NumberWrapper>
+              )}
+              {activeTab !== 'tip' && (
               <GenerateBillBtn handlePay={this.handlePay} />
+              )}
+              <Tip
+                active={activeTab === 'tip'}
+                onTipReceived={this.onTipReceived}
+              />
             </LeftSide>
           </React.Fragment>
         ) : (
