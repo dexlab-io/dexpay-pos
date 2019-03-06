@@ -11,6 +11,7 @@ import theme, { GlobalStyle } from './theme'; // load custom theme
 import {
   Error404,
   Dashboard,
+  Login,
   Settings,
   AccountInfo,
   AcceptedTokens,
@@ -51,6 +52,7 @@ class App extends Component {
             <BrowserRouter>
               <Switch>
                 <Route path="/" exact component={Dashboard} />
+                <Route path="/Login" exact component={Login} />
                 <Route path="/settings" exact component={Settings} />
                 <Route
                   path="/settings/account-info"
