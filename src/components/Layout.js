@@ -57,7 +57,7 @@ class Layout extends React.Component {
             console.log('Layout', data, loading, error);
             return (
               <Sidebar
-                sidebar={<MySidebar />}
+                sidebar={<MySidebar isLoggedIn={data.isLoggedIn} />}
                 shadow={false}
                 open={sidebarOpen}
                 onSetOpen={this.onSetSidebarOpen}

@@ -21,32 +21,45 @@ const Item = styled.li`
   padding: 15px 0;
 `;
 
-const Sidebar = () => (
-  <Container>
-    <aside className="menu">
-      <Logo src={logoImg} alt="Dexpay logo" />
-      <ItemsList className="menu-list">
-        <Item>
-          <Link to="settings">Account Settings</Link>
-        </Item>
-        <Item>
-          <a
-            href="https://medium.com/dexlab-io/introducing-dexpay-and-makerdao-grant-announcement-f437f2e87da3"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            About Dexpay
-          </a>
-        </Item>
-        <Item>
-          <a href="mailto:dev@dexlab.io">Send a Feedback</a>
-        </Item>
-        <Item>
-          <a>Logout</a>
-        </Item>
-      </ItemsList>
-    </aside>
-  </Container>
-);
+class Sidebar extends React.Component {
+  handleLogout = () => {
+    window.localStorage.clear();
+    window.location.reload(true);
+  };
+
+  render() {
+    const { isLoggedIn } = this.props;
+
+    return (
+      <Container>
+        <aside className="menu">
+          <Logo src={logoImg} alt="Dexpay logo" />
+          <ItemsList className="menu-list">
+            <Item>
+              <Link to="settings">Account Settings</Link>
+            </Item>
+            <Item>
+              <a
+                href="https://medium.com/dexlab-io/introducing-dexpay-and-makerdao-grant-announcement-f437f2e87da3"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                About Dexpay
+              </a>
+            </Item>
+            <Item>
+              <a href="mailto:dev@dexlab.io">Send a Feedback</a>
+            </Item>
+            {isLoggedIn && (
+              <Item>
+                <a onClick={this.handleLogout}>Logout</a>
+              </Item>
+            )}
+          </ItemsList>
+        </aside>
+      </Container>
+    );
+  }
+}
 
 export default Sidebar;
