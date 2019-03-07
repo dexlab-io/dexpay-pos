@@ -27,9 +27,22 @@ const resolvers = {
       const wallet = new EthereumHDWallet();
       await wallet.setWeb3();
 
+      // check if token already in store
+      const data = cache.readQuery({
+        query: gql`
+          query AcceptedTokens {
+            walletAddress @client
+          }
+        `
+      });
+
       const metaMaskAddress = wallet.getAddress();
       // update cache
-      if (metaMaskAddress && checkValidAddress(metaMaskAddress)) {
+      if (
+        metaMaskAddress &&
+        checkValidAddress(metaMaskAddress) &&
+        data.walletAddress === null
+      ) {
         cache.writeData({
           data: { walletAddress: metaMaskAddress, source: 'web3js' }
         });
