@@ -73,7 +73,8 @@ const Header = props => {
     title,
     leftBtnClick,
     onNavItemClick,
-    activeNavItem
+    activeNavItem,
+    isLoggedIn
   } = props;
 
   if (!isVisible) {
@@ -107,31 +108,33 @@ const Header = props => {
                 <LogoContainer className="navbar-brand">
                   <Logo src={logoImg} alt="Dexpay logo" />
                 </LogoContainer>
-                <div className="navbar-menu">
-                  <div className="navbar-start">
-                    <MenuItem
-                      className={`navbar-item ${activeNavItem === 'numberPad' &&
-                        'is-active'}`}
-                      onClick={() => onNavItemClick('numberPad')}
-                    >
-                      Number Pad
-                    </MenuItem>
-                    <MenuItem
-                      className={`navbar-item ${activeNavItem ===
-                        'productItems' && 'is-active'}`}
-                      onClick={() => onNavItemClick('productItems')}
-                    >
-                      Product Items
-                    </MenuItem>
-                    <MenuItem
-                      className={`navbar-item ${activeNavItem ===
-                        'recentPayments' && 'is-active'}`}
-                      onClick={() => onNavItemClick('recentPayments')}
-                    >
-                      Recent Transactions
-                    </MenuItem>
+                {isLoggedIn && (
+                  <div className="navbar-menu">
+                    <div className="navbar-start">
+                      <MenuItem
+                        className={`navbar-item ${activeNavItem ===
+                          'numberPad' && 'is-active'}`}
+                        onClick={() => onNavItemClick('numberPad')}
+                      >
+                        Number Pad
+                      </MenuItem>
+                      <MenuItem
+                        className={`navbar-item ${activeNavItem ===
+                          'productItems' && 'is-active'}`}
+                        onClick={() => onNavItemClick('productItems')}
+                      >
+                        Product Items
+                      </MenuItem>
+                      <MenuItem
+                        className={`navbar-item ${activeNavItem ===
+                          'recentPayments' && 'is-active'}`}
+                        onClick={() => onNavItemClick('recentPayments')}
+                      >
+                        Recent Transactions
+                      </MenuItem>
+                    </div>
                   </div>
-                </div>
+                )}
               </Nav>
             </div>
           )}
@@ -147,7 +150,8 @@ Header.defaultProps = {
   isVisible: true,
   title: undefined,
   leftBtnClick: () => {},
-  onNavItemClick: () => {}
+  onNavItemClick: () => {},
+  isLoggedIn: false
 };
 
 Header.propTypes = {
@@ -156,7 +160,8 @@ Header.propTypes = {
   isVisible: PropTypes.bool,
   title: PropTypes.string,
   leftBtnClick: PropTypes.func,
-  onNavItemClick: PropTypes.func
+  onNavItemClick: PropTypes.func,
+  isLoggedIn: PropTypes.bool
 };
 
 export default Header;

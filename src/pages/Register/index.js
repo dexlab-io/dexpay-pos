@@ -7,12 +7,12 @@ import { Link } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
-import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
 import logo from '../../assets/images/dex-logo-large.png';
 
-const loginMutation = gql`
-  mutation login($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
+const registerMutation = gql`
+  mutation register($email: String!, $password: String!) {
+    register(input: { email: $email, password: $password }) {
       jwt
       user {
         id
@@ -47,12 +47,12 @@ const ButtonText = styled(Link)`
   margin-bottom: 30px;
 `;
 
-class Login extends React.Component {
-  onLoginSuccess = async (cache, { data: { login } }) => {
-    console.log('onLoginSuccess', login);
+class Register extends React.Component {
+  onRegisterSuccess = async (cache, { data: { login } }) => {
+    console.log('onRegisterSuccess', login);
     // store token in local storage
     // await AsyncStorage.setItem('token', telephoneLogin.jwt);
-    window.localStorage.setItem('token', login.jwt);
+    localStorage.setItem('token', login.jwt);
     // update local store
     // await apolloClient.mutate({
     //   mutation: toggleIsLoggedInMutation,
@@ -70,18 +70,18 @@ class Login extends React.Component {
             <Tagline>Take your shop to the future</Tagline>
             <Tagline>Sign Up for free now</Tagline>
             <Mutation
-              mutation={loginMutation}
+              mutation={registerMutation}
               update={this.onLoginSuccess}
               onError={() => {
                 swal('Issue!', 'Invalid email or password', 'warning');
               }}
             >
-              {(login, { error }) => (
+              {(register, { error }) => (
                 <React.Fragment>
-                  <LoginForm
+                  <RegisterForm
                     handleSubmit={data => {
                       // console.log('login form', data);
-                      login({
+                      register({
                         variables: data
                       });
                     }}
@@ -91,8 +91,8 @@ class Login extends React.Component {
               )}
             </Mutation>
             <OrText>OR</OrText>
-            <ButtonText to="/">Create a new account</ButtonText>
-            <ButtonText to="/login">Forgot password?</ButtonText>
+            <ButtonText to="/login">Use an Existing Account</ButtonText>
+            <ButtonText to="/dashboard">Continue without an Account</ButtonText>
           </Container>
         </div>
       </Layout>
@@ -100,4 +100,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default Register;

@@ -10,8 +10,9 @@ import client, { persistor } from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
 import {
   Error404,
-  Dashboard,
   Login,
+  Register,
+  Dashboard,
   Settings,
   AccountInfo,
   AcceptedTokens,
@@ -51,8 +52,9 @@ class App extends Component {
           <React.Fragment>
             <BrowserRouter>
               <Switch>
-                <Route path="/" exact component={Dashboard} />
-                <Route path="/Login" exact component={Login} />
+                <Route path="/" exact component={Register} />
+                <Route path="/login" exact component={Login} />
+                <Route path="/dashboard" exact component={Dashboard} />
                 <Route path="/settings" exact component={Settings} />
                 <Route
                   path="/settings/account-info"

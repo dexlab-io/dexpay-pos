@@ -31,13 +31,19 @@ const resolvers = {
       // update cache
       if (metaMaskAddress && checkValidAddress(metaMaskAddress)) {
         cache.writeData({
-          data: { walletAddress: metaMaskAddress }
+          data: { walletAddress: metaMaskAddress, source: 'web3js' }
         });
       } else if (params.posAddress && checkValidAddress(params.posAddress)) {
         cache.writeData({
-          data: { walletAddress: params.posAddress }
+          data: { walletAddress: params.posAddress, source: 'getQuery' }
         });
       }
+
+      // check if logged in
+      const token = window.localStorage.getItem('token');
+      cache.writeData({
+        data: { isLoggedIn: !!token }
+      });
 
       return true;
     },
@@ -99,11 +105,19 @@ const resolvers = {
     },
     updateWalletAddress: (_, variables, { cache }) => {
       // update cache
-      const { address } = variables;
+      const { address, source } = variables;
+      const data = {};
+      if (source) {
+        data.walletAddressSource = source;
+      }
 
       if (checkValidAddress(address)) {
         cache.writeData({
-          data: { walletAddress: variables.address }
+          data: {
+            ...data,
+            walletAddress: variables.address,
+            source: 'manualInput'
+          }
         });
       }
 

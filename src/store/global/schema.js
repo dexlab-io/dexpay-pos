@@ -1,4 +1,10 @@
 const typeDefs = `
+  enum WalletAddressSource {
+    web3js
+    getQuery
+    manualInput
+  }
+
   type Confirmation {
     token: String!
     confirmations: Int!
@@ -8,7 +14,8 @@ const typeDefs = `
     currency: String!
     acceptedTokens: [String!]
     requiredConfirmations: [Confirmation!]
-    walletAddress: String!
+    walletAddress: String
+    walletAddressSource: WalletAddressSource
   }
 
   type Mutation {
@@ -16,7 +23,7 @@ const typeDefs = `
     updateCurrency(currency: String!): String!
     toggleAcceptedTokens(token: String!, isAccepted: Boolean!): [String!]
     updateRequiredConfirmations(token: String!, confirmations: Int!): Confirmation!
-    updateWalletAddress(address: String!): String!
+    updateWalletAddress(address: String!, source: String): String!
   }
 `;
 

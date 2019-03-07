@@ -1,6 +1,7 @@
 import Error404 from './404';
-import Dashboard from './Dashboard';
 import Login from './Login';
+import Register from './Register';
+import Dashboard from './Dashboard';
 import Settings from './Settings';
 import AccountInfo from './Settings/AccountInfo';
 import AcceptedTokens from './Settings/AcceptedTokens';
@@ -11,8 +12,9 @@ import Test from './Test';
 
 export {
   Error404,
-  Dashboard,
   Login,
+  Register,
+  Dashboard,
   Settings,
   AccountInfo,
   AcceptedTokens,
