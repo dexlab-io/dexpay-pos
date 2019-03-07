@@ -27,6 +27,7 @@ const LoginForm = props => {
         error={errors.email}
       />
       <TextGroup
+        type="password"
         name="password"
         label="Password"
         placeholder="********"

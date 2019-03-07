@@ -19,7 +19,7 @@ const SettingsHeader = ({ history }) => {
   return (
     <Container>
       <h2 className="title">Account Settings</h2>
-      <a onClick={() => history.push('/')}>
+      <a onClick={() => history.push('/dashboard')}>
         <CrossIcon className="fas fa-times" />
       </a>
     </Container>

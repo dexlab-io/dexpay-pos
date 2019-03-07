@@ -54,7 +54,10 @@ class Layout extends React.Component {
         <Helmet title={config.siteName} />
         <Query query={query} fetchPolicy="cache-and-network">
           {({ data, loading, error }) => {
-            console.log('Layout', data, loading, error);
+            if (loading) return <p>loading...</p>;
+            if (error) return <p>Error: {error.message}</p>;
+            // console.log('Layout', data);
+
             return (
               <Sidebar
                 sidebar={<MySidebar isLoggedIn={data.isLoggedIn} />}

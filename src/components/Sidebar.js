@@ -36,7 +36,7 @@ class Sidebar extends React.Component {
           <Logo src={logoImg} alt="Dexpay logo" />
           <ItemsList className="menu-list">
             <Item>
-              <Link to="settings">Account Settings</Link>
+              <Link to="/settings">Account Settings</Link>
             </Item>
             <Item>
               <a
@@ -50,9 +50,13 @@ class Sidebar extends React.Component {
             <Item>
               <a href="mailto:dev@dexlab.io">Send a Feedback</a>
             </Item>
-            {isLoggedIn && (
+            {isLoggedIn ? (
               <Item>
                 <a onClick={this.handleLogout}>Logout</a>
+              </Item>
+            ) : (
+              <Item>
+                <Link to="/login">Login</Link>
               </Item>
             )}
           </ItemsList>

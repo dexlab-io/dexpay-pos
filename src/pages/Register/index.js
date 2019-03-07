@@ -49,18 +49,14 @@ const ButtonText = styled(Link)`
 
 class Register extends React.Component {
   onRegisterSuccess = async (cache, { data: { login } }) => {
-    console.log('onRegisterSuccess', login);
+    // console.log('onRegisterSuccess', login);
     // store token in local storage
-    // await AsyncStorage.setItem('token', telephoneLogin.jwt);
     localStorage.setItem('token', login.jwt);
-    // update local store
-    // await apolloClient.mutate({
-    //   mutation: toggleIsLoggedInMutation,
-    //   variables: { isLoggedIn: true },
-    // });
   };
 
   render() {
+    const { history } = this.props;
+
     return (
       <Layout>
         <Seo title="Login" />
@@ -74,6 +70,9 @@ class Register extends React.Component {
               update={this.onLoginSuccess}
               onError={() => {
                 swal('Issue!', 'Invalid email or password', 'warning');
+              }}
+              onCompleted={() => {
+                history.push('/dashboard');
               }}
             >
               {(register, { error }) => (
