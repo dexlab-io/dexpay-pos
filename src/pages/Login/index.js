@@ -48,6 +48,24 @@ const ButtonText = styled(Link)`
 `;
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const token = window.localStorage.getItem('token');
+    this.state = {
+      isLoggedIn: !!token
+    };
+  }
+
+  componentDidMount() {
+    const { isLoggedIn } = this.state;
+    const { history } = this.props;
+
+    if (isLoggedIn) {
+      history.push('/dashboard');
+    }
+  }
+
   onLoginSuccess = async (cache, { data: { login } }) => {
     // console.log('onLoginSuccess', login);
     // store token in local storage

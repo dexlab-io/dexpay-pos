@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import RegisterForm from './components/RegisterForm';
@@ -48,6 +49,24 @@ const ButtonText = styled(Link)`
 `;
 
 class Register extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const token = window.localStorage.getItem('token');
+    this.state = {
+      isLoggedIn: !!token
+    };
+  }
+
+  componentDidMount() {
+    const { isLoggedIn } = this.state;
+    const { history } = this.props;
+
+    if (isLoggedIn) {
+      history.push('/dashboard');
+    }
+  }
+
   onRegisterSuccess = async (cache, { data: { login } }) => {
     // console.log('onRegisterSuccess', login);
     // store token in local storage
