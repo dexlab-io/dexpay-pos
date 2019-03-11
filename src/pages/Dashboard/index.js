@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter, matchPath } from 'react-router-dom';
+import Confetti from 'react-confetti';
 
 import { checkWindowSize } from '../../utils/helpers';
 import { store } from '../../store';
@@ -22,6 +23,8 @@ class Dashboard extends Component {
       setupModalOpen: false,
       pos: { address: null },
       tipHashes: [],
+      confettiRun: false,
+      confettiRec: false,
     };
   }
 
@@ -64,10 +67,21 @@ class Dashboard extends Component {
     }, 5000);
   };
 
+  confetti = () => {
+    this.setState({
+      confettiRun: true,
+      confettiRec: true,
+    });
+    window.setTimeout(() => {
+      this.setState({ confettiRec: false });
+    }, 5000);
+  }
+
   onTipReceived = (txHash) => {
     const { tipHashes } = this.state;
     tipHashes.push(txHash);
     this.setState({ tipHashes });
+    this.confetti();
   }
 
   handleNavItemChange = activeTab => {
@@ -91,6 +105,7 @@ class Dashboard extends Component {
     const { isMobile, totalAmount, paymentModalOpen, activeTab } = this.state;
 
     return (
+      <Fragment>
       <Layout
         header={{ onNavItemClick: this.handleNavItemChange }}
         activeNavItem={activeTab}
@@ -108,6 +123,13 @@ class Dashboard extends Component {
           />
         ) : null}
       </Layout>
+        <Confetti
+          style={ { zIndex: -1 } }
+          run={this.state.confettiRun}
+          recycle={this.state.confettiRec}
+          numberOfPieces={600}
+        />
+      </Fragment>
     );
   }
 }

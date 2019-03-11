@@ -40,6 +40,7 @@
     "react": "^16.7.0",
     "react-apollo": "^2.4.1",
     "react-clipboard.js": "^2.0.2",
+    "react-confetti": "^2.6.0",
     "react-dom": "^16.7.0",
     "react-helmet": "^5.2.0",
     "react-i18next": "^9.0.10",
