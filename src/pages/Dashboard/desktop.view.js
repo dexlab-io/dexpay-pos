@@ -62,7 +62,12 @@ export default function() {
                   }
                 />
               )}
-              {activeTab === 'tip' && <RecentPayments type="tips" />}
+              {activeTab === 'tip' && (
+                <RecentPayments
+                  type="tips"
+                  txHashes={this.state.tipHashes}
+                />
+              )}
             </RightSide>
             <LeftSide>
               {activeTab !== 'tip' && (

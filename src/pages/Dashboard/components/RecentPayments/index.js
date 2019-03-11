@@ -30,21 +30,38 @@ class RecentPayments extends React.Component {
     isLoading: true
   };
 
-  componentDidMount() {
+  loadTxs(props) {
     store.fetch.pos().subscribe(async result => {
       // eslint-disable-next-line new-cap
       this.wallet = new xDAIHDWallet(null, result.data.pos.address);
       await this.wallet.setWeb3();
       await this.wallet.fetchEthTransactions();
+      let filteredTxs = [];
+      if(props.txHashes) {
+        filteredTxs = this.wallet.transactions.filter(tx => {
+          return props.txHashes.includes(tx.transactionHash);
+        });
+      }
+      else {
+        filteredTxs = this.wallet.transactions;
+      }
       this.setState({
         // eslint-disable-next-line react/no-unused-state
-        transactions: this.wallet.transactions,
+        transactions: filteredTxs,
         isLoading: false
       });
     });
+  }
+
+  componentDidMount() {
+    this.loadTxs(this.props);
     if(this.props.type) {
       this.setState({ type: this.props.type });
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.loadTxs(nextProps);
   }
 
   render() {

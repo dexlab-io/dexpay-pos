@@ -20,7 +20,8 @@ class Dashboard extends Component {
       totalAmount: '0',
       paymentModalOpen: false,
       setupModalOpen: false,
-      pos: { address: null }
+      pos: { address: null },
+      tipHashes: [],
     };
   }
 
@@ -63,8 +64,10 @@ class Dashboard extends Component {
     }, 5000);
   };
 
-  onTipReceived = () => {
-    
+  onTipReceived = (txHash) => {
+    const { tipHashes } = this.state;
+    tipHashes.push(txHash);
+    this.setState({ tipHashes });
   }
 
   handleNavItemChange = activeTab => {

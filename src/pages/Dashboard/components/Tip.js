@@ -31,7 +31,6 @@ class Tip extends Component {
     this.state = {
       posAddress: null,
       txState: null,
-      txHashes: [],
     };
   }
 
@@ -39,15 +38,9 @@ class Tip extends Component {
     this.setState({ txState: WatcherTx.STATES.PENDING });
     this.tipWatcher = new WatcherTx(WatcherTx.NETWORKS.XDAI);
     this.tipWatcher.xdaiTransfer(this.state.posAddress, null, data => {
-      this.setState(prevState => {
-        //console.log(prevState);
-        return {
-          txState: data.state,
-          //txHashes: prevState.txHashes.push(data.txHash),
-        };
-      });
+      this.setState({ txState: data.state});
       if (data.state === WatcherTx.STATES.CONFIRMED) {
-        this.props.onPaymentReceived();
+        this.props.onTipReceived(data.txHash);
       }
     });
   }
@@ -64,7 +57,6 @@ class Tip extends Component {
       const posAddress = result.data.pos.address;
       this.setState({ posAddress });
     });
-    this.startWatcher();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,7 +65,6 @@ class Tip extends Component {
     }
     else {
       this.stopWatcher();
-      console.log(this.state);
     }
   }
 
