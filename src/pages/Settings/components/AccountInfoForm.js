@@ -72,7 +72,7 @@ AccountInfoForm.propTypes = {
 
 export default withFormik({
   mapPropsToValues: props => ({
-    shopName: props.initialValues.shopName || '',
+    shopName: props.initialValues.store.name || '',
     email: props.initialValues.email || '',
     currentPassword: '',
     newPassword: '',

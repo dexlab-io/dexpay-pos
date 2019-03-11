@@ -14,27 +14,31 @@ import settingsItems from './components/settingsItems';
 
 const query = gql`
   {
-    user @client {
+    me {
       id
-      shopName
       email
+      store {
+        name
+      }
     }
   }
 `;
 
 const mutation = gql`
-  mutation updateUser($shopName: String!, $email: String!) {
-    updateUser(input: { shopName: $shopName, email: $email }) @client {
+  mutation updateMe($shopName: String!, $email: String!) {
+    updateMe(input: { shopName: $shopName, email: $email }) @client {
       id
-      shopName
       email
+      store {
+        name
+      }
     }
   }
 `;
 
 class AccountInfo extends React.Component {
   handleUpdate = data => {
-    apolloClient.mutate({ mutation, variables: data });
+    apolloClient.mutate({ mutation, variables: { data } });
     swal('Success!', 'Account info updated!', 'success');
   };
 
@@ -53,13 +57,13 @@ class AccountInfo extends React.Component {
             <Breadcrumb history={history} {...settingItem} />
             <Query query={query} fetchPolicy="cache-and-network">
               {({ data, loading, error }) => {
-                if (loading && !data.user) return <p>loading...</p>;
+                if (loading && !data.me) return <p>loading...</p>;
                 if (error) return <p>Error: {error.message}</p>;
                 // console.log('data', data);
 
                 return (
                   <AccountInfoForm
-                    initialValues={data.user || {}}
+                    initialValues={data.me || {}}
                     handleSubmit={this.handleUpdate}
                   />
                 );
