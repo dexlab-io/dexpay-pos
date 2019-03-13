@@ -93,7 +93,7 @@ class Login extends React.Component {
                 history.push('/dashboard');
               }}
             >
-              {(login, { error }) => (
+              {login => (
                 <React.Fragment>
                   <LoginForm
                     handleSubmit={data => {
@@ -103,7 +103,6 @@ class Login extends React.Component {
                       });
                     }}
                   />
-                  {error && <p>Error: {error.message}</p>}
                 </React.Fragment>
               )}
             </Mutation>

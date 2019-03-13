@@ -5,7 +5,6 @@ import swal from 'sweetalert';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import RegisterForm from './components/RegisterForm';
@@ -94,7 +93,7 @@ class Register extends React.Component {
                 history.push('/dashboard');
               }}
             >
-              {(register, { error }) => (
+              {register => (
                 <React.Fragment>
                   <RegisterForm
                     handleSubmit={data => {
@@ -104,7 +103,6 @@ class Register extends React.Component {
                       });
                     }}
                   />
-                  {error && <p>Error: {error.message}</p>}
                 </React.Fragment>
               )}
             </Mutation>

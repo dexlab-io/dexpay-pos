@@ -108,16 +108,17 @@ const Header = props => {
                 <LogoContainer className="navbar-brand">
                   <Logo src={logoImg} alt="Dexpay logo" />
                 </LogoContainer>
-                {isLoggedIn && (
-                  <div className="navbar-menu">
-                    <div className="navbar-start">
-                      <MenuItem
-                        className={`navbar-item ${activeNavItem ===
-                          'numberPad' && 'is-active'}`}
-                        onClick={() => onNavItemClick('numberPad')}
-                      >
-                        Number Pad
-                      </MenuItem>
+
+                <div className="navbar-menu">
+                  <div className="navbar-start">
+                    <MenuItem
+                      className={`navbar-item ${activeNavItem === 'numberPad' &&
+                        'is-active'}`}
+                      onClick={() => onNavItemClick('numberPad')}
+                    >
+                      Number Pad
+                    </MenuItem>
+                    {isLoggedIn && (
                       <MenuItem
                         className={`navbar-item ${activeNavItem ===
                           'productItems' && 'is-active'}`}
@@ -125,16 +126,16 @@ const Header = props => {
                       >
                         Product Items
                       </MenuItem>
-                      <MenuItem
-                        className={`navbar-item ${activeNavItem ===
-                          'recentPayments' && 'is-active'}`}
-                        onClick={() => onNavItemClick('recentPayments')}
-                      >
-                        Recent Transactions
-                      </MenuItem>
-                    </div>
+                    )}
+                    <MenuItem
+                      className={`navbar-item ${activeNavItem ===
+                        'recentPayments' && 'is-active'}`}
+                      onClick={() => onNavItemClick('recentPayments')}
+                    >
+                      Recent Transactions
+                    </MenuItem>
                   </div>
-                )}
+                </div>
               </Nav>
             </div>
           )}
