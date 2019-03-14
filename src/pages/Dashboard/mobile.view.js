@@ -21,7 +21,7 @@ export default function() {
       <div className="container is-fluid">
         <NavTabs
           activeTab={activeTab}
-          onChange={tab => this.setState({ activeTab: tab })}
+          onChange={this.handleTabChange}
         />
         {pos.address ? (
           <div>

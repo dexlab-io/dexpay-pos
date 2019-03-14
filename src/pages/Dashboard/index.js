@@ -89,6 +89,15 @@ class Dashboard extends Component {
     this.confetti();
   }
 
+  setUrl = nextTab => {
+    if (nextTab === 'tip') {
+      window.history.replaceState({}, '', '/address/' + this.state.pos.address + '/tip');
+    }
+    else {
+      window.history.replaceState({}, '', '/address/' + this.state.pos.address);
+    }
+  }
+
   handleNavItemChange = activeTab => {
     // eslint-disable-next-line
     const currentTab = this.state.activeTab;
@@ -100,7 +109,13 @@ class Dashboard extends Component {
       this.setState({ totalAmount: '0' });
     }
     this.setState({ activeTab, lastTab: currentTab });
+    this.setUrl(nextTab);
   };
+
+  handleTabChange = nextTab => {
+    this.setState({ activeTab: nextTab });
+    this.setUrl(nextTab);
+  }
 
   onCloseTip = () => {
     this.handleNavItemChange(this.state.lastTab);
