@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const FiatContainer = styled.div`
-  padding: 10px 75px 0px 75px;
+  padding: 10px 10px 10px 10px;
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
   text-align: center;
 `;
@@ -22,7 +22,7 @@ const FiatContainer = styled.div`
 const Title = styled.span``;
 
 const PaymentInfo = styled.div`
-  padding: 12px 75px;
+  padding: 12px 12px;
 `;
 
 class Tip extends Component {
@@ -84,7 +84,10 @@ class Tip extends Component {
     
     return this.props.active && (
       <Container>
-        <CryptoAmount cryptoValue={{dai: ''}} />
+        <CryptoAmount
+          cryptoValue={{dai: ''}}
+          hasSelection={true}
+        />
         <FiatContainer>
           <Title className="is-family-secondary">{title}</Title>
         </FiatContainer>
