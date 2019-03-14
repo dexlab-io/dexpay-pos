@@ -58,8 +58,8 @@ const AccountInfoForm = props => {
         onBlur={handleBlur}
         error={errors.confirmNewPassword}
       />
-      <button type="submit" className="button is-primary is-fullwidth">
-        Primary
+      <button type="submit" className="button is-black is-uppercase is-large">
+        Save
       </button>
     </form>
   );

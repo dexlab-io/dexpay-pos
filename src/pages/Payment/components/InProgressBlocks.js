@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Trans } from 'react-i18next';
+import { find } from 'lodash';
 
 import loadingImg from '../../../assets/images/loading.gif';
 import checkImg from '../../../assets/images/checkmark.png';
@@ -33,7 +34,9 @@ const Count = styled.div`
   margin-bottom: 10px;
 `;
 
-const InProgressBlocks = ({ blocksCount, status, txHash }) => {
+const InProgressBlocks = ({ status, txHash, requiredConfirmations }) => {
+  const selectedToken = find(requiredConfirmations, { token: 'xdai' });
+
   return (
     <Container>
       <div>
@@ -44,7 +47,7 @@ const InProgressBlocks = ({ blocksCount, status, txHash }) => {
           <CheckImage src={checkImg} alt="completed" />
         )}
       </div>
-      <Count status={status}>{blocksCount}</Count>
+      <Count status={status}>{selectedToken.confirmations}</Count>
       <div>
         <Trans>Blocks Verified</Trans>
       </div>
@@ -60,13 +63,13 @@ const InProgressBlocks = ({ blocksCount, status, txHash }) => {
   );
 };
 
-InProgressBlocks.propTypes = {
-  blocksCount: PropTypes.number.isRequired,
-  status: PropTypes.string
-};
-
 InProgressBlocks.defaultProps = {
   status: 'pending'
+};
+
+InProgressBlocks.propTypes = {
+  requiredConfirmations: PropTypes.array.isRequired,
+  status: PropTypes.string
 };
 
 export default InProgressBlocks;

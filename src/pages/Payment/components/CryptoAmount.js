@@ -13,6 +13,8 @@ const Container = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
+  width: 130px;
+  margin: 8px auto;
 `;
 
 const Image = styled.img`

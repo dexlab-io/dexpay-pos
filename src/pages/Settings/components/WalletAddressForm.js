@@ -19,6 +19,9 @@ const WalletAddressForm = props => {
         onBlur={handleBlur}
         error={errors.walletAddress}
       />
+      <button type="submit" className="button is-black is-uppercase is-large">
+        Save
+      </button>
     </form>
   );
 };

@@ -15,6 +15,10 @@ import dexLogo from '../../../assets/images/dex-logo-white.png';
 const query = gql`
   {
     walletAddress @client
+    requiredConfirmations @client {
+      token
+      confirmations
+    }
   }
 `;
 
@@ -89,22 +93,30 @@ class PaymentDetails extends React.Component {
         {status === 'pending' && (
           <QrCode valueCrypto={valueCrypto[selectedCurrency]} />
         )}
-        {status !== 'pending' && (
-          <InProgressBlocks blocksCount={14} status={status} txHash={txHash} />
-        )}
-        <Query query={query} fetchPolicy="cache">
+        <Query query={query} fetchPolicy="cache-and-network">
           {({ data }) => (
-            <PaymentInfo>
-              <AddressClipboard address={data.walletAddress} />
-              {watchers ? (
-                <NetworkStatus
-                  label={watchers.xdai.conf.label}
-                  status={
-                    watchers.xdai.isConnected() ? 'connected' : 'not connected'
-                  }
+            <React.Fragment>
+              {status !== 'pending' && (
+                <InProgressBlocks
+                  status={status}
+                  txHash={txHash}
+                  requiredConfirmations={data.requiredConfirmations}
                 />
-              ) : null}
-            </PaymentInfo>
+              )}
+              <PaymentInfo>
+                <AddressClipboard address={data.walletAddress} />
+                {watchers ? (
+                  <NetworkStatus
+                    label={watchers.xdai.conf.label}
+                    status={
+                      watchers.xdai.isConnected()
+                        ? 'connected'
+                        : 'not connected'
+                    }
+                  />
+                ) : null}
+              </PaymentInfo>
+            </React.Fragment>
           )}
         </Query>
       </Container>
