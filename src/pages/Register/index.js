@@ -66,17 +66,16 @@ class Register extends React.Component {
     }
   }
 
-  onRegisterSuccess = async (cache, { data: { login } }) => {
-    // console.log('onRegisterSuccess', login);
+  onRegisterSuccess = async (cache, { data: { register } }) => {
+    console.log('onRegisterSuccess', register);
     // store token in local storage
-    localStorage.setItem('token', login.jwt);
+    await window.localStorage.setItem('token', register.jwt);
+    window.location.replace('/dashboard');
   };
 
   render() {
-    const { history } = this.props;
-
     return (
-      <Layout>
+      <Layout header={{ isVisible: false }}>
         <Seo title="Login" />
         <div className="section">
           <Container className="container">
@@ -85,12 +84,9 @@ class Register extends React.Component {
             <Tagline>Sign Up for free now</Tagline>
             <Mutation
               mutation={registerMutation}
-              update={this.onLoginSuccess}
+              update={this.onRegisterSuccess}
               onError={() => {
                 swal('Issue!', 'Invalid email or password', 'warning');
-              }}
-              onCompleted={() => {
-                history.push('/dashboard');
               }}
             >
               {register => (

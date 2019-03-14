@@ -29,6 +29,7 @@ const AccountInfoForm = props => {
         error={errors.email}
       />
       <TextGroup
+        type="password"
         name="currentPassword"
         label="Current Password"
         placeholder="Your Current Password"
@@ -38,6 +39,7 @@ const AccountInfoForm = props => {
         error={errors.currentPassword}
       />
       <TextGroup
+        type="password"
         name="newPassword"
         label="New Password"
         placeholder="Set new password"
@@ -47,6 +49,7 @@ const AccountInfoForm = props => {
         error={errors.newPassword}
       />
       <TextGroup
+        type="password"
         name="confirmNewPassword"
         label="Confirm Password"
         placeholder="Confirm new password again"

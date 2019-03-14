@@ -26,8 +26,8 @@ export default theme;
 
 export const GlobalStyle = createGlobalStyle`
   body {
-		margin: 0;
-  	padding: 0;
+    margin: 0;
+    padding: 0;
     height: 100vh;
   }
   #root {
@@ -49,5 +49,13 @@ export const GlobalStyle = createGlobalStyle`
       flex-shrink: 0;
       box-shadow: none;
     }
+  }
+
+  .rc-slider-track {
+    background-color: #000000 !important;
+  }
+  .rc-slider-handle {
+    border: 2px solid #000000 !important;
+    background-color: #fff !important;
   }
 `;

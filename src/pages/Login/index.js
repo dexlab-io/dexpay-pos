@@ -67,16 +67,17 @@ class Login extends React.Component {
   }
 
   onLoginSuccess = async (cache, { data: { login } }) => {
-    // console.log('onLoginSuccess', login);
+    console.log('onLoginSuccess', login);
     // store token in local storage
-    window.localStorage.setItem('token', login.jwt);
+    await window.localStorage.setItem('token', login.jwt);
+    window.location.replace('/dashboard');
   };
 
   render() {
-    const { history } = this.props;
+    // const { history } = this.props;
 
     return (
-      <Layout>
+      <Layout header={{ isVisible: false }}>
         <Seo title="Login" />
         <div className="section">
           <Container className="container">
@@ -88,9 +89,6 @@ class Login extends React.Component {
               update={this.onLoginSuccess}
               onError={() => {
                 swal('Issue!', 'Invalid email or password', 'warning');
-              }}
-              onCompleted={() => {
-                history.push('/dashboard');
               }}
             >
               {login => (
