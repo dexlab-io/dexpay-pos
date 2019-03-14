@@ -56,6 +56,9 @@ class Tip extends Component {
     store.fetch.pos().subscribe(async result => {
       const posAddress = result.data.pos.address;
       this.setState({ posAddress });
+      if(this.props.active) {
+        this.startWatcher();
+      }
     });
   }
 

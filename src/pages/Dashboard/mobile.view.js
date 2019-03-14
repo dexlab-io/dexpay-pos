@@ -36,7 +36,10 @@ export default function() {
               </React.Fragment>
             )}
             {activeTab === 'recentPayments' && <RecentPayments />}
-            {activeTab === 'tip' && <Tip onClose={this.onCloseTip} />}
+            <Tip
+              active={activeTab === 'tip'}
+              onTipReceived={this.onTipReceived}
+            />
           </div>
         ) : (
           <div>Pos address is empty</div>
