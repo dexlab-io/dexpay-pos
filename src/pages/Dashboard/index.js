@@ -25,6 +25,7 @@ class Dashboard extends Component {
       tipHashes: [],
       confettiRun: false,
       confettiRec: false,
+      confettiZ: -1,
     };
   }
 
@@ -71,9 +72,13 @@ class Dashboard extends Component {
     this.setState({
       confettiRun: true,
       confettiRec: true,
+      confettiZ: 2,
     });
     window.setTimeout(() => {
-      this.setState({ confettiRec: false });
+      this.setState({
+        confettiRec: false,
+        confettiZ: -1,
+      });
     }, 5000);
   }
 
@@ -124,7 +129,7 @@ class Dashboard extends Component {
         ) : null}
       </Layout>
         <Confetti
-          style={ { zIndex: -1 } }
+          style={ { zIndex: this.state.confettiZ } }
           run={this.state.confettiRun}
           recycle={this.state.confettiRec}
           numberOfPieces={600}
