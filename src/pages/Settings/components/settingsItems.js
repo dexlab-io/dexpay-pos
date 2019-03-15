@@ -36,7 +36,7 @@ export default [
     title: 'Wallet Address',
     linkTo: '/settings/wallet-address',
     bgColor: '#000000',
-    emoji: '🧾',
+    emoji: '💰',
     isPrivate: false
   },
   {
