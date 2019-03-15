@@ -21,6 +21,7 @@ const Container = styled.div`
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
   grid-template-columns: 70% 30%;
 `;
+
 const RightSide = styled.div`
   padding-top: 20px;
 `;
@@ -43,8 +44,8 @@ export default function() {
 
   return (
     <Section className="section">
-      <Container className="container whiteBG">
-        {pos.address ? (
+      {pos.address ? (
+        <Container className="container whiteBG">
           <React.Fragment>
             <RightSide>
               {activeTab === 'numberPad' && (
@@ -73,10 +74,12 @@ export default function() {
               <GenerateBillBtn handlePay={this.handlePay} />
             </LeftSide>
           </React.Fragment>
-        ) : (
+        </Container>
+      ) : (
+        <div>
           <SetWalletAddress />
-        )}
-      </Container>
+        </div>
+      )}
     </Section>
   );
 }

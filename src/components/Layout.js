@@ -13,6 +13,7 @@ import MySidebar from './Sidebar';
 const query = gql`
   {
     isLoggedIn @client
+    walletAddress @client
   }
 `;
 
@@ -54,7 +55,7 @@ class Layout extends React.Component {
         <Helmet title={config.siteName} />
         <Query query={query} fetchPolicy="cache-and-network">
           {({ data, loading, error }) => {
-            if (loading) return <p>loading...</p>;
+            if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
             // console.log('Layout', data);
 
@@ -73,6 +74,7 @@ class Layout extends React.Component {
                     leftBtnClick={() => this.onSetSidebarOpen(true)}
                     activeNavItem={activeNavItem}
                     isLoggedIn={data.isLoggedIn}
+                    isReady={data.walletAddress !== null}
                     {...header}
                   />
                   {children}

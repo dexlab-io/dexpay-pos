@@ -41,7 +41,7 @@ const ButtonText = styled.p`
   margin-bottom: 30px;
 `;
 const Button = styled.button`
-  margin-bottom: 10px;
+  margin: 10px 0px;
 `;
 
 class SetWalletAddress extends React.Component {
@@ -55,10 +55,8 @@ class SetWalletAddress extends React.Component {
   render() {
     return (
       <Container>
-        <BlackBox>
-          <span>🧾</span>
-        </BlackBox>
-        <Title>You need to add a Wallet!!</Title>
+        <Title>Add an Ethereum Wallet Address</Title>
+        <Title>to use the Point Of Sale</Title>
         <FormContainer>
           <WalletAddressForm
             initialValues={{ walletAddress: '' }}
@@ -66,13 +64,13 @@ class SetWalletAddress extends React.Component {
           />
         </FormContainer>
         <OrText>OR</OrText>
-        <ButtonText>Use one of the following services</ButtonText>
+        {/* <ButtonText>Use one of the following services</ButtonText> */}
         <Button type="submit" className="button is-large is-black">
-          METAMASK
+          Connect with METAMASK
         </Button>
-        <Button type="submit" className="button is-large is-black">
+        {/* <Button type="submit" className="button is-large is-black">
           WALLET CONNECT
-        </Button>
+        </Button> */}
       </Container>
     );
   }
