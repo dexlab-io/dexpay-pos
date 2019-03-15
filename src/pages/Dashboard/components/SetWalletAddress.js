@@ -1,10 +1,10 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-
 import apolloClient from '../../../utils/apolloClient';
 import WalletAddressForm from '../../Settings/components/WalletAddressForm';
 import logo from '../../../assets/images/dex-logo-large.png';
+import client, { persistor } from '../../../utils/apolloClient';
 
 const mutation = gql`
   mutation updateWalletAddress($address: String!) {
@@ -51,11 +51,25 @@ const Logo = styled.img`
   margin-bottom: 30px;
 `;
 
+const initAppMutation = gql`
+  mutation initApp {
+    initApp @client
+  }
+`;
+
 class SetWalletAddress extends React.Component {
   handleAddressUpdate = data => {
     apolloClient.mutate({
       mutation,
       variables: { address: data.walletAddress }
+    });
+  };
+
+  useMetamask = async () => {
+    await persistor.restore();
+    this.client = client;
+    await this.client.mutate({
+      mutation: initAppMutation
     });
   };
 
@@ -74,9 +88,15 @@ class SetWalletAddress extends React.Component {
         </FormContainer>
         <OrText>OR</OrText>
         {/* <ButtonText>Use one of the following services</ButtonText> */}
-        <Button type="submit" className="button is-large is-black">
-          Connect with METAMASK
-        </Button>
+        {window.web3 ? (
+          <Button
+            type="button"
+            onClick={() => this.useMetamask()}
+            className="button is-large is-black"
+          >
+            Connect with METAMASK
+          </Button>
+        ) : null}
         <Button
           onClick={() => window.location.replace('/login')}
           type="submit"
