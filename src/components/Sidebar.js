@@ -25,6 +25,7 @@ class Sidebar extends React.Component {
   handleLogout = () => {
     window.localStorage.clear();
     window.location.reload(true);
+    window.location.replace('/');
   };
 
   render() {
