@@ -10,6 +10,16 @@ export const truncateHash = (hash, length = 22) => {
   return `${startHash}...${lastHash}`;
 };
 
+export const isDesktop = () => {
+  const maxIpadWidth = elements.ipadBreakpoint;
+  console.log(
+    'isDesktop',
+    window.innerWidth > 375 && window.innerWidth > maxIpadWidth
+  );
+
+  return window.innerWidth > 375 && window.innerWidth > maxIpadWidth;
+};
+
 export const checkWindowSize = (init = true, cb) => {
   const maxMobileWidth = elements.mobileBreakpoint;
   let isMobile = window.innerWidth < maxMobileWidth;

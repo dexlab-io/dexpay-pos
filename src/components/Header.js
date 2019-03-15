@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { isDesktop } from '../utils/helpers';
 import barsImg from '../assets/images/bars.png';
 import backImg from '../assets/images/back.png';
 import logoImg from '../assets/images/logo.png';
@@ -9,6 +10,9 @@ import logoImg from '../assets/images/logo.png';
 const Section = styled.section`
   grid-area: header;
   padding: 1rem 1.5rem;
+  border-top: ${props => `1px solid ${props.theme.borderColor}`};
+  border-left: ${props => `1px solid ${props.theme.borderColor}`};
+  border-right: ${props => `1px solid ${props.theme.borderColor}`};
   @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
     padding: 0rem 1.5rem;
   }
@@ -82,8 +86,8 @@ const Header = props => {
   }
 
   return (
-    <Section className="whiteBG ">
-      <Container className="container">
+    <Section className={`whiteBG ${isDesktop() ? 'container' : ''}`}>
+      <Container className="">
         <Columns className="columns is-mobile">
           <LeftSide className="column is-one-fifth">
             <LeftLink onClick={leftBtnClick}>

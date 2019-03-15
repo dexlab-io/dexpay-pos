@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-export const elements = { mobileBreakpoint: 800 };
+export const elements = { mobileBreakpoint: 800, ipadBreakpoint: 1024 };
 
 // http://chir.ag/projects/name-that-color/
 export const colors = {
@@ -10,6 +10,7 @@ export const colors = {
 
 const theme = {
   mobileBreakpoint: `${elements.mobileBreakpoint}px`,
+  ipadBreakpoint: `${elements.ipadBreakpoint}px`,
   primaryColor: colors.black,
   secondaryColor: colors.riptide,
   primaryFontFamily: '"Quicksand", sans-serif',
@@ -33,6 +34,9 @@ export const GlobalStyle = createGlobalStyle`
   }
   .whiteBG {
     background: #FFF;
+  }
+  .container {
+    width: 100%;
   }
   #root {
     height: 100%;
