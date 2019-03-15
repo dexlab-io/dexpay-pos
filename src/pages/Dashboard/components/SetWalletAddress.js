@@ -67,6 +67,7 @@ class SetWalletAddress extends React.Component {
         <Title>to use the Point Of Sale</Title>
         <FormContainer>
           <WalletAddressForm
+            column
             initialValues={{ walletAddress: '' }}
             handleSubmit={this.handleAddressUpdate}
           />
