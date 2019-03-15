@@ -1,7 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import apolloClient from '../../../utils/apolloClient';
 import WalletAddressForm from '../../Settings/components/WalletAddressForm';
 import logo from '../../../assets/images/dex-logo-large.png';
 import client, { persistor } from '../../../utils/apolloClient';
@@ -18,16 +17,6 @@ const Container = styled.div`
   align-items: center;
   margin: 20px 0;
 `;
-
-const BlackBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #000;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 30px;
-`;
 const Title = styled.h3`
   font-size: 30px;
   margin-bottom: 20px;
@@ -37,9 +26,6 @@ const FormContainer = styled.div`
 `;
 const OrText = styled.p`
   font-size: 30px;
-`;
-const ButtonText = styled.p`
-  margin-bottom: 30px;
 `;
 const Button = styled.button`
   margin: 10px 0px;
@@ -59,7 +45,7 @@ const initAppMutation = gql`
 
 class SetWalletAddress extends React.Component {
   handleAddressUpdate = data => {
-    apolloClient.mutate({
+    client.mutate({
       mutation,
       variables: { address: data.walletAddress }
     });
@@ -74,6 +60,7 @@ class SetWalletAddress extends React.Component {
   };
 
   render() {
+    const { isLoggedIn } = this.props;
     return (
       <Container>
         <Logo src={logo} alt="Dexpay logo" />
@@ -86,7 +73,8 @@ class SetWalletAddress extends React.Component {
             handleSubmit={this.handleAddressUpdate}
           />
         </FormContainer>
-        <OrText>OR</OrText>
+
+        {window.web3 || !isLoggedIn ? <OrText>OR</OrText> : null}
         {/* <ButtonText>Use one of the following services</ButtonText> */}
         {window.web3 ? (
           <Button
@@ -97,13 +85,16 @@ class SetWalletAddress extends React.Component {
             Connect with METAMASK
           </Button>
         ) : null}
-        <Button
-          onClick={() => window.location.replace('/login')}
-          type="submit"
-          className="button is-large is-black"
-        >
-          Login
-        </Button>
+
+        {!isLoggedIn ? (
+          <Button
+            onClick={() => window.location.replace('/login')}
+            type="submit"
+            className="button is-large is-black"
+          >
+            Login
+          </Button>
+        ) : null}
       </Container>
     );
   }

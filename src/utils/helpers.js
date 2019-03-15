@@ -12,11 +12,6 @@ export const truncateHash = (hash, length = 22) => {
 
 export const isDesktop = () => {
   const maxIpadWidth = elements.ipadBreakpoint;
-  console.log(
-    'isDesktop',
-    window.innerWidth > 375 && window.innerWidth > maxIpadWidth
-  );
-
   return window.innerWidth > 375 && window.innerWidth > maxIpadWidth;
 };
 

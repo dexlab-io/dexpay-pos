@@ -12,6 +12,7 @@ import Payment from '../Payment';
 
 const query = gql`
   {
+    isLoggedIn @client
     walletAddress @client
   }
 `;
@@ -37,7 +38,10 @@ class Dashboard extends Component {
     });
 
     apolloClient.watchQuery({ query }).subscribe(result => {
-      this.setState({ pos: { address: result.data.walletAddress } });
+      this.setState({
+        pos: { address: result.data.walletAddress },
+        isLoggedIn: result.data.isLoggedIn
+      });
     });
   }
 

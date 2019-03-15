@@ -39,8 +39,13 @@ const NumberWrapper = styled.div`
 `;
 
 export default function() {
-  const { activeTab, totalAmount, pos, paymentModalOpen } = this.state;
-  // console.log('this.state', this.state);
+  const {
+    activeTab,
+    totalAmount,
+    pos,
+    paymentModalOpen,
+    isLoggedIn
+  } = this.state;
 
   return (
     <Section className="section">
@@ -77,7 +82,7 @@ export default function() {
         </Container>
       ) : (
         <div>
-          <SetWalletAddress />
+          <SetWalletAddress isLoggedIn={isLoggedIn} />
         </div>
       )}
     </Section>

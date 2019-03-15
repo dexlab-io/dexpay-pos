@@ -13,8 +13,7 @@ const Section = styled.div`
 `;
 
 export default function() {
-  const { activeTab, totalAmount, pos } = this.state;
-  // console.log('totalAmount', totalAmount);
+  const { activeTab, totalAmount, pos, isLoggedIn } = this.state;
 
   return (
     <Section className="section">
@@ -37,7 +36,7 @@ export default function() {
           {activeTab === 'recentPayments' && <RecentPayments />}
         </div>
       ) : (
-        <SetWalletAddress />
+        <SetWalletAddress isLoggedIn={isLoggedIn} />
       )}
     </Section>
   );
