@@ -45,11 +45,12 @@ const FiatContainer = styled.div`
   padding: 10px 75px 0px 75px;
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
   text-align: center;
+  line-height: 1;
 `;
 const Title = styled.span``;
 
 const PaymentInfo = styled.div`
-  padding: 12px 75px;
+  padding: 5px 75px;
 `;
 
 class PaymentDetails extends React.Component {
@@ -90,7 +91,10 @@ class PaymentDetails extends React.Component {
         />
         <FiatContainer>
           <Title className="is-family-secondary">{title}</Title>
-          <FiatAmount fiatAmount={parseFloat(valueFiat) + tipValue} />
+          <FiatAmount
+            style={{ letterSpacing: '-0.2rem' }}
+            fiatAmount={parseFloat(valueFiat) + tipValue}
+          />
         </FiatContainer>
         {status === WatcherTx.STATES.PENDING && (
           <QrCode valueCrypto={valueCrypto[selectedCurrency]} />

@@ -14,7 +14,7 @@ const Container = styled.div`
   flex: 1;
   align-items: center;
   width: 130px;
-  margin: 8px auto;
+  margin: 0px auto;
 `;
 
 const Image = styled.img`

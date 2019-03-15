@@ -29,7 +29,7 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: #F6F9FC;
+    background: #F3F3F3;
   }
   .whiteBG {
     background: #FFF;
