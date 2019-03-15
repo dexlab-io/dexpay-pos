@@ -26,6 +26,7 @@ const loginMutation = gql`
 `;
 
 const Container = styled.div`
+  margin-top: 5%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -81,7 +82,7 @@ class Login extends React.Component {
         <Seo title="Login" />
         <div className="section">
           <Container className="container">
-            <Logo src={logo} alt="dex logo" />
+            <Logo src={logo} alt="Dexpay logo" />
             <Tagline>Take your shop to the future</Tagline>
             <Tagline>Sign Up for free now</Tagline>
             <Mutation

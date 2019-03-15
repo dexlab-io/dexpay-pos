@@ -17,30 +17,28 @@ export default function() {
   // console.log('totalAmount', totalAmount);
 
   return (
-    <Section className="section whiteBG">
-      <div className="container is-fluid">
-        <NavTabs
-          activeTab={activeTab}
-          onChange={tab => this.setState({ activeTab: tab })}
-        />
-        {pos.address ? (
-          <div>
-            {activeTab === 'numberPad' && (
-              <React.Fragment>
-                <NumberInput value={totalAmount} />
-                <Keypad
-                  value={totalAmount.toString()}
-                  handleChange={val => this.setState({ totalAmount: val })}
-                />
-                <GenerateBillBtn handlePay={this.handlePay} />
-              </React.Fragment>
-            )}
-            {activeTab === 'recentPayments' && <RecentPayments />}
-          </div>
-        ) : (
-          <SetWalletAddress />
-        )}
-      </div>
+    <Section className="section">
+      {pos.address ? (
+        <div className="container whiteBG is-fluid">
+          <NavTabs
+            activeTab={activeTab}
+            onChange={tab => this.setState({ activeTab: tab })}
+          />
+          {activeTab === 'numberPad' && (
+            <React.Fragment>
+              <NumberInput value={totalAmount} />
+              <Keypad
+                value={totalAmount.toString()}
+                handleChange={val => this.setState({ totalAmount: val })}
+              />
+              <GenerateBillBtn handlePay={this.handlePay} />
+            </React.Fragment>
+          )}
+          {activeTab === 'recentPayments' && <RecentPayments />}
+        </div>
+      ) : (
+        <SetWalletAddress />
+      )}
     </Section>
   );
 }

@@ -70,13 +70,15 @@ class Layout extends React.Component {
                 }}
               >
                 <Wrapper hasHeader={header.isVisible || true}>
-                  <Header
-                    leftBtnClick={() => this.onSetSidebarOpen(true)}
-                    activeNavItem={activeNavItem}
-                    isLoggedIn={data.isLoggedIn}
-                    isReady={data.walletAddress !== null}
-                    {...header}
-                  />
+                  {data.walletAddress !== null ? (
+                    <Header
+                      leftBtnClick={() => this.onSetSidebarOpen(true)}
+                      activeNavItem={activeNavItem}
+                      isLoggedIn={data.isLoggedIn}
+                      isReady={data.walletAddress !== null}
+                      {...header}
+                    />
+                  ) : null}
                   {children}
                 </Wrapper>
               </Sidebar>

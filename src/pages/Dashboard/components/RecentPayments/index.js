@@ -55,7 +55,9 @@ class RecentPayments extends React.Component {
 
     return (
       <Container>
-        {isLoading && <p>Loading recent transactions.</p>}
+        {isLoading && (
+          <p style={{ marginLeft: '10px' }}>Loading recent transactions.</p>
+        )}
         {transactions.length === 0 && !isLoading && (
           <p>No recent transactions found.</p>
         )}

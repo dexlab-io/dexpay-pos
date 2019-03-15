@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import apolloClient from '../../../utils/apolloClient';
 import WalletAddressForm from '../../Settings/components/WalletAddressForm';
+import logo from '../../../assets/images/dex-logo-large.png';
 
 const mutation = gql`
   mutation updateWalletAddress($address: String!) {
@@ -15,7 +16,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 100px 0;
+  margin: 20px 0;
 `;
 
 const BlackBox = styled.div`
@@ -44,6 +45,12 @@ const Button = styled.button`
   margin: 10px 0px;
 `;
 
+const Logo = styled.img`
+  width: 124px;
+  height: auto;
+  margin-bottom: 30px;
+`;
+
 class SetWalletAddress extends React.Component {
   handleAddressUpdate = data => {
     apolloClient.mutate({
@@ -55,6 +62,7 @@ class SetWalletAddress extends React.Component {
   render() {
     return (
       <Container>
+        <Logo src={logo} alt="Dexpay logo" />
         <Title>Add an Ethereum Wallet Address</Title>
         <Title>to use the Point Of Sale</Title>
         <FormContainer>
@@ -68,9 +76,13 @@ class SetWalletAddress extends React.Component {
         <Button type="submit" className="button is-large is-black">
           Connect with METAMASK
         </Button>
-        {/* <Button type="submit" className="button is-large is-black">
-          WALLET CONNECT
-        </Button> */}
+        <Button
+          onClick={() => window.location.replace('/login')}
+          type="submit"
+          className="button is-large is-black"
+        >
+          Login
+        </Button>
       </Container>
     );
   }

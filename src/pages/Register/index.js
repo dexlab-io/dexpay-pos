@@ -26,6 +26,7 @@ const registerMutation = gql`
 `;
 
 const Container = styled.div`
+  margin-top: 5%;
   display: flex;
   align-items: center;
   flex-direction: column;
