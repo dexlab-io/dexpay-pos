@@ -137,22 +137,17 @@ class Payment extends Component {
     const { txState } = this.state;
     const { t } = this.props;
     this.title = '';
-    this.status = null;
+    this.status = txState;
 
     if (txState === WatcherTx.STATES.PENDING) {
       this.title = `1 / 3 ${t('Awaiting Payment')}`;
-      this.status = 'pending';
     } else if (txState === WatcherTx.STATES.DETECTED) {
       this.title = `2 / 3 ${t('Pending Payment')}`;
-      this.status = 'detected';
     } else if (txState === WatcherTx.STATES.NEW_CONFIRMATION) {
       this.title = `2 / 3 ${t('Pending Payment')}`;
-      this.status = WatcherTx.STATES.NEW_CONFIRMATION;
     } else if (txState === WatcherTx.STATES.CONFIRMED) {
       this.title = `3 / 3 ${t('Payment Successful')}`;
-      this.status = 'confirmed';
     }
-    // status = 'detected';
 
     const { isMobile } = this.state;
     const { isModalOpen, onCloseModal } = this.props;

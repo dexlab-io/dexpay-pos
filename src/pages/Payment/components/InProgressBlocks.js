@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Trans } from 'react-i18next';
 import { find } from 'lodash';
-
+import WatcherTx from '../../../class/WatcherTx';
 import loadingImg from '../../../assets/images/loading.gif';
 import checkImg from '../../../assets/images/checkmark.png';
 
@@ -45,11 +45,11 @@ const InProgressBlocks = ({
   return (
     <Container>
       <div>
-        {status === 'detected' ||
-          (status === 'NEW_CONFIRMATION' && (
+        {status === WatcherTx.STATES.DETECTED ||
+          (status === WatcherTx.STATES.NEW_CONFIRMATION && (
             <LoadingImage src={loadingImg} alt="loading" />
           ))}
-        {status === 'confirmed' && (
+        {status === WatcherTx.STATES.CONFIRMED && (
           <CheckImage src={checkImg} alt="completed" />
         )}
       </div>

@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 
 import CryptoAmount from './CryptoAmount';
 import FiatAmount from './FiatAmount';
+import WatcherTx from '../../../class/WatcherTx';
 import AddTip from './AddTip';
 import QrCode from './QrCode';
 import AddressClipboard from './AddressClipboard';
@@ -75,14 +76,14 @@ class PaymentDetails extends React.Component {
         <Header>
           <Logo src={dexLogo} alt="Dexpay logo" />
         </Header>
-        {status === 'pending' && (
+        {status === WatcherTx.STATES.PENDING && (
           <AddTip value={0} handleChange={addTipPayment} />
         )}
         <CryptoAmount
           cryptoCurrency={selectedCurrency}
           cryptoValue={valueCrypto}
           fiatAmount={parseFloat(valueFiat)}
-          hasSelection={status === 'pending'}
+          hasSelection={status === WatcherTx.STATES.PENDING}
           handleChange={option => {
             this.setState({ selectedCurrency: option.value });
           }}
@@ -91,13 +92,13 @@ class PaymentDetails extends React.Component {
           <Title className="is-family-secondary">{title}</Title>
           <FiatAmount fiatAmount={parseFloat(valueFiat) + tipValue} />
         </FiatContainer>
-        {status === 'pending' && (
+        {status === WatcherTx.STATES.PENDING && (
           <QrCode valueCrypto={valueCrypto[selectedCurrency]} />
         )}
         <Query query={query} fetchPolicy="cache-and-network">
           {({ data }) => (
             <React.Fragment>
-              {status !== 'pending' && (
+              {status !== WatcherTx.STATES.PENDING && (
                 <InProgressBlocks
                   status={status}
                   txHash={txHash}
