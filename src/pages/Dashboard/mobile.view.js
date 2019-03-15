@@ -17,7 +17,7 @@ export default function() {
   // console.log('totalAmount', totalAmount);
 
   return (
-    <Section className="section">
+    <Section className="section whiteBG">
       <div className="container is-fluid">
         <NavTabs
           activeTab={activeTab}

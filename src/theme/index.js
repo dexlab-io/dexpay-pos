@@ -29,6 +29,10 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     height: 100vh;
+    background: #F6F9FC;
+  }
+  .whiteBG {
+    background: #FFF;
   }
   #root {
     height: 100%;

@@ -40,7 +40,7 @@ export default function() {
 
   return (
     <Section className="section">
-      <Container className="container">
+      <Container className="container whiteBG">
         {pos.address ? (
           <React.Fragment>
             <RightSide>

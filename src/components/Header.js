@@ -82,7 +82,7 @@ const Header = props => {
   }
 
   return (
-    <Section className="section">
+    <Section className="whiteBG ">
       <Container className="container">
         <Columns className="columns is-mobile">
           <LeftSide className="column is-one-fifth">
