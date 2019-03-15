@@ -31,7 +31,8 @@ class Payment extends Component {
     tipPercentage: 0,
     tipValue: 0,
     txState: null,
-    txHash: null
+    txHash: null,
+    numConfirmations: 0
   };
 
   async componentDidMount() {
@@ -105,7 +106,8 @@ class Payment extends Component {
     this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
       this.setState({
         txState: data.state,
-        txHash: data.txHash
+        txHash: data.txHash,
+        numConfirmations: data.numConfirmations
       });
 
       if (data.state === WatcherTx.STATES.CONFIRMED) {
@@ -143,6 +145,9 @@ class Payment extends Component {
     } else if (txState === WatcherTx.STATES.DETECTED) {
       this.title = `2 / 3 ${t('Pending Payment')}`;
       this.status = 'detected';
+    } else if (txState === WatcherTx.STATES.NEW_CONFIRMATION) {
+      this.title = `2 / 3 ${t('Pending Payment')}`;
+      this.status = WatcherTx.STATES.NEW_CONFIRMATION;
     } else if (txState === WatcherTx.STATES.CONFIRMED) {
       this.title = `3 / 3 ${t('Payment Successful')}`;
       this.status = 'confirmed';

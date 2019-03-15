@@ -65,7 +65,8 @@ class PaymentDetails extends React.Component {
       watchers,
       status,
       addTipPayment,
-      title
+      title,
+      numConfirmations
     } = this.props;
     const { selectedCurrency } = this.state;
 
@@ -101,6 +102,7 @@ class PaymentDetails extends React.Component {
                   status={status}
                   txHash={txHash}
                   requiredConfirmations={data.requiredConfirmations}
+                  numConfirmations={numConfirmations}
                 />
               )}
               <PaymentInfo>

@@ -29,7 +29,8 @@ export default class WatcherTx {
   static STATES = {
     PENDING: 'PENDING',
     DETECTED: 'DETECTED',
-    CONFIRMED: 'CONFIRMED'
+    CONFIRMED: 'CONFIRMED',
+    NEW_CONFIRMATION: 'NEW_CONFIRMATION'
   };
 
   constructor(network) {
@@ -121,7 +122,8 @@ export default class WatcherTx {
       cb({
         state: WatcherTx.STATES.DETECTED,
         tx: trx,
-        txHash
+        txHash,
+        numConfirmations: 0
       });
 
       // Initiate transaction confirmation
@@ -271,11 +273,19 @@ export default class WatcherTx {
 
         cb({
           state: WatcherTx.STATES.CONFIRMED,
-          txHash
+          txHash,
+          numConfirmations: trxConfirmations
         });
 
         return;
       }
+
+      cb({
+        state: WatcherTx.STATES.NEW_CONFIRMATION,
+        txHash,
+        numConfirmations: trxConfirmations
+      });
+
       // Recursive call
       // eslint-disable-next-line consistent-return
       return this.confirmTransaction(txHash, confirmations, cb);

@@ -34,20 +34,28 @@ const Count = styled.div`
   margin-bottom: 10px;
 `;
 
-const InProgressBlocks = ({ status, txHash, requiredConfirmations }) => {
+const InProgressBlocks = ({
+  status,
+  txHash,
+  requiredConfirmations,
+  numConfirmations
+}) => {
   const selectedToken = find(requiredConfirmations, { token: 'xdai' });
 
   return (
     <Container>
       <div>
-        {status === 'detected' && (
-          <LoadingImage src={loadingImg} alt="loading" />
-        )}
+        {status === 'detected' ||
+          (status === 'NEW_CONFIRMATION' && (
+            <LoadingImage src={loadingImg} alt="loading" />
+          ))}
         {status === 'confirmed' && (
           <CheckImage src={checkImg} alt="completed" />
         )}
       </div>
-      <Count status={status}>{selectedToken.confirmations}</Count>
+      <Count status={status}>
+        {numConfirmations}/{selectedToken.confirmations}
+      </Count>
       <div>
         <Trans>Blocks Verified</Trans>
       </div>
