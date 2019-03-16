@@ -13,13 +13,13 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const FiatContainer = styled.div`
-  padding: 10px 10px 10px 10px;
-  border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
-  text-align: center;
-`;
+// const FiatContainer = styled.div`
+//   padding: 10px 10px 10px 10px;
+//   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
+//   text-align: center;
+// `;
 
-const Title = styled.span``;
+// const Title = styled.span``;
 
 const PaymentInfo = styled.div`
   padding: 12px 12px;
@@ -72,15 +72,15 @@ class Tip extends Component {
   }
 
   render() {
-    const { txState } = this.state;
-    let title = '';
-    if (txState === WatcherTx.STATES.PENDING) {
-      title = `1 / 3 Awaiting Payment`;
-    } else if (txState === WatcherTx.STATES.DETECTED) {
-      title = `2 / 3 Pending Payment`;
-    } else if (txState === WatcherTx.STATES.CONFIRMED) {
-      title = `3 / 3 Payment Successful`;
-    }
+    // const { txState } = this.state;
+    // let title = '';
+    // if (txState === WatcherTx.STATES.PENDING) {
+    //   title = `1 / 3 Awaiting Payment`;
+    // } else if (txState === WatcherTx.STATES.DETECTED) {
+    //   title = `2 / 3 Pending Payment`;
+    // } else if (txState === WatcherTx.STATES.CONFIRMED) {
+    //   title = `3 / 3 Payment Successful`;
+    // }
     
     return this.props.active && (
       <Container>
@@ -88,9 +88,9 @@ class Tip extends Component {
           cryptoValue={{dai: ''}}
           hasSelection={true}
         />
-        <FiatContainer>
-          <Title className="is-family-secondary">{title}</Title>
-        </FiatContainer>
+        {/* <FiatContainer> */}
+        {/*   <Title className="is-family-secondary">{title}</Title> */}
+        {/* </FiatContainer> */}
         <QrCode valueCrypto="" noValue={true} />
         <Query query={store.queries.pos} fetchPolicy="cache">
           {({ data }) => (
