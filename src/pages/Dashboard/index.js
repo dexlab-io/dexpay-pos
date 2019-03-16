@@ -150,7 +150,7 @@ class Dashboard extends Component {
           numberOfPieces={117}
           wind={-0.01}
           gravity={0.04}
-          colors="['#2EDFB7' '#E25050' '#78B4E5' '#FFEE66' '#FFAA22' '#BB66CC' '#CCDD33' '#BBBBBB']"
+          colors={['#2EDFB7', '#E25050', '#78B4E5', '#FFEE66', '#FFAA22', '#BB66CC', '#CCDD33', '#BBBBBB']}
         />
       </Fragment>
     );
