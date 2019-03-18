@@ -130,6 +130,13 @@ const Header = props => {
                     >
                       Recent Transactions
                     </MenuItem>
+                    <MenuItem
+                      className={`navbar-item ${activeNavItem ===
+                        'tip' && 'is-active'}`}
+                      onClick={() => onNavItemClick('tip')}
+                    >
+                      Tip
+                    </MenuItem>
                   </div>
                 </div>
               </Nav>

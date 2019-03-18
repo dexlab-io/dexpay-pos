@@ -14,17 +14,24 @@ const Container = styled.div`
 
 class QrCode extends React.Component {
   state = {
-    address: null
+    address: null,
+    noValue: false,
   };
 
   componentDidMount() {
     store.fetch.pos().subscribe(res => {
       this.setState({ address: res.data.pos.address });
     });
+    if(this.props.noValue) {
+      this.setState({ noValue: this.props.noValue });
+    }
   }
 
   getQrData(value) {
     const { address } = this.state;
+    if(this.state.noValue) {
+      return `ethereum:${address}@100`;
+    }
     return `ethereum:${address}@100?value=${value}e18`;
   }
 
@@ -45,7 +52,8 @@ QrCode.propTypes = {
 };
 
 QrCode.propTypes = {
-  valueCrypto: PropTypes.string.isRequired
+  valueCrypto: PropTypes.string.isRequired,
+  noValue: PropTypes.bool,
 };
 
 export default QrCode;

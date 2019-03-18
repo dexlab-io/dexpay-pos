@@ -6,6 +6,7 @@ import GenerateBillBtn from './components/GenerateBillBtn';
 import NumberInput from './components/Keypad/NumberInput';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
+import Tip from './components/Tip';
 
 const Section = styled.div`
   padding: 0.5rem 1.5rem;
@@ -20,7 +21,7 @@ export default function() {
       <div className="container is-fluid">
         <NavTabs
           activeTab={activeTab}
-          onChange={tab => this.setState({ activeTab: tab })}
+          onChange={this.handleTabChange}
         />
         {pos.address ? (
           <div>
@@ -35,6 +36,10 @@ export default function() {
               </React.Fragment>
             )}
             {activeTab === 'recentPayments' && <RecentPayments />}
+            <Tip
+              active={activeTab === 'tip'}
+              onTipReceived={this.onTipReceived}
+            />
           </div>
         ) : (
           <div>Pos address is empty</div>

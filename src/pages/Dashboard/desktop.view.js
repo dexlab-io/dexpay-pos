@@ -6,6 +6,7 @@ import GenerateBillBtn from './components/GenerateBillBtn';
 import Keypad from './components/Keypad';
 import RecentPayments from './components/RecentPayments';
 import ProductItems from './components/ProductItems';
+import Tip from './components/Tip';
 
 const Section = styled.div`
   grid-area: content;
@@ -61,12 +62,26 @@ export default function() {
                   }
                 />
               )}
+              {activeTab === 'tip' && (
+                <RecentPayments
+                  type="tips"
+                  txHashes={this.state.tipHashes}
+                />
+              )}
             </RightSide>
             <LeftSide>
+              {activeTab !== 'tip' && (
               <NumberWrapper>
                 <NumberInput value={totalAmount} />
               </NumberWrapper>
+              )}
+              {activeTab !== 'tip' && (
               <GenerateBillBtn handlePay={this.handlePay} />
+              )}
+              <Tip
+                active={activeTab === 'tip'}
+                onTipReceived={this.onTipReceived}
+              />
             </LeftSide>
           </React.Fragment>
         ) : (

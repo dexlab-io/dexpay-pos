@@ -75,7 +75,7 @@ export default class WatcherTx {
     if (!toValid) return false;
 
     const walletToValid = trx.to.toLowerCase() === recipient.toLowerCase();
-    const amountValid =
+    const amountValid = total === null ||
       web3Http.utils.toWei(total.toString(), 'ether') === trx.value;
 
     return toValid && amountValid && walletToValid;
