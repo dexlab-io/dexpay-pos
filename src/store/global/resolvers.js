@@ -4,7 +4,6 @@ import Web3 from 'web3';
 import swal from 'sweetalert';
 import qs from 'qs';
 
-import EthereumHDWallet from '../../class/ethereum/EthereumHDWallet';
 import { getTokenPrice } from '../../utils/Coingecko';
 
 const fetchExchangeRates = async (_, variables, { cache }) => {
@@ -57,31 +56,13 @@ const resolvers = {
   Mutation: {
     initApp: async (_, variables, { cache }) => {
       const params = qs.parse(window.location.search.slice(1));
-      const wallet = new EthereumHDWallet();
-      await wallet.setWeb3();
 
-      // check if token already in store
-      const data = cache.readQuery({
-        query: gql`
-          query WalletAddress {
-            walletAddress @client
+      if (params.posAddress && checkValidAddress(params.posAddress)) {
+        cache.writeData({
+          data: {
+            walletAddress: params.posAddress,
+            walletAddressSource: 'getQuery'
           }
-        `
-      });
-
-      const metaMaskAddress = wallet.getAddress();
-      // update cache
-      if (
-        metaMaskAddress &&
-        checkValidAddress(metaMaskAddress) &&
-        data.walletAddress === null
-      ) {
-        cache.writeData({
-          data: { walletAddress: metaMaskAddress, source: 'web3js' }
-        });
-      } else if (params.posAddress && checkValidAddress(params.posAddress)) {
-        cache.writeData({
-          data: { walletAddress: params.posAddress, source: 'getQuery' }
         });
       }
 
@@ -157,17 +138,12 @@ const resolvers = {
     updateWalletAddress: (_, variables, { cache }) => {
       // update cache
       const { address, source } = variables;
-      const data = {};
-      if (source) {
-        data.walletAddressSource = source;
-      }
 
       if (checkValidAddress(address)) {
         cache.writeData({
           data: {
-            ...data,
             walletAddress: variables.address,
-            source: 'manualInput'
+            walletAddressSource: source || 'manualInput'
           }
         });
       }

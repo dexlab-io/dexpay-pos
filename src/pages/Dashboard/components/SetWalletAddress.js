@@ -1,13 +1,15 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+
 import WalletAddressForm from '../../Settings/components/WalletAddressForm';
 import logo from '../../../assets/images/dex-logo-large.png';
-import client, { persistor } from '../../../utils/apolloClient';
+import client from '../../../utils/apolloClient';
+import EthereumHDWallet from '../../../class/ethereum/EthereumHDWallet';
 
 const mutation = gql`
-  mutation updateWalletAddress($address: String!) {
-    updateWalletAddress(address: $address) @client
+  mutation updateWalletAddress($address: String!, $source: String) {
+    updateWalletAddress(address: $address, source: $source) @client
   }
 `;
 
@@ -37,12 +39,6 @@ const Logo = styled.img`
   margin-bottom: 30px;
 `;
 
-const initAppMutation = gql`
-  mutation initApp {
-    initApp @client
-  }
-`;
-
 class SetWalletAddress extends React.Component {
   handleAddressUpdate = data => {
     client.mutate({
@@ -51,12 +47,17 @@ class SetWalletAddress extends React.Component {
     });
   };
 
-  useMetamask = async () => {
-    await persistor.restore();
-    this.client = client;
-    await this.client.mutate({
-      mutation: initAppMutation
-    });
+  handleUseMetamask = async () => {
+    const wallet = new EthereumHDWallet();
+    await wallet.setWeb3();
+    const metaMaskAddress = wallet.getAddress();
+    // update cache
+    if (metaMaskAddress) {
+      client.mutate({
+        mutation,
+        variables: { address: metaMaskAddress, source: 'web3js' }
+      });
+    }
   };
 
   render() {
@@ -79,7 +80,7 @@ class SetWalletAddress extends React.Component {
         {window.web3 ? (
           <Button
             type="button"
-            onClick={() => this.useMetamask()}
+            onClick={this.handleUseMetamask}
             className="button is-large is-black"
           >
             Connect with METAMASK
