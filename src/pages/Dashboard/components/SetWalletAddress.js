@@ -3,9 +3,10 @@ import gql from 'graphql-tag';
 import styled from 'styled-components';
 
 import WalletAddressForm from '../../Settings/components/WalletAddressForm';
-import logo from '../../../assets/images/dex-logo-large.png';
 import client from '../../../utils/apolloClient';
 import EthereumHDWallet from '../../../class/ethereum/EthereumHDWallet';
+import logo from '../../../assets/images/dex-logo-large.png';
+import metaMaskLogo from '../../../assets/images/metamask-logo.png';
 
 const mutation = gql`
   mutation updateWalletAddress($address: String!, $source: String) {
@@ -31,12 +32,20 @@ const OrText = styled.p`
 `;
 const Button = styled.button`
   margin: 10px 0px;
+  padding-left: 2em;
+  padding-right: 2em;
 `;
 
 const Logo = styled.img`
   width: 124px;
   height: auto;
   margin-bottom: 30px;
+`;
+
+const MetaMaskLogo = styled.img`
+  width: 23px;
+  height: auto;
+  margin-right: 12px;
 `;
 
 class SetWalletAddress extends React.Component {
@@ -81,9 +90,10 @@ class SetWalletAddress extends React.Component {
           <Button
             type="button"
             onClick={this.handleUseMetamask}
-            className="button is-large is-black"
+            className="button is-large"
           >
-            Connect with METAMASK
+            <MetaMaskLogo src={metaMaskLogo} alt="Metamask Logo" />
+            METAMASK
           </Button>
         ) : null}
 
