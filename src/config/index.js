@@ -4,16 +4,12 @@ export default {
   APP_VERSION: '0.0.1',
   siteName: 'Dexpay',
   siteUrl: 'https://dexpay.me',
-  graphQlUri: 'https://dexpay-graphql.now.sh/',
+  // graphQlUri: 'https://dexpay-graphql.now.sh/',
+  graphQlUri: 'http://localhost:4000/',
   logo: '',
   fbAppID: '',
   twitter: '',
   posAddress: '',
-
-  // currency: {
-  //   symbol: '€',
-  //   id: 'eur'
-  // },
 
   defaultHDpathEthereum: "m/44'/60'/0'/0/0", // Compatible with Jaxx, Metamask, Exodus, imToken, TREZOR (ETH) & Digital Bitbox
   confirmationNeeded: 1,

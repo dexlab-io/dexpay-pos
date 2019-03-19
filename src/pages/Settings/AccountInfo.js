@@ -49,7 +49,7 @@ class AccountInfo extends React.Component {
     apolloClient
       .mutate({
         mutation,
-        variables: { data }
+        variables: data
       })
       .then(() => {
         swal('Success!', 'Account info updated!', 'success');

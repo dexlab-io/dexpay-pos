@@ -7,8 +7,6 @@ import { find } from 'lodash';
 import apolloClient from '../../utils/apolloClient';
 import WatcherTx from '../../class/WatcherTx';
 import { checkWindowSize } from '../../utils/helpers';
-import config from '../../config';
-import { getTokenPrice } from '../../utils/Coingecko';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
 import Seo from '../../components/Seo';
