@@ -51,7 +51,7 @@ class Layout extends React.Component {
     const { sidebarOpen } = this.state;
 
     return (
-      <Container>
+      <Container className="my-container">
         <Helmet title={config.siteName} />
         <Query query={query} fetchPolicy="cache-and-network">
           {({ data, loading, error }) => {

@@ -68,7 +68,7 @@ class Register extends React.Component {
   }
 
   onRegisterSuccess = async (cache, { data: { register } }) => {
-    console.log('onRegisterSuccess', register);
+    // console.log('onRegisterSuccess', register);
     // store token in local storage
     await window.localStorage.setItem('token', register.jwt);
     window.location.replace('/dashboard');
@@ -86,8 +86,12 @@ class Register extends React.Component {
             <Mutation
               mutation={registerMutation}
               update={this.onRegisterSuccess}
-              onError={() => {
-                swal('Issue!', 'Invalid email or password', 'warning');
+              onError={error => {
+                swal(
+                  'Issue!',
+                  error.message.replace('GraphQL error: ', ''),
+                  'warning'
+                );
               }}
             >
               {register => (

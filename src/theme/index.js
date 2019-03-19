@@ -66,4 +66,11 @@ export const GlobalStyle = createGlobalStyle`
     border: 2px solid #000000 !important;
     background-color: #fff !important;
   }
+  .my-container > div > div {
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+  }
+  .my-container > div > div::-webkit-scrollbar {
+    display: none;
+  }
 `;

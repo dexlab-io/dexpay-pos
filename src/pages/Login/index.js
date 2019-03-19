@@ -88,8 +88,12 @@ class Login extends React.Component {
             <Mutation
               mutation={loginMutation}
               update={this.onLoginSuccess}
-              onError={() => {
-                swal('Issue!', 'Invalid email or password', 'warning');
+              onError={error => {
+                swal(
+                  'Issue!',
+                  error.message.replace('GraphQL error: ', ''),
+                  'warning'
+                );
               }}
             >
               {login => (
