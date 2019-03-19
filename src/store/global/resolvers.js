@@ -1,10 +1,42 @@
 import gql from 'graphql-tag';
-import { indexOf, findIndex } from 'lodash';
+import { indexOf, findIndex, map } from 'lodash';
 import Web3 from 'web3';
 import swal from 'sweetalert';
 import qs from 'qs';
 
 import EthereumHDWallet from '../../class/ethereum/EthereumHDWallet';
+import { getTokenPrice } from '../../utils/Coingecko';
+
+const fetchExchangeRates = async (_, variables, { cache }) => {
+  // check if token already in store
+  const data = cache.readQuery({
+    query: gql`
+      query AcceptedTokens {
+        acceptedTokens @client
+      }
+    `
+  });
+
+  const exchangeRates = await new Promise(resolve => {
+    data.acceptedTokens.map(async token => {
+      const fiat = [];
+      const prices = await getTokenPrice(token === 'xdai' ? 'dai' : token);
+      map(prices, (price, currency) => {
+        fiat.push({
+          __typename: 'FiatRates',
+          currency,
+          price
+        });
+      });
+      resolve({ __typename: 'ExchangeRates', token, fiat });
+    });
+  });
+
+  // console.log('exchangeRates', exchangeRates);
+  cache.writeData({
+    data: { exchangeRates }
+  });
+};
 
 const checkValidAddress = address => {
   const web3 = new Web3();
@@ -30,7 +62,7 @@ const resolvers = {
       // check if token already in store
       const data = cache.readQuery({
         query: gql`
-          query AcceptedTokens {
+          query WalletAddress {
             walletAddress @client
           }
         `
@@ -57,6 +89,11 @@ const resolvers = {
       cache.writeData({
         data: { isLoggedIn: !!token }
       });
+
+      // fetch exchange rates, every 3 seconds
+      setInterval(() => {
+        fetchExchangeRates(_, variables, { cache });
+      }, 3000);
 
       return true;
     },

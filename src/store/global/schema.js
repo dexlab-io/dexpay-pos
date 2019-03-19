@@ -10,12 +10,23 @@ const typeDefs = `
     confirmations: Int!
   }
 
+  type FiatRates {
+    currency: String!
+    price: Int!
+  }
+
+  type ExchangeRates {
+    token: String!
+    fiat: [FiatRates]
+  }
+
   type Query {
     currency: String!
     acceptedTokens: [String!]
     requiredConfirmations: [Confirmation!]
     walletAddress: String
     walletAddressSource: WalletAddressSource
+    exchangeRates: [ExchangeRates]
   }
 
   type Mutation {

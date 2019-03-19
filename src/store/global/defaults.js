@@ -5,5 +5,6 @@ export default {
     { token: 'xdai', confirmations: 10, __typename: 'Confirmation' }
   ],
   walletAddress: null,
-  walletAddressSource: null
+  walletAddressSource: null,
+  exchangeRates: []
 };
