@@ -2,6 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { find } from 'lodash';
+import swal from 'sweetalert';
 
 import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
@@ -29,6 +30,7 @@ class WalletAddress extends React.Component {
       mutation,
       variables: { address: data.walletAddress }
     });
+    swal('Success!', 'Wallet address updated!', 'success');
   };
 
   render() {
@@ -48,7 +50,6 @@ class WalletAddress extends React.Component {
               {({ data, loading, error }) => {
                 if (loading && !data.currency) return <p>loading...</p>;
                 if (error) return <p>Error: {error.message}</p>;
-                console.log('data', data.walletAddress);
 
                 return (
                   <WalletAddressForm

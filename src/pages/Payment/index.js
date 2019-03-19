@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
 import { withNamespaces } from 'react-i18next';
 import Modal from 'react-responsive-modal';
+import gql from 'graphql-tag';
+import { find } from 'lodash';
 
+import apolloClient from '../../utils/apolloClient';
 import WatcherTx from '../../class/WatcherTx';
 import { checkWindowSize } from '../../utils/helpers';
-import config from '../../config';
-import { getTokenPrice } from '../../utils/Coingecko';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
 import Seo from '../../components/Seo';
-import { store } from '../../store';
+
+const query = gql`
+  {
+    currency @client
+    walletAddress @client
+    exchangeRates @client {
+      token
+      fiat {
+        currency
+        price
+      }
+    }
+  }
+`;
 
 class Payment extends Component {
   state = {
@@ -24,7 +38,10 @@ class Payment extends Component {
     tipPercentage: 0,
     tipValue: 0,
     txState: null,
-    txHash: null
+    txHash: null,
+    numConfirmations: 0,
+    exchangeRates: [],
+    currency: null
   };
 
   async componentDidMount() {
@@ -33,9 +50,12 @@ class Payment extends Component {
       this.setState({ isMobile });
     });
 
-    store.fetch.pos().subscribe(async result => {
+    apolloClient.watchQuery({ query }).subscribe(async result => {
+      // console.log('payment query', result);
       this.setState({
-        posAddress: result.data.pos.address
+        posAddress: result.data.walletAddress,
+        exchangeRates: result.data.exchangeRates,
+        currency: result.data.currency
       });
       await this.updateFiatValue();
     });
@@ -73,22 +93,33 @@ class Payment extends Component {
   };
 
   calculateCryptoValue = async () => {
-    const { valueFiat, tipValue, posAddress } = this.state;
+    const {
+      valueFiat,
+      tipValue,
+      posAddress,
+      exchangeRates,
+      currency
+    } = this.state;
     const { onPaymentReceived } = this.props;
-    const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
-    const pricesEth = await getTokenPrice();
-    const pricesDai = await getTokenPrice('dai');
 
-    const ethValue = (
-      parseFloat(totalIncludingTip) / parseFloat(pricesEth[config.currency.id])
-    ).toFixed(4);
+    const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
+    const pricesDai = find(exchangeRates, {
+      token: 'xdai'
+    });
+    const pricesDaiFiat = find(pricesDai.fiat, {
+      currency: currency.toLowerCase()
+    });
+
+    // const ethValue = (
+    //   parseFloat(totalIncludingTip) / parseFloat(pricesEth[config.currency.id])
+    // ).toFixed(4);
     const daiValue = (
-      parseFloat(totalIncludingTip) / parseFloat(pricesDai[config.currency.id])
+      parseFloat(totalIncludingTip) / parseFloat(pricesDaiFiat.price)
     ).toFixed(2);
 
     await this.setState({
       valueCrypto: {
-        eth: ethValue,
+        //   eth: ethValue,
         dai: daiValue
       }
     });
@@ -97,7 +128,8 @@ class Payment extends Component {
     this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
       this.setState({
         txState: data.state,
-        txHash: data.txHash
+        txHash: data.txHash,
+        numConfirmations: data.numConfirmations
       });
 
       if (data.state === WatcherTx.STATES.CONFIRMED) {
@@ -127,19 +159,17 @@ class Payment extends Component {
     const { txState } = this.state;
     const { t } = this.props;
     this.title = '';
-    this.status = null;
+    this.status = txState;
 
     if (txState === WatcherTx.STATES.PENDING) {
       this.title = `1 / 3 ${t('Awaiting Payment')}`;
-      this.status = 'pending';
     } else if (txState === WatcherTx.STATES.DETECTED) {
       this.title = `2 / 3 ${t('Pending Payment')}`;
-      this.status = 'detected';
+    } else if (txState === WatcherTx.STATES.NEW_CONFIRMATION) {
+      this.title = `2 / 3 ${t('Pending Payment')}`;
     } else if (txState === WatcherTx.STATES.CONFIRMED) {
       this.title = `3 / 3 ${t('Payment Successful')}`;
-      this.status = 'confirmed';
     }
-    // status = 'detected';
 
     const { isMobile } = this.state;
     const { isModalOpen, onCloseModal } = this.props;

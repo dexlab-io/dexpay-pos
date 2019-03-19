@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { truncateHash, formatCurrency } from '../../../../utils/helpers';
+import { truncateHash } from '../../../../utils/helpers';
 import cryptoIcon from '../../../../assets/dummy/crypto-icon.png';
+import FormatCurrency from '../../../../components/FormatCurrency';
 
 const Container = styled.a`
   padding-left: 1.5rem;
@@ -34,7 +35,9 @@ const PaymentItem = ({ payment }) => (
       </div>
     </div>
     <div className="media-right">
-      <small>{formatCurrency(payment.value)}</small>
+      <small>
+        <FormatCurrency value={payment.value} />
+      </small>
     </div>
   </Container>
 );

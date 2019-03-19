@@ -4,16 +4,6 @@ import { persistor } from '../../utils/apolloClient';
 
 const resolvers = {
   Mutation: {
-    toggleOnline: (_, variables, { cache }) => {
-      const { isOnline } = variables.input;
-      // console.log('toggleIsLoggedIn', isLoggedIn);
-      const data = {
-        isOnline
-      };
-      // update local store
-      cache.writeData({ data });
-      return isOnline;
-    },
     toggleLoggedIn: (_, variables, { cache }) => {
       const { isLoggedIn } = variables.input;
       const data = {
@@ -53,14 +43,6 @@ const resolvers = {
 
       window.localStorage.clear();
       await timeout(600);
-
-      return true;
-    },
-    updateCounter: (_, variables, { cache }) => {
-      // update cache
-      console.log('variables', variables);
-      // const data = cache.readyData({ gql`counter` });
-      cache.writeData({ data: { counter: variables.number } });
 
       return true;
     },

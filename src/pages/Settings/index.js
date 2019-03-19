@@ -20,26 +20,43 @@ const ItemRightIcon = styled.i`
   right: 2px;
 `;
 
-const Settings = props => {
-  const { history } = props;
+class Settings extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <Layout header={{ isVisible: false }}>
-      <Seo title="Settings" description="POS System" />
-      <div className="section">
-        <div className="container">
-          <SettingsHeader history={history} onClose={() => history.push('/')} />
-          {settingsItems.map(item => (
-            <NavItem key={item.id} to={item.linkTo}>
-              <SettingsEmoji bgColor={item.bgColor} emoji={item.emoji} />
-              <ItemTitle>{item.title}</ItemTitle>
-              <ItemRightIcon className="fas fa-angle-right" />
-            </NavItem>
-          ))}
+    const token = window.localStorage.getItem('token');
+    this.state = {
+      isLoggedIn: !!token
+    };
+  }
+
+  render() {
+    const { history } = this.props;
+    const { isLoggedIn } = this.state;
+
+    return (
+      <Layout header={{ isVisible: false }}>
+        <Seo title="Settings" description="POS System" />
+        <div className="section">
+          <div className="container">
+            <SettingsHeader history={history} />
+            {settingsItems.map(item => {
+              if (!isLoggedIn && item.isPrivate) {
+                return null;
+              }
+              return (
+                <NavItem key={item.id} to={item.linkTo}>
+                  <SettingsEmoji bgColor={item.bgColor} emoji={item.emoji} />
+                  <ItemTitle>{item.title}</ItemTitle>
+                  <ItemRightIcon className="fas fa-angle-right" />
+                </NavItem>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </Layout>
-  );
-};
+      </Layout>
+    );
+  }
+}
 
 export default Settings;

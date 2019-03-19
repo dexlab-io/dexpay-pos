@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-export const elements = { mobileBreakpoint: 800 };
+export const elements = { mobileBreakpoint: 800, ipadBreakpoint: 1024 };
 
 // http://chir.ag/projects/name-that-color/
 export const colors = {
@@ -10,6 +10,7 @@ export const colors = {
 
 const theme = {
   mobileBreakpoint: `${elements.mobileBreakpoint}px`,
+  ipadBreakpoint: `${elements.ipadBreakpoint}px`,
   primaryColor: colors.black,
   secondaryColor: colors.riptide,
   primaryFontFamily: '"Quicksand", sans-serif',
@@ -26,9 +27,16 @@ export default theme;
 
 export const GlobalStyle = createGlobalStyle`
   body {
-		margin: 0;
-  	padding: 0;
+    margin: 0;
+    padding: 0;
     height: 100vh;
+    background: #F3F3F3;
+  }
+  .whiteBG {
+    background: #FFF;
+  }
+  .container {
+    width: 100%;
   }
   #root {
     height: 100%;
@@ -49,5 +57,20 @@ export const GlobalStyle = createGlobalStyle`
       flex-shrink: 0;
       box-shadow: none;
     }
+  }
+
+  .rc-slider-track {
+    background-color: #000000 !important;
+  }
+  .rc-slider-handle {
+    border: 2px solid #000000 !important;
+    background-color: #fff !important;
+  }
+  .my-container > div > div {
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+  }
+  .my-container > div > div::-webkit-scrollbar {
+    display: none;
   }
 `;

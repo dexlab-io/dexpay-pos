@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { findIndex } from 'lodash';
 
-import { formatCurrency } from '../../../utils/helpers';
 import { NumberIncrementer } from '../../../components/elements';
+import FormatCurrency from '../../../components/FormatCurrency';
 
 const Container = styled.div``;
 
@@ -95,7 +95,9 @@ class ProductItems extends React.Component {
                 {item.name}
               </ItemName>
               <ItemRight>
-                <ItemPrice>{formatCurrency(item.price)}</ItemPrice>
+                <ItemPrice>
+                  <FormatCurrency value={item.price} />
+                </ItemPrice>
                 <ItemQuantitiy>
                   <NumberIncrementer
                     value={initValue}

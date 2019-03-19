@@ -3,10 +3,19 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import Sidebar from 'react-sidebar';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import config from '../config';
 import Header from './Header';
 import MySidebar from './Sidebar';
+
+const query = gql`
+  {
+    isLoggedIn @client
+    walletAddress @client
+  }
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -42,24 +51,40 @@ class Layout extends React.Component {
     const { sidebarOpen } = this.state;
 
     return (
-      <Container>
+      <Container className="my-container">
         <Helmet title={config.siteName} />
-        <Sidebar
-          sidebar={<MySidebar />}
-          shadow={false}
-          open={sidebarOpen}
-          onSetOpen={this.onSetSidebarOpen}
-          styles={{ sidebar: { background: 'white', minWidth: ' 340px' } }}
-        >
-          <Wrapper hasHeader={header.isVisible || true}>
-            <Header
-              leftBtnClick={() => this.onSetSidebarOpen(true)}
-              activeNavItem={activeNavItem}
-              {...header}
-            />
-            {children}
-          </Wrapper>
-        </Sidebar>
+        <Query query={query} fetchPolicy="cache-and-network">
+          {({ data, loading, error }) => {
+            if (loading) return <p>Loading...</p>;
+            if (error) return <p>Error: {error.message}</p>;
+            // console.log('Layout', data);
+
+            return (
+              <Sidebar
+                sidebar={<MySidebar isLoggedIn={data.isLoggedIn} />}
+                shadow={false}
+                open={sidebarOpen}
+                onSetOpen={this.onSetSidebarOpen}
+                styles={{
+                  sidebar: { background: 'white', minWidth: ' 340px' }
+                }}
+              >
+                <Wrapper hasHeader={header.isVisible || true}>
+                  {data.walletAddress !== null ? (
+                    <Header
+                      leftBtnClick={() => this.onSetSidebarOpen(true)}
+                      activeNavItem={activeNavItem}
+                      isLoggedIn={data.isLoggedIn}
+                      isReady={data.walletAddress !== null}
+                      {...header}
+                    />
+                  ) : null}
+                  {children}
+                </Wrapper>
+              </Sidebar>
+            );
+          }}
+        </Query>
       </Container>
     );
   }

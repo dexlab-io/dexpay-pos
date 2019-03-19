@@ -2,13 +2,44 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
-
+import styled from 'styled-components';
 import { TextGroup } from '../../../components/elements';
 
-const WalletAddressForm = props => {
-  const { values, errors, handleChange, handleBlur, handleSubmit } = props;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-  return (
+const WalletAddressForm = props => {
+  const {
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    column
+  } = props;
+
+  return column ? (
+    <Form onSubmit={handleSubmit}>
+      <TextGroup
+        name="walletAddress"
+        label="Address"
+        placeholder="Paste or Scan your public address"
+        value={values.walletAddress}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.walletAddress}
+      />
+      <button
+        type="submit"
+        className="button is-black is-uppercase is-large is-fullwidth"
+      >
+        Save
+      </button>
+    </Form>
+  ) : (
     <form onSubmit={handleSubmit}>
       <TextGroup
         name="walletAddress"
@@ -19,6 +50,9 @@ const WalletAddressForm = props => {
         onBlur={handleBlur}
         error={errors.walletAddress}
       />
+      <button type="submit" className="button is-black is-uppercase is-large">
+        Save
+      </button>
     </form>
   );
 };

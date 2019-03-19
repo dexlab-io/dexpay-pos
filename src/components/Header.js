@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { isDesktop } from '../utils/helpers';
 import barsImg from '../assets/images/bars.png';
 import backImg from '../assets/images/back.png';
 import logoImg from '../assets/images/logo.png';
@@ -9,6 +10,9 @@ import logoImg from '../assets/images/logo.png';
 const Section = styled.section`
   grid-area: header;
   padding: 1rem 1.5rem;
+  border-top: ${props => `1px solid ${props.theme.borderColor}`};
+  border-left: ${props => `1px solid ${props.theme.borderColor}`};
+  border-right: ${props => `1px solid ${props.theme.borderColor}`};
   @media only screen and (max-width: ${props => props.theme.mobileBreakpoint}) {
     padding: 0rem 1.5rem;
   }
@@ -73,7 +77,8 @@ const Header = props => {
     title,
     leftBtnClick,
     onNavItemClick,
-    activeNavItem
+    activeNavItem,
+    isReady
   } = props;
 
   if (!isVisible) {
@@ -81,8 +86,8 @@ const Header = props => {
   }
 
   return (
-    <Section className="section">
-      <Container className="container">
+    <Section className={`whiteBG ${isDesktop() ? 'container' : ''}`}>
+      <Container className="">
         <Columns className="columns is-mobile">
           <LeftSide className="column is-one-fifth">
             <LeftLink onClick={leftBtnClick}>
@@ -107,29 +112,34 @@ const Header = props => {
                 <LogoContainer className="navbar-brand">
                   <Logo src={logoImg} alt="Dexpay logo" />
                 </LogoContainer>
+
                 <div className="navbar-menu">
                   <div className="navbar-start">
-                    <MenuItem
-                      className={`navbar-item ${activeNavItem === 'numberPad' &&
-                        'is-active'}`}
-                      onClick={() => onNavItemClick('numberPad')}
-                    >
-                      Number Pad
-                    </MenuItem>
-                    <MenuItem
-                      className={`navbar-item ${activeNavItem ===
-                        'productItems' && 'is-active'}`}
-                      onClick={() => onNavItemClick('productItems')}
-                    >
-                      Product Items
-                    </MenuItem>
-                    <MenuItem
-                      className={`navbar-item ${activeNavItem ===
-                        'recentPayments' && 'is-active'}`}
-                      onClick={() => onNavItemClick('recentPayments')}
-                    >
-                      Recent Transactions
-                    </MenuItem>
+                    {isReady ? (
+                      <React.Fragment>
+                        <MenuItem
+                          className={`navbar-item ${activeNavItem ===
+                            'numberPad' && 'is-active'}`}
+                          onClick={() => onNavItemClick('numberPad')}
+                        >
+                          Number Pad
+                        </MenuItem>
+                        <MenuItem
+                          className={`navbar-item ${activeNavItem ===
+                            'productItems' && 'is-active'}`}
+                          onClick={() => onNavItemClick('productItems')}
+                        >
+                          Product Items
+                        </MenuItem>
+                        <MenuItem
+                          className={`navbar-item ${activeNavItem ===
+                            'recentPayments' && 'is-active'}`}
+                          onClick={() => onNavItemClick('recentPayments')}
+                        >
+                          Recent Transactions
+                        </MenuItem>
+                      </React.Fragment>
+                    ) : null}
                   </div>
                 </div>
               </Nav>
@@ -147,7 +157,8 @@ Header.defaultProps = {
   isVisible: true,
   title: undefined,
   leftBtnClick: () => {},
-  onNavItemClick: () => {}
+  onNavItemClick: () => {},
+  isLoggedIn: false
 };
 
 Header.propTypes = {
@@ -156,7 +167,8 @@ Header.propTypes = {
   isVisible: PropTypes.bool,
   title: PropTypes.string,
   leftBtnClick: PropTypes.func,
-  onNavItemClick: PropTypes.func
+  onNavItemClick: PropTypes.func,
+  isLoggedIn: PropTypes.bool
 };
 
 export default Header;
