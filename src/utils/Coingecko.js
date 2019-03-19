@@ -4,7 +4,6 @@ import axios from 'axios';
 import config from '../config';
 
 export const getTokenPrice = (token = 'ethereum') => {
-  // console.log('currencies', config.currencies);
   const currencies = config.currencies.map(currency => {
     return currency.id.toLowerCase();
   });

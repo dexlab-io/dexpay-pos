@@ -18,7 +18,7 @@ const fetchExchangeRates = async (_, variables, { cache }) => {
   });
 
   const exchangeRates = await new Promise(resolve => {
-    data.acceptedTokens.map(async token => {
+    const ratesPromise = data.acceptedTokens.map(async token => {
       const fiat = [];
       const prices = await getTokenPrice(token === 'xdai' ? 'dai' : token);
       map(prices, (price, currency) => {
@@ -28,8 +28,9 @@ const fetchExchangeRates = async (_, variables, { cache }) => {
           price
         });
       });
-      resolve({ __typename: 'ExchangeRates', token, fiat });
+      return { __typename: 'ExchangeRates', token, fiat };
     });
+    Promise.all(ratesPromise).then(resultData => resolve(resultData));
   });
 
   // console.log('exchangeRates', exchangeRates);

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withNamespaces } from 'react-i18next';
 import Modal from 'react-responsive-modal';
 import gql from 'graphql-tag';
+import { find } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
 import WatcherTx from '../../class/WatcherTx';
@@ -14,7 +15,15 @@ import Seo from '../../components/Seo';
 
 const query = gql`
   {
+    currency @client
     walletAddress @client
+    exchangeRates @client {
+      token
+      fiat {
+        currency
+        price
+      }
+    }
   }
 `;
 
@@ -32,7 +41,9 @@ class Payment extends Component {
     tipValue: 0,
     txState: null,
     txHash: null,
-    numConfirmations: 0
+    numConfirmations: 0,
+    exchangeRates: [],
+    currency: null
   };
 
   async componentDidMount() {
@@ -42,8 +53,11 @@ class Payment extends Component {
     });
 
     apolloClient.watchQuery({ query }).subscribe(async result => {
+      // console.log('payment query', result);
       this.setState({
-        posAddress: result.data.walletAddress
+        posAddress: result.data.walletAddress,
+        exchangeRates: result.data.exchangeRates,
+        currency: result.data.currency
       });
       await this.updateFiatValue();
     });
@@ -81,23 +95,33 @@ class Payment extends Component {
   };
 
   calculateCryptoValue = async () => {
-    const { valueFiat, tipValue, posAddress } = this.state;
+    const {
+      valueFiat,
+      tipValue,
+      posAddress,
+      exchangeRates,
+      currency
+    } = this.state;
     const { onPaymentReceived } = this.props;
 
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
-    const pricesEth = await getTokenPrice();
-    const pricesDai = await getTokenPrice('dai');
+    const pricesDai = find(exchangeRates, {
+      token: 'xdai'
+    });
+    const pricesDaiFiat = find(pricesDai.fiat, {
+      currency: currency.toLowerCase()
+    });
 
-    const ethValue = (
-      parseFloat(totalIncludingTip) / parseFloat(pricesEth[config.currency.id])
-    ).toFixed(4);
+    // const ethValue = (
+    //   parseFloat(totalIncludingTip) / parseFloat(pricesEth[config.currency.id])
+    // ).toFixed(4);
     const daiValue = (
-      parseFloat(totalIncludingTip) / parseFloat(pricesDai[config.currency.id])
+      parseFloat(totalIncludingTip) / parseFloat(pricesDaiFiat.price)
     ).toFixed(2);
 
     await this.setState({
       valueCrypto: {
-        eth: ethValue,
+        //   eth: ethValue,
         dai: daiValue
       }
     });
