@@ -20,15 +20,23 @@ const query = gql`
       store {
         name
       }
+      profile {
+        fullName
+      }
     }
   }
 `;
 
 const mutation = gql`
-  mutation updateMe($shopName: String!, $email: String!) {
-    updateMe(input: { shopName: $shopName, email: $email }) @client {
+  mutation updateMe($storeName: String, $email: String, $fullName: String) {
+    updateMe(
+      input: { storeName: $storeName, email: $email, fullName: $fullName }
+    ) {
       id
       email
+      profile {
+        fullName
+      }
       store {
         name
       }
@@ -38,8 +46,17 @@ const mutation = gql`
 
 class AccountInfo extends React.Component {
   handleUpdate = data => {
-    apolloClient.mutate({ mutation, variables: { data } });
-    swal('Success!', 'Account info updated!', 'success');
+    apolloClient
+      .mutate({
+        mutation,
+        variables: { data }
+      })
+      .then(() => {
+        swal('Success!', 'Account info updated!', 'success');
+      })
+      .catch(() => {
+        swal('Issue!', 'Invalid form input data.', 'warning');
+      });
   };
 
   render() {

@@ -11,13 +11,22 @@ const AccountInfoForm = props => {
   return (
     <form onSubmit={handleSubmit}>
       <TextGroup
-        name="shopName"
-        label="Shop Name"
-        placeholder="John's Shop"
-        value={values.shopName}
+        name="fullName"
+        label="Your Name"
+        placeholder="John Doe"
+        value={values.fullName}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={errors.shopName}
+        error={errors.fullName}
+      />
+      <TextGroup
+        name="storeName"
+        label="Store Name"
+        placeholder="John's Shop"
+        value={values.storeName}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.storeName}
       />
       <TextGroup
         name="email"
@@ -78,14 +87,15 @@ AccountInfoForm.propTypes = {
 
 export default withFormik({
   mapPropsToValues: props => ({
-    shopName: props.initialValues.store.name || '',
+    fullName: props.initialValues.profile.fullName || '',
+    storeName: props.initialValues.store.name || '',
     email: props.initialValues.email || '',
     currentPassword: '',
     newPassword: '',
     confirmNewPassword: ''
   }),
   validationSchema: yup.object().shape({
-    shopName: yup.string().required('Shop name is required!'),
+    storeName: yup.string().required('Store name is required!'),
     email: yup.string().required('Email is required!')
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
