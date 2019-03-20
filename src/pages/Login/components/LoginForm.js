@@ -61,8 +61,14 @@ export default withFormik({
     password: ''
   }),
   validationSchema: yup.object().shape({
-    email: yup.string().required('Email is required!'),
-    password: yup.string().required('Password is required!')
+    email: yup
+      .string()
+      .required('Email is required')
+      .email('Required valid email address'),
+    password: yup
+      .string()
+      .required('Password is required!')
+      .min(6, 'Min 6 charactes required')
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
     // console.log('handle submit', values, props);

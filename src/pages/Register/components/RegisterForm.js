@@ -61,7 +61,10 @@ export default withFormik({
     password: ''
   }),
   validationSchema: yup.object().shape({
-    email: yup.string().required('Email is required'),
+    email: yup
+      .string()
+      .required('Email is required')
+      .email('Required valid email address'),
     password: yup
       .string()
       .required('Password is required')
