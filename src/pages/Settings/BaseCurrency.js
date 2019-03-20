@@ -21,6 +21,9 @@ const query = gql`
 const mutation = gql`
   mutation updateCurrency($currency: String!) {
     updateCurrency(currency: $currency) @client
+    updateMe(input: { walletCurrency: $currency }) {
+      id
+    }
   }
 `;
 

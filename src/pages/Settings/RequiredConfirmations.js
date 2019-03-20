@@ -28,6 +28,9 @@ const mutation = gql`
       token
       confirmations
     }
+    updateMe(input: { tokenName: $token, tokenConfirmations: $confirmations }) {
+      id
+    }
   }
 `;
 

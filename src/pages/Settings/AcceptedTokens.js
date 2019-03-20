@@ -20,6 +20,9 @@ const query = gql`
 const mutation = gql`
   mutation toggleAcceptedTokens($token: String!, $isAccepted: Boolean!) {
     toggleAcceptedTokens(token: $token, isAccepted: $isAccepted) @client
+    updateMe(input: { tokenName: $token, tokenAccepted: $isAccepted }) {
+      id
+    }
   }
 `;
 

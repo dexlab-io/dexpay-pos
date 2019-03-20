@@ -147,7 +147,6 @@ const resolvers = {
           }
         });
       }
-
       return variables.address;
     }
   }
