@@ -111,7 +111,7 @@ class Login extends React.Component {
             </Mutation>
             <OrText>OR</OrText>
             <ButtonText to="/">Create a new account</ButtonText>
-            <ButtonText to="/login">Forgot password?</ButtonText>
+            <ButtonText to="/forgot-password">Forgot password?</ButtonText>
           </Container>
         </div>
       </Layout>

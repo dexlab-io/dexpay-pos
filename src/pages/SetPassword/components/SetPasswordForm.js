@@ -5,7 +5,7 @@ import * as yup from 'yup';
 
 import { TextGroup } from '../../../components/elements';
 
-const RegisterForm = props => {
+const SetPasswordForm = props => {
   const {
     values,
     errors,
@@ -17,18 +17,6 @@ const RegisterForm = props => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextGroup
-        name="email"
-        label="Email"
-        placeholder="Your email address"
-        value={values.email}
-        onChange={e => {
-          e.target.value = e.target.value.trim();
-          handleChange(e);
-        }}
-        onBlur={handleBlur}
-        error={errors.email}
-      />
       <TextGroup
         type="password"
         name="password"
@@ -44,13 +32,13 @@ const RegisterForm = props => {
         className={`button is-large is-black is-fullwidth ${isSubmitting &&
           'is-loading'}`}
       >
-        CREATE ACCOUNT
+        RESET PASSWORD
       </button>
     </form>
   );
 };
 
-RegisterForm.propTypes = {
+SetPasswordForm.propTypes = {
   values: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
@@ -60,14 +48,9 @@ RegisterForm.propTypes = {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    email: '',
     password: ''
   }),
   validationSchema: yup.object().shape({
-    email: yup
-      .string()
-      .required('Email is required')
-      .email('Required valid email address'),
     password: yup
       .string()
       .required('Password is required')
@@ -85,5 +68,5 @@ export default withFormik({
     props.handleSubmit(values);
     setSubmitting(false);
   },
-  displayName: 'RegisterForm' // helps with React DevTools
-})(RegisterForm);
+  displayName: 'SetPasswordForm' // helps with React DevTools
+})(SetPasswordForm);

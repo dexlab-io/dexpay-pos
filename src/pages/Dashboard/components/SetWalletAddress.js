@@ -11,6 +11,9 @@ import metaMaskLogo from '../../../assets/images/metamask-logo.png';
 const mutation = gql`
   mutation updateWalletAddress($address: String!, $source: String) {
     updateWalletAddress(address: $address, source: $source) @client
+    updateMe(input: { walletAddress: $address }) {
+      id
+    }
   }
 `;
 
@@ -23,6 +26,7 @@ const Container = styled.div`
 const Title = styled.h3`
   font-size: 30px;
   margin-bottom: 20px;
+  text-align: center;
 `;
 const FormContainer = styled.div`
   border-top: 1px solid #d6d6d6;
@@ -71,11 +75,14 @@ class SetWalletAddress extends React.Component {
 
   render() {
     const { isLoggedIn } = this.props;
+
     return (
       <Container>
         <Logo src={logo} alt="Dexpay logo" />
-        <Title>Add an Ethereum Wallet Address</Title>
-        <Title>to use the Point Of Sale</Title>
+        <Title>
+          Add an Ethereum Wallet Address <br />
+          to use the Point Of Sale
+        </Title>
         <FormContainer>
           <WalletAddressForm
             column

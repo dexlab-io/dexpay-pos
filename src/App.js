@@ -12,6 +12,8 @@ import {
   Error404,
   Login,
   Register,
+  ForgotPassword,
+  SetPassword,
   Dashboard,
   Settings,
   AccountInfo,
@@ -54,6 +56,12 @@ class App extends Component {
               <Switch>
                 <Route path="/" exact component={Register} />
                 <Route path="/login" exact component={Login} />
+                <Route
+                  path="/forgot-password"
+                  exact
+                  component={ForgotPassword}
+                />
+                <Route path="/set-password/:token" component={SetPassword} />
                 <Route path="/dashboard" exact component={Dashboard} />
                 <Route path="/settings" exact component={Settings} />
                 <Route

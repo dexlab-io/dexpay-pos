@@ -1,6 +1,8 @@
 import Error404 from './404';
 import Login from './Login';
 import Register from './Register';
+import ForgotPassword from './ForgotPassword';
+import SetPassword from './SetPassword';
 import Dashboard from './Dashboard';
 import Settings from './Settings';
 import AccountInfo from './Settings/AccountInfo';
@@ -14,6 +16,8 @@ export {
   Error404,
   Login,
   Register,
+  ForgotPassword,
+  SetPassword,
   Dashboard,
   Settings,
   AccountInfo,

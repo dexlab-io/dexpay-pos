@@ -22,7 +22,10 @@ const LoginForm = props => {
         label="Email"
         placeholder="Your email address"
         value={values.email}
-        onChange={handleChange}
+        onChange={e => {
+          e.target.value = e.target.value.trim();
+          handleChange(e);
+        }}
         onBlur={handleBlur}
         error={errors.email}
       />
