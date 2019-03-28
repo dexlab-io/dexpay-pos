@@ -47,7 +47,7 @@ class Layout extends React.Component {
   };
 
   render() {
-    const { children, header, activeNavItem } = this.props;
+    const { children, header, activeNavItem, isSlim } = this.props;
     const { sidebarOpen } = this.state;
 
     return (
@@ -58,6 +58,10 @@ class Layout extends React.Component {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
             // console.log('Layout', data);
+
+            if (isSlim) {
+              return <React.Fragment>{children}</React.Fragment>;
+            }
 
             return (
               <Sidebar
@@ -92,13 +96,15 @@ class Layout extends React.Component {
 
 Layout.defaultProps = {
   header: {},
-  activeNavItem: ''
+  activeNavItem: '',
+  isSlim: false
 };
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   header: PropTypes.object,
-  activeNavItem: PropTypes.string
+  activeNavItem: PropTypes.string,
+  isSlim: PropTypes.bool
 };
 
 export default Layout;

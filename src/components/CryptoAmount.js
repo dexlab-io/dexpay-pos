@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Select from 'react-select';
 
-import cryptoIcon from '../../../assets/dummy/crypto-icon.png';
+import cryptoIcon from '../assets/dummy/crypto-icon.png';
 
 const Wrapper = styled.div`
   padding: 10px 75px;

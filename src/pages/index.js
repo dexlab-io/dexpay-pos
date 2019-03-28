@@ -4,6 +4,7 @@ import Register from './Register';
 import ForgotPassword from './ForgotPassword';
 import SetPassword from './SetPassword';
 import Dashboard from './Dashboard';
+import Invoice from './Invoice';
 import Settings from './Settings';
 import AccountInfo from './Settings/AccountInfo';
 import AcceptedTokens from './Settings/AcceptedTokens';
@@ -19,6 +20,7 @@ export {
   ForgotPassword,
   SetPassword,
   Dashboard,
+  Invoice,
   Settings,
   AccountInfo,
   AcceptedTokens,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Textfit } from 'react-textfit';
 
-import FormatCurrency from '../../../components/FormatCurrency';
+import FormatCurrency from './FormatCurrency';
 
 const Container = styled.div`
   font-weight: 300;
