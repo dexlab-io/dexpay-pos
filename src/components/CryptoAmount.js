@@ -50,7 +50,7 @@ class CryptoAmount extends React.Component {
   };
 
   render() {
-    const { cryptoValue, hasSelection } = this.props;
+    const { cryptoValue, hasSelection, style } = this.props;
     const { selectOpen, selectedCrypto } = this.state;
 
     const activeItem = (
@@ -65,7 +65,7 @@ class CryptoAmount extends React.Component {
 
     if (hasSelection) {
       return (
-        <Wrapper>
+        <Wrapper style={style}>
           {selectOpen ? (
             <Select
               value={selectedCrypto}

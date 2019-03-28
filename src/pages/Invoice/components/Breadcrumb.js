@@ -31,20 +31,20 @@ const Text = styled.span`
   margin: 0 10px;
 `;
 
-const Breadcrumb = ({ step, text }) => {
+const Breadcrumb = ({ step, text, goToStep }) => {
   const textNode = <Text>{text}</Text>;
 
   return (
     <Container>
-      <Circle active={step === 1}>
+      <Circle active={step === 1} onClick={() => goToStep(1)}>
         <span>1</span>
       </Circle>
       {step === 1 && textNode}
-      <Circle active={step === 2}>
+      <Circle active={step === 2} onClick={() => goToStep(2)}>
         <span>2</span>
       </Circle>
       {step === 2 && textNode}
-      <Circle active={step === 3}>
+      <Circle active={step === 3} onClick={() => goToStep(3)}>
         <span>3</span>
       </Circle>
       {step === 3 && textNode}
