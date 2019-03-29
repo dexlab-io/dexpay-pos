@@ -44,6 +44,7 @@ class CryptoAmount extends React.Component {
   }
 
   handleChange = option => {
+    console.log('option', option);
     const { handleChange } = this.props;
     this.setState({ selectedCrypto: option.value, selectOpen: false });
     handleChange(option);

@@ -177,7 +177,12 @@ class Payment extends Component {
     return (
       <Modal
         open={isModalOpen}
-        onClose={onCloseModal}
+        onClose={() => {
+          if (this.watcherXdai) {
+            this.watcherXdai.pollingOn = false;
+          }
+          onCloseModal();
+        }}
         center
         showCloseIcon={false}
         styles={{
