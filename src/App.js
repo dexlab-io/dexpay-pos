@@ -16,6 +16,7 @@ import {
   SetPassword,
   Dashboard,
   Invoice,
+  CreateInvoice,
   Settings,
   AccountInfo,
   AcceptedTokens,
@@ -65,6 +66,7 @@ class App extends Component {
                 <Route path="/set-password/:token" component={SetPassword} />
                 <Route path="/dashboard" exact component={Dashboard} />
                 <Route path="/invoice/:id" component={Invoice} />
+                <Route path="/create-invoice" component={CreateInvoice} />
                 <Route path="/settings" exact component={Settings} />
                 <Route
                   path="/settings/account-info"
