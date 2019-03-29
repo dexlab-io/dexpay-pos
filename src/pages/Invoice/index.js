@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import EthereumHDWallet from '../../class/ethereum/EthereumHDWallet';
+import { Loading } from '../../components/elements';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import CryptoAmount from '../../components/CryptoAmount';
@@ -97,6 +100,22 @@ const ButtonLogo = styled.img`
   margin-right: 12px;
 `;
 
+const query = gql`
+  query Invoice($id: String) {
+    invoice(invoiceNumber: $id) {
+      id
+      invoiceNumber
+      fiatAmount
+      fiatCurrency
+      store {
+        id
+        name
+        walletAddress
+      }
+    }
+  }
+`;
+
 class Invoice extends React.Component {
   constructor(props) {
     super(props);
@@ -142,12 +161,23 @@ class Invoice extends React.Component {
 
   render() {
     const { step, walletConnected, isApproved, isSuccessful } = this.state;
+    const { match } = this.props;
+
     let stepText = 'Payment Method';
     if (step === 2) {
       stepText = 'Connect Wallet';
     } else if (step === 3) {
       stepText = 'Recap & Pay';
     }
+
+    const fiatAmount = invoice => (
+      <FiatAmountWrapper>
+        <FiatAmount
+          fiatCurrency={invoice.fiatCurrency}
+          fiatAmount={parseFloat(invoice.fiatAmount)}
+        />
+      </FiatAmountWrapper>
+    );
 
     const cryptoAmount = (
       <CryptoAmount
@@ -172,112 +202,121 @@ class Invoice extends React.Component {
               text={stepText}
               goToStep={stepNumber => this.setState({ step: stepNumber })}
             />
-            <InnerBox>
-              <InnerBoxHeader>
-                <BrandLogo src={starbuckLogo} />
-              </InnerBoxHeader>
-              <InnerBoxContent>
-                {step === 1 && (
-                  <React.Fragment>
-                    <Tag>Total you pay</Tag>
-                    <FiatAmountWrapper>
-                      <FiatAmount fiatAmount={parseFloat('14.50')} />
-                    </FiatAmountWrapper>
-                    {cryptoAmount}
-                    <button
-                      type="submit"
-                      className="button is-black is-large is-fullwidth"
-                      onClick={this.goToStepTwo}
-                    >
-                      CONTINUE
-                    </button>
-                  </React.Fragment>
-                )}
-                {step === 2 && !walletConnected && (
-                  <React.Fragment>
-                    <Tag>Unlock your wallet</Tag>
-                    <Button
-                      type="button"
-                      onClick={this.handleUseMetamask}
-                      className="button is-medium is-fullwidth"
-                    >
-                      <ButtonLogo src={metaMaskLogo} alt="Metamask Logo" />
-                      METAMASK
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={this.handleUsePrivateKey}
-                      className="button is-medium is-fullwidth"
-                    >
-                      <ButtonLogo src={privateKeyLogo} alt="Private Key Logo" />
-                      PRIVATE KEY
-                    </Button>
-                  </React.Fragment>
-                )}
-                {step === 2 && walletConnected && (
-                  <React.Fragment>
-                    <Tag>Total you pay</Tag>
-                    <FiatAmountWrapper>
-                      <FiatAmount fiatAmount={parseFloat('14.50')} />
-                    </FiatAmountWrapper>
-                    {cryptoAmount}
-                    <Info>
-                      You need to give permission for Dexpay to interact with
-                      DAI
-                    </Info>
-                    <button
-                      type="submit"
-                      className="button is-black is-large is-fullwidth"
-                      onClick={this.handleApprove}
-                    >
-                      APPROVE
-                    </button>
-                  </React.Fragment>
-                )}
-                {step === 3 && isApproved && !isSuccessful && (
-                  <React.Fragment>
-                    <Tag>Total you pay</Tag>
-                    <FiatAmountWrapper>
-                      <FiatAmount fiatAmount={parseFloat('14.50')} />
-                    </FiatAmountWrapper>
-                    {cryptoAmount}
-                    <Info>
-                      You need to give permission for Dexpay to interact with
-                      DAI
-                    </Info>
-                    <button
-                      type="submit"
-                      className="button is-black is-large is-fullwidth"
-                      onClick={this.handlePay}
-                    >
-                      PAY NOW
-                    </button>
-                  </React.Fragment>
-                )}
-                {step === 3 && isApproved && isSuccessful && (
-                  <React.Fragment>
-                    <Tag>You paid!</Tag>
-                    <FiatAmountWrapper>
-                      <FiatAmount fiatAmount={parseFloat('14.50')} />
-                    </FiatAmountWrapper>
-                    {cryptoAmount}
-                    <button
-                      type="submit"
-                      className="button is-large is-fullwidth"
-                    >
-                      See it on Etherscan
-                    </button>
-                  </React.Fragment>
-                )}
-              </InnerBoxContent>
-              <InnerBoxFooter>
-                <AddressClipboard address="0xcgffd3h53dfsdf43g405c3647f9c2599...4j2I" />
-                <NetworkStatus
-                  label="Ethereum Main Network"
-                  status={walletConnected ? 'connected' : 'not connected'}
-                />
-              </InnerBoxFooter>
-            </InnerBox>
+            <Query query={query} variables={{ id: match.params.id }}>
+              {({ loading, error, data }) => {
+                if (loading) return <Loading />;
+                if (error) return `Error!: ${error}`;
+                const { invoice } = data;
+                // console.log('data', data);
+
+                return (
+                  <InnerBox>
+                    <InnerBoxHeader>
+                      <BrandLogo src={starbuckLogo} />
+                    </InnerBoxHeader>
+                    <InnerBoxContent>
+                      {step === 1 && (
+                        <React.Fragment>
+                          <Tag>Total you pay</Tag>
+                          {fiatAmount(invoice)}
+                          {cryptoAmount}
+                          <button
+                            type="submit"
+                            className="button is-black is-large is-fullwidth"
+                            onClick={this.goToStepTwo}
+                          >
+                            CONTINUE
+                          </button>
+                        </React.Fragment>
+                      )}
+                      {step === 2 && !walletConnected && (
+                        <React.Fragment>
+                          <Tag>Unlock your wallet</Tag>
+                          <Button
+                            type="button"
+                            onClick={this.handleUseMetamask}
+                            className="button is-medium is-fullwidth"
+                          >
+                            <ButtonLogo
+                              src={metaMaskLogo}
+                              alt="Metamask Logo"
+                            />
+                            METAMASK
+                          </Button>
+                          {/* <Button
+                            type="button"
+                            onClick={this.handleUsePrivateKey}
+                            className="button is-medium is-fullwidth"
+                          >
+                            <ButtonLogo
+                              src={privateKeyLogo}
+                              alt="Private Key Logo"
+                            />
+                            PRIVATE KEY
+                          </Button> */}
+                        </React.Fragment>
+                      )}
+                      {step === 2 && walletConnected && (
+                        <React.Fragment>
+                          <Tag>Total you pay</Tag>
+                          {fiatAmount(invoice)}
+                          {cryptoAmount}
+                          <Info>
+                            You need to give permission for Dexpay to interact
+                            with DAI
+                          </Info>
+                          <button
+                            type="submit"
+                            className="button is-black is-large is-fullwidth"
+                            onClick={this.handleApprove}
+                          >
+                            APPROVE
+                          </button>
+                        </React.Fragment>
+                      )}
+                      {step === 3 && isApproved && !isSuccessful && (
+                        <React.Fragment>
+                          <Tag>Total you pay</Tag>
+                          {fiatAmount(invoice)}
+                          {cryptoAmount}
+                          <Info>
+                            You need to give permission for Dexpay to interact
+                            with DAI
+                          </Info>
+                          <button
+                            type="submit"
+                            className="button is-black is-large is-fullwidth"
+                            onClick={this.handlePay}
+                          >
+                            PAY NOW
+                          </button>
+                        </React.Fragment>
+                      )}
+                      {step === 3 && isApproved && isSuccessful && (
+                        <React.Fragment>
+                          <Tag>You paid!</Tag>
+                          {fiatAmount(invoice)}
+                          {cryptoAmount}
+                          <button
+                            type="submit"
+                            className="button is-large is-fullwidth"
+                          >
+                            See it on Etherscan
+                          </button>
+                        </React.Fragment>
+                      )}
+                    </InnerBoxContent>
+                    <InnerBoxFooter>
+                      <AddressClipboard address={invoice.store.walletAddress} />
+                      <NetworkStatus
+                        label="Ethereum Main Network"
+                        status={walletConnected ? 'connected' : 'not connected'}
+                      />
+                    </InnerBoxFooter>
+                  </InnerBox>
+                );
+              }}
+            </Query>
             <Footer>
               <p>
                 Powered by <Logo src={dexLogo} alt="Dexpay logo" />

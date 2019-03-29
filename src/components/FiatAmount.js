@@ -10,22 +10,24 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const FiatAmount = ({ fiatAmount }) => {
+const FiatAmount = ({ fiatAmount, fiatCurrency }) => {
   return (
     <Container>
       <Textfit mode="single" max={72}>
-        <FormatCurrency value={fiatAmount} />
+        <FormatCurrency currency={fiatCurrency} value={fiatAmount} />
       </Textfit>
     </Container>
   );
 };
 
 FiatAmount.defaultProps = {
-  fiatAmount: 0
+  fiatAmount: 0,
+  fiatCurrency: undefined
 };
 
 FiatAmount.propTypes = {
-  fiatAmount: PropTypes.number
+  fiatAmount: PropTypes.number,
+  fiatCurrency: PropTypes.string
 };
 
 export default FiatAmount;
