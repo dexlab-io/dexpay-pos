@@ -84,7 +84,7 @@ class PaymentDetails extends React.Component {
           cryptoCurrency={selectedCurrency}
           cryptoValue={valueCrypto}
           fiatAmount={parseFloat(valueFiat)}
-          hasSelection={status === WatcherTx.STATES.PENDING}
+          hasSelection={false}
           handleChange={option => {
             this.setState({ selectedCurrency: option.value });
           }}

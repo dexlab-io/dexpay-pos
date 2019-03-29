@@ -55,7 +55,7 @@ class CryptoAmount extends React.Component {
     const { selectOpen, selectedCrypto } = this.state;
 
     const activeItem = (
-      <Container>
+      <Container style={{ paddingTop: '10px' }}>
         <Image src={cryptoIcon} alt={selectedCrypto} />
         <span>x{selectedCrypto.toUpperCase()}&nbsp;</span>
         <span className="has-text-weight-light">
