@@ -15,23 +15,19 @@ const CrossIcon = styled.i`
   top: 27px;
 `;
 
-const SettingsHeader = ({ history, onClose }) => {
+const SettingsHeader = ({ history }) => {
   return (
     <Container>
       <h2 className="title">Account Settings</h2>
-      <a onClick={() => (onClose ? onClose() : history.goBack())}>
+      <a onClick={() => history.push('/dashboard')}>
         <CrossIcon className="fas fa-times" />
       </a>
     </Container>
   );
 };
 
-SettingsHeader.defaultProps = {
-  onClose: undefined
-};
-
 SettingsHeader.propTypes = {
-  onClose: PropTypes.func
+  history: PropTypes.object.isRequired
 };
 
 export default SettingsHeader;

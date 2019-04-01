@@ -1,6 +1,10 @@
 export default {
   currency: 'EUR',
-  acceptedTokens: ['ether', 'dai', 'xdai', 'wbtc'],
-  requiredConfirmations: 10,
-  walletAddress: null
+  acceptedTokens: ['xdai'],
+  requiredConfirmations: [
+    { token: 'xdai', confirmations: 10, __typename: 'Confirmation' }
+  ],
+  walletAddress: null,
+  walletAddressSource: null,
+  exchangeRates: []
 };

@@ -14,13 +14,23 @@ import settingsItems from './components/settingsItems';
 
 const query = gql`
   {
-    requiredConfirmations @client
+    requiredConfirmations @client {
+      token
+      confirmations
+    }
   }
 `;
 
 const mutation = gql`
-  mutation updateRequiredConfirmations($confirmation: String!) {
-    updateRequiredConfirmations(confirmation: $confirmation) @client
+  mutation updateRequiredConfirmations($token: String!, $confirmations: Int!) {
+    updateRequiredConfirmations(token: $token, confirmations: $confirmations)
+      @client {
+      token
+      confirmations
+    }
+    updateMe(input: { tokenName: $token, tokenConfirmations: $confirmations }) {
+      id
+    }
   }
 `;
 
@@ -44,7 +54,7 @@ const SliderWrapper = styled.div`
 
 class RequiredConfirmations extends React.Component {
   handleChange = confirmation => {
-    apolloClient.mutate({ mutation, variables: { confirmation } });
+    apolloClient.mutate({ mutation, variables: { ...confirmation } });
   };
 
   render() {
@@ -67,20 +77,25 @@ class RequiredConfirmations extends React.Component {
                 if (error) return <p>Error: {error.message}</p>;
                 // console.log('data', data.requiredConfirmations);
 
-                return (
-                  <SliderContainer>
+                return data.requiredConfirmations.map(item => (
+                  <SliderContainer key={item.token}>
                     <SliderLabel className="has-text-weight-semibold">
-                      Number of blocks
+                      {item.token}
                     </SliderLabel>
-                    <SliderValue>{data.requiredConfirmations}</SliderValue>
+                    <SliderValue>{item.confirmations} Blocks</SliderValue>
                     <SliderWrapper>
                       <Slider
-                        value={data.requiredConfirmations}
-                        onChange={this.handleChange}
+                        value={item.confirmations}
+                        onChange={count =>
+                          this.handleChange({
+                            token: item.token,
+                            confirmations: count
+                          })
+                        }
                       />
                     </SliderWrapper>
                   </SliderContainer>
-                );
+                ));
               }}
             </Query>
           </div>

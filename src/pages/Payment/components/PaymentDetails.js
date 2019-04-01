@@ -1,17 +1,27 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
+import gql from 'graphql-tag';
 
-import { store } from '../../../store';
 import CryptoAmount from './CryptoAmount';
 import FiatAmount from './FiatAmount';
+import WatcherTx from '../../../class/WatcherTx';
 import AddTip from './AddTip';
 import QrCode from './QrCode';
 import AddressClipboard from './AddressClipboard';
 import NetworkStatus from './NetworkStatus';
 import InProgressBlocks from './InProgressBlocks';
-import { Divider } from '../../../components/elements';
 import dexLogo from '../../../assets/images/dex-logo-white.png';
+
+const query = gql`
+  {
+    walletAddress @client
+    requiredConfirmations @client {
+      token
+      confirmations
+    }
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -35,11 +45,12 @@ const FiatContainer = styled.div`
   padding: 10px 75px 0px 75px;
   border-bottom: ${props => `1px solid ${props.theme.borderColor}`};
   text-align: center;
+  line-height: 1;
 `;
 const Title = styled.span``;
 
 const PaymentInfo = styled.div`
-  padding: 12px 75px;
+  padding: 5px 75px;
 `;
 
 class PaymentDetails extends React.Component {
@@ -56,7 +67,8 @@ class PaymentDetails extends React.Component {
       watchers,
       status,
       addTipPayment,
-      title
+      title,
+      numConfirmations
     } = this.props;
     const { selectedCurrency } = this.state;
 
@@ -65,98 +77,53 @@ class PaymentDetails extends React.Component {
         <Header>
           <Logo src={dexLogo} alt="Dexpay logo" />
         </Header>
-        {status === 'pending' && (
+        {status === WatcherTx.STATES.PENDING && (
           <AddTip value={0} handleChange={addTipPayment} />
         )}
         <CryptoAmount
           cryptoCurrency={selectedCurrency}
           cryptoValue={valueCrypto}
           fiatAmount={parseFloat(valueFiat)}
-          hasSelection={status === 'pending'}
+          hasSelection={status === WatcherTx.STATES.PENDING}
           handleChange={option => {
             this.setState({ selectedCurrency: option.value });
           }}
         />
         <FiatContainer>
           <Title className="is-family-secondary">{title}</Title>
-          <FiatAmount fiatAmount={parseFloat(valueFiat) + tipValue} />
+          <FiatAmount
+            style={{ letterSpacing: '-0.2rem' }}
+            fiatAmount={parseFloat(valueFiat) + tipValue}
+          />
         </FiatContainer>
-        {status === 'pending' && (
+        {status === WatcherTx.STATES.PENDING && (
           <QrCode valueCrypto={valueCrypto[selectedCurrency]} />
         )}
-        {status !== 'pending' && (
-          <InProgressBlocks blocksCount={14} status={status} txHash={txHash} />
-        )}
-        <Query query={store.queries.pos} fetchPolicy="cache">
+        <Query query={query} fetchPolicy="cache-and-network">
           {({ data }) => (
-            <PaymentInfo>
-              <AddressClipboard
-                address={data.pos.address ? data.pos.address : data.pos.error}
-              />
-              {watchers ? (
-                <NetworkStatus
-                  label={watchers.xdai.conf.label}
-                  status={
-                    watchers.xdai.isConnected() ? 'connected' : 'not connected'
-                  }
+            <React.Fragment>
+              {status !== WatcherTx.STATES.PENDING && (
+                <InProgressBlocks
+                  status={status}
+                  txHash={txHash}
+                  requiredConfirmations={data.requiredConfirmations}
+                  numConfirmations={numConfirmations}
                 />
-              ) : null}
-            </PaymentInfo>
-          )}
-        </Query>
-      </Container>
-    );
-
-    return (
-      <Container>
-        <Header>
-          <Title className="is-family-secondary">{title}</Title>
-        </Header>
-        <CryptoAmount
-          cryptoCurrency={selectedCurrency}
-          cryptoValue={valueCrypto}
-          fiatAmount={parseFloat(valueFiat)}
-          hasSelection={status === 'pending'}
-          handleChange={option => {
-            this.setState({ selectedCurrency: option.value });
-          }}
-        />
-        <FiatAmount fiatAmount={parseFloat(valueFiat) + tipValue} />
-        {status !== 'pending' && <Divider isDotted />}
-        {status === 'pending' && (
-          <AddTip value={0} handleChange={addTipPayment} />
-        )}
-        {status === 'pending' && (
-          <QrCode valueCrypto={valueCrypto[selectedCurrency]} />
-        )}
-        {status !== 'pending' && (
-          <InProgressBlocks blocksCount={14} status={status} txHash={txHash} />
-        )}
-
-        <Query query={store.queries.pos} fetchPolicy="cache">
-          {({ data }) => (
-            <div style={{ flex: 2 }}>
-              <AddressClipboard
-                address={data.pos.address ? data.pos.address : data.pos.error}
-              />
-              {watchers ? (
-                <NetworkStatus
-                  label={watchers.xdai.conf.label}
-                  status={
-                    watchers.xdai.isConnected() ? 'connected' : 'not connected'
-                  }
-                />
-              ) : null}
-              {/* <button
-                type="button"
-                className="button is-black is-uppercase is-large is-fullwidth"
-                href={`ethereum:${data.pos.address}?amount=${
-                  valueCrypto[selectedCurrency]
-                }`}
-              >
-                Open in wallet
-              </button> */}
-            </div>
+              )}
+              <PaymentInfo>
+                <AddressClipboard address={data.walletAddress} />
+                {watchers ? (
+                  <NetworkStatus
+                    label={watchers.xdai.conf.label}
+                    status={
+                      watchers.xdai.isConnected()
+                        ? 'connected'
+                        : 'not connected'
+                    }
+                  />
+                ) : null}
+              </PaymentInfo>
+            </React.Fragment>
           )}
         </Query>
       </Container>

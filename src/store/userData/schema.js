@@ -8,7 +8,6 @@ const typeDefs = `
 
   type Query {
     user: User
-    isOnline: Boolean!
     isLoggedIn: Boolean!
     counter: Int
   }
@@ -24,11 +23,9 @@ const typeDefs = `
   }
 
   type Mutation {
-    toggleOnline(isOnline: Boolean!): Boolean
     toggleLoggedIn(isLoggedIn: Boolean!): Boolean
     login(input: LoginInput): User
     logout: Boolean!
-    updateCounter(number: Int!): Int
     updateUser(input: UserInput!): User
   }
 `;

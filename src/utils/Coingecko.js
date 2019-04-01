@@ -1,11 +1,20 @@
-import axios from 'axios';
+/* eslint import/prefer-default-export: 0 */
 
-export const getTokenPrice = (token = 'ethereum') =>
-  axios
+import axios from 'axios';
+import config from '../config';
+
+export const getTokenPrice = (token = 'ethereum') => {
+  const currencies = config.currencies.map(currency => {
+    return currency.id.toLowerCase();
+  });
+  const currenciesString = currencies.join(',');
+
+  return axios
     .get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=usd,eur`
+      `https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=${currenciesString}`
     )
     .then(response => {
       return response.data[token];
     })
-    .catch(err => 0);
+    .catch(() => 0);
+};

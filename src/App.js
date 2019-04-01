@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import qs from 'qs';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter, Route, Switch, matchPath } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import gql from 'graphql-tag';
 
 import './theme/bulma.css'; // load bulma
 import './localization'; // load i18n
-import client from './utils/apolloClient';
-import { store } from './store';
+import client, { persistor } from './utils/apolloClient';
 import theme, { GlobalStyle } from './theme'; // load custom theme
-import EthereumHDWallet from './class/ethereum/EthereumHDWallet';
 import {
   Error404,
+  Login,
+  Register,
+  ForgotPassword,
+  SetPassword,
   Dashboard,
   Settings,
   AccountInfo,
@@ -22,42 +24,22 @@ import {
   Test
 } from './pages';
 
+const initAppMutation = gql`
+  mutation initApp {
+    initApp @client
+  }
+`;
+
 class App extends Component {
   state = { loaded: false };
 
   async componentDidMount() {
-    await this.init();
-    // /await persistor.restore();
+    await persistor.restore();
     this.client = client;
-    this.setState({ loaded: true });
-  }
-
-  async init() {
-    const t = matchPath(window.location.pathname, {
-      path: '/address/:id'
+    await this.client.mutate({
+      mutation: initAppMutation
     });
-
-    if (t && t.params && t.params.id) {
-      const address = t.params.id;
-      store.update.pos.address(address, null, 'GET');
-      return;
-    }
-
-    const params = qs.parse(window.location.search.slice(1));
-    this.wallet = new EthereumHDWallet();
-    await this.wallet.setWeb3();
-
-    if (this.wallet.getAddress()) {
-      store.update.pos.address(
-        this.wallet.getAddress(),
-        null,
-        'Injected Provider'
-      );
-    } else if (!this.wallet.getAddress() && params.posAddress) {
-      store.update.pos.address(params.posAddress, null, 'GET');
-    } else {
-      store.update.pos.address(null, 'Pos address is empty', null);
-    }
+    this.setState({ loaded: true });
   }
 
   render() {
@@ -72,7 +54,15 @@ class App extends Component {
           <React.Fragment>
             <BrowserRouter>
               <Switch>
-                <Route path="/" exact component={Dashboard} />
+                <Route path="/" exact component={Register} />
+                <Route path="/login" exact component={Login} />
+                <Route
+                  path="/forgot-password"
+                  exact
+                  component={ForgotPassword}
+                />
+                <Route path="/set-password/:token" component={SetPassword} />
+                <Route path="/dashboard" exact component={Dashboard} />
                 <Route path="/settings" exact component={Settings} />
                 <Route
                   path="/settings/account-info"
