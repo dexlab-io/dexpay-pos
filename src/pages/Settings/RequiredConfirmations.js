@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { find } from 'lodash';
+import { find, findIndex } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
@@ -53,11 +53,35 @@ const SliderWrapper = styled.div`
 `;
 
 class RequiredConfirmations extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { confirmations: undefined };
+    this.mutationTimeout = undefined;
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.mutationTimeout);
+  }
+
   handleChange = confirmation => {
-    apolloClient.mutate({ mutation, variables: { ...confirmation } });
+    const { confirmations } = this.state;
+    const selectedIndex = findIndex(confirmations, {
+      token: confirmation.token
+    });
+    const selected = confirmations[selectedIndex];
+    selected.confirmations = confirmation.confirmations;
+    confirmations[selectedIndex] = selected;
+    this.setState({ confirmations });
+
+    clearTimeout(this.mutationTimeout);
+    this.mutationTimeout = setTimeout(() => {
+      apolloClient.mutate({ mutation, variables: { ...confirmation } });
+    }, 1000);
   };
 
   render() {
+    const { confirmations } = this.state;
     const { history } = this.props;
     const settingItem = find(settingsItems, {
       linkTo: '/settings/required-confirmations'
@@ -70,14 +94,21 @@ class RequiredConfirmations extends React.Component {
           <div className="container">
             <SettingsHeader history={history} />
             <Breadcrumb history={history} {...settingItem} />
-            <Query query={query} fetchPolicy="cache-and-network">
-              {({ data, loading, error }) => {
-                if (loading && !data.requiredConfirmations)
-                  return <p>loading...</p>;
+            <Query
+              query={query}
+              fetchPolicy="cache-and-network"
+              onCompleted={data => {
+                if (!confirmations) {
+                  this.setState({ confirmations: data.requiredConfirmations });
+                }
+              }}
+            >
+              {({ loading, error }) => {
+                if (loading || !confirmations) return <p>loading...</p>;
                 if (error) return <p>Error: {error.message}</p>;
-                // console.log('data', data.requiredConfirmations);
+                // console.log('data', confirmations);
 
-                return data.requiredConfirmations.map(item => (
+                return confirmations.map(item => (
                   <SliderContainer key={item.token}>
                     <SliderLabel className="has-text-weight-semibold">
                       {item.token}
