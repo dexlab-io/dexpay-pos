@@ -31,6 +31,10 @@ const Logo = styled.img`
 const Tagline = styled.h3`
   font-size: 20px;
 `;
+const P = styled.p`
+  text-align: center;
+  margin-top: 10px;
+`;
 
 class ForgotPassword extends React.Component {
   onSuccess = () => {
@@ -47,7 +51,13 @@ class ForgotPassword extends React.Component {
         <div className="section">
           <Container className="container">
             <Logo src={logo} alt="Dexpay logo" />
-            <Tagline>Forgot your password?</Tagline>
+            <Tagline className="has-text-weight-semibold">
+              Do you want to reset your password?
+            </Tagline>
+            <P>
+              Please fill your email address in order to
+              <br /> reset your password and create a new one
+            </P>
             <Mutation
               mutation={mutation}
               update={this.onSuccess}

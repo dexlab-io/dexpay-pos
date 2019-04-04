@@ -47,7 +47,11 @@ class SetPassword extends React.Component {
         <div className="section">
           <Container className="container">
             <Logo src={logo} alt="Dexpay logo" />
-            <Tagline>Set new password</Tagline>
+            <Tagline className="has-text-weight-semibold">
+              You have request to reset your password
+              <br />
+              Enter a new password now
+            </Tagline>
             <Mutation
               mutation={mutation}
               update={this.onSuccess}
