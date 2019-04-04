@@ -22,7 +22,7 @@ const LoadingImage = styled.img`
   height: 120px;
 `;
 const CheckImage = styled.img`
-  width: 240px;
+  width: 120px;
   height: auto;
 `;
 const Count = styled.div`
