@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { find } from 'lodash';
 
+import apolloClient from '../../utils/apolloClient';
 import EthereumHDWallet from '../../class/ethereum/EthereumHDWallet';
 import { Loading } from '../../components/elements';
 import Layout from '../../components/Layout';
@@ -16,6 +18,7 @@ import dexLogo from '../../assets/images/dex-logo.png';
 import metaMaskLogo from '../../assets/images/metamask-logo.png';
 import privateKeyLogo from '../../assets/images/private-key-logo.png';
 import starbuckLogo from '../../assets/dummy/starbuck-logo.png';
+import checkImg from '../../assets/images/checkmark.png';
 
 const Container = styled.div`
   width: 445px;
@@ -99,6 +102,10 @@ const ButtonLogo = styled.img`
   height: auto;
   margin-right: 12px;
 `;
+const CheckImage = styled.img`
+  width: 240px;
+  height: auto;
+`;
 
 const query = gql`
   query Invoice($id: String) {
@@ -116,6 +123,18 @@ const query = gql`
   }
 `;
 
+const exchangeRateQuery = gql`
+  {
+    exchangeRates @client {
+      token
+      fiat {
+        currency
+        price
+      }
+    }
+  }
+`;
+
 class Invoice extends React.Component {
   constructor(props) {
     super(props);
@@ -125,8 +144,19 @@ class Invoice extends React.Component {
       walletConnected: false,
       isApproved: false,
       isSuccessful: false,
-      walletAddress: null
+      walletAddress: null,
+      exchangeRates: []
     };
+  }
+
+  async componentDidMount() {
+    apolloClient
+      .watchQuery({ query: exchangeRateQuery })
+      .subscribe(async result => {
+        this.setState({
+          exchangeRates: result.data.exchangeRates
+        });
+      });
   }
 
   goToStepTwo = () => {
@@ -159,6 +189,36 @@ class Invoice extends React.Component {
     this.setState({ isSuccessful: true });
   };
 
+  cryptoAmount = invoice => {
+    const { exchangeRates } = this.state;
+
+    const pricesDai = find(exchangeRates, {
+      token: 'xdai'
+    });
+    if (!pricesDai) {
+      return null;
+    }
+    const pricesDaiFiat = find(pricesDai.fiat, {
+      currency: invoice.fiatCurrency.toLowerCase()
+    });
+    const daiValue = parseFloat(
+      invoice.fiatAmount / pricesDaiFiat.price
+    ).toFixed(2);
+
+    return (
+      <CryptoAmount
+        cryptoCurrency="dai"
+        cryptoValue={{ dai: daiValue }}
+        fiatAmount={parseFloat(invoice.fiatAmount)}
+        hasSelection
+        handleChange={option => {
+          console.log({ selectedCurrency: option.value });
+        }}
+        style={{ borderBottom: 'none' }}
+      />
+    );
+  };
+
   render() {
     const { step, walletConnected, isApproved, isSuccessful } = this.state;
     const { match } = this.props;
@@ -177,19 +237,6 @@ class Invoice extends React.Component {
           fiatAmount={parseFloat(invoice.fiatAmount)}
         />
       </FiatAmountWrapper>
-    );
-
-    const cryptoAmount = (
-      <CryptoAmount
-        cryptoCurrency="dai"
-        cryptoValue={{ dai: 12 }}
-        fiatAmount={parseFloat('14.50')}
-        hasSelection
-        handleChange={option => {
-          console.log({ selectedCurrency: option.value });
-        }}
-        style={{ borderBottom: 'none' }}
-      />
     );
 
     return (
@@ -219,7 +266,7 @@ class Invoice extends React.Component {
                         <React.Fragment>
                           <Tag>Total you pay</Tag>
                           {fiatAmount(invoice)}
-                          {cryptoAmount}
+                          {this.cryptoAmount(invoice)}
                           <button
                             type="submit"
                             className="button is-black is-large is-fullwidth"
@@ -260,7 +307,7 @@ class Invoice extends React.Component {
                         <React.Fragment>
                           <Tag>Total you pay</Tag>
                           {fiatAmount(invoice)}
-                          {cryptoAmount}
+                          {this.cryptoAmount(invoice)}
                           <Info>
                             You need to give permission for Dexpay to interact
                             with DAI
@@ -278,7 +325,7 @@ class Invoice extends React.Component {
                         <React.Fragment>
                           <Tag>Total you pay</Tag>
                           {fiatAmount(invoice)}
-                          {cryptoAmount}
+                          {this.cryptoAmount(invoice)}
                           <Info>
                             You need to give permission for Dexpay to interact
                             with DAI
@@ -296,7 +343,8 @@ class Invoice extends React.Component {
                         <React.Fragment>
                           <Tag>You paid!</Tag>
                           {fiatAmount(invoice)}
-                          {cryptoAmount}
+                          {this.cryptoAmount(invoice)}
+                          <CheckImage src={checkImg} alt="completed" />
                           <button
                             type="submit"
                             className="button is-large is-fullwidth"
