@@ -1,9 +1,40 @@
 import React from 'react';
 import swal from 'sweetalert';
+import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import { Link } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import CreateInvoiceForm from './components/CreateInvoiceForm';
+
+const query = gql`
+  {
+    invoices {
+      id
+      invoiceNumber
+      fiatAmount
+      fiatCurrency
+    }
+  }
+`;
+
+const createInvoiceMutation = gql`
+  mutation createInvoice($fiatAmount: Int!, $fiatCurrency: String!) {
+    createInvoice(
+      input: { fiatAmount: $fiatAmount, fiatCurrency: $fiatCurrency }
+    ) {
+      id
+      invoiceNumber
+      fiatAmount
+      fiatCurrency
+      store {
+        name
+        walletAddress
+      }
+    }
+  }
+`;
 
 class CreateInvoice extends React.Component {
   constructor(props) {
@@ -32,6 +63,20 @@ class CreateInvoice extends React.Component {
     }
   }
 
+  onSuccess = (cache, { data: { createInvoice } }) => {
+    const { history } = this.props;
+
+    swal({
+      icon: 'info',
+      title: 'Invoice created',
+      button: {
+        text: 'Get URL'
+      }
+    }).then(() => {
+      history.push(`/invoice/${createInvoice.invoiceNumber}`);
+    });
+  };
+
   render() {
     return (
       <Layout>
@@ -39,10 +84,67 @@ class CreateInvoice extends React.Component {
         <div className="section">
           <div className="container">
             <h2 className="title">Create Invoice</h2>
-            <CreateInvoiceForm />
+            <Mutation
+              mutation={createInvoiceMutation}
+              update={this.onSuccess}
+              onError={error => {
+                swal(
+                  'Issue!',
+                  error.message.replace('GraphQL error: ', ''),
+                  'warning'
+                );
+              }}
+            >
+              {createInvoice => (
+                <CreateInvoiceForm
+                  handleSubmit={data => {
+                    // console.log('login form', data);
+                    createInvoice({
+                      variables: data
+                    });
+                  }}
+                />
+              )}
+            </Mutation>
             <hr />
             <h2 className="title">Your Invoices</h2>
-            <p>TODO: list invoice here</p>
+            <Query query={query} fetchPolicy="cache-and-network">
+              {({ data, loading, error }) => {
+                if (loading && !data.invoices) return <p>loading...</p>;
+                if (error) return <p>Error: {error.message}</p>;
+                // console.log('invoices', data.invoices);
+
+                return (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Invoice ID</th>
+                        <th>Currency</th>
+                        <th>Amount</th>
+                        <th />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.invoices.map(invoice => (
+                        <tr key={invoice.id}>
+                          <th>{invoice.invoiceNumber}</th>
+                          <th>{invoice.fiatCurrency}</th>
+                          <th>{invoice.fiatAmount}</th>
+                          <th>
+                            <Link
+                              to={`/invoice/${invoice.invoiceNumber}`}
+                              className="button is-small"
+                            >
+                              VIEW
+                            </Link>
+                          </th>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                );
+              }}
+            </Query>
           </div>
         </div>
       </Layout>

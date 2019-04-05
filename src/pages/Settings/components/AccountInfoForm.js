@@ -6,7 +6,14 @@ import * as yup from 'yup';
 import { TextGroup } from '../../../components/elements';
 
 const AccountInfoForm = props => {
-  const { values, errors, handleChange, handleBlur, handleSubmit } = props;
+  const {
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isSubmitting
+  } = props;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -69,7 +76,8 @@ const AccountInfoForm = props => {
       />
       <button
         type="submit"
-        className="button is-black is-uppercase is-large is-fullwidth"
+        className={`button is-black is-uppercase is-large ${isSubmitting &&
+          'is-loading'}`}
       >
         Save
       </button>

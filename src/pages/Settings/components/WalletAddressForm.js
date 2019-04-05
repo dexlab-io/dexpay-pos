@@ -18,11 +18,12 @@ const WalletAddressForm = props => {
     handleChange,
     handleBlur,
     handleSubmit,
+    isSubmitting,
     column
   } = props;
 
-  return column ? (
-    <Form onSubmit={handleSubmit}>
+  const innerForm = (
+    <React.Fragment>
       <TextGroup
         name="walletAddress"
         label="Address"
@@ -34,26 +35,18 @@ const WalletAddressForm = props => {
       />
       <button
         type="submit"
-        className="button is-black is-uppercase is-large is-fullwidth"
+        className={`button is-black is-uppercase is-large ${isSubmitting &&
+          'is-loading'}`}
       >
         Save
       </button>
-    </Form>
+    </React.Fragment>
+  );
+
+  return column ? (
+    <Form onSubmit={handleSubmit}>{innerForm}</Form>
   ) : (
-    <form onSubmit={handleSubmit}>
-      <TextGroup
-        name="walletAddress"
-        label="Address"
-        placeholder="Paste or Scan your public address"
-        value={values.walletAddress}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={errors.walletAddress}
-      />
-      <button type="submit" className="button is-black is-uppercase is-large">
-        Save
-      </button>
-    </form>
+    <form onSubmit={handleSubmit}>{innerForm}</form>
   );
 };
 

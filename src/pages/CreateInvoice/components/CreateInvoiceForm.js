@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
 
-import { TextGroup } from '../../../components/elements';
+import config from '../../../config';
+import { TextGroup, SelectGroup } from '../../../components/elements';
 
 const CreateInvoiceForm = props => {
   const {
@@ -16,9 +17,24 @@ const CreateInvoiceForm = props => {
     handleSubmit
   } = props;
 
+  const currencies = config.currencies.map(currency => {
+    return { key: currency.id, value: currency.name };
+  });
+
   return (
     <form onSubmit={handleSubmit}>
+      <SelectGroup
+        name="fiatCurrency"
+        label="Fiat Currency"
+        placeholder="Select currency"
+        value={values.fiatCurrency}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.fiatCurrency}
+        options={currencies}
+      />
       <TextGroup
+        type="number"
         name="fiatAmount"
         label="Fiat Amount"
         placeholder="100"
@@ -26,15 +42,6 @@ const CreateInvoiceForm = props => {
         onChange={handleChange}
         onBlur={handleBlur}
         error={errors.fiatAmount}
-      />
-      <TextGroup
-        name="fiatCurrency"
-        label="Fiat Currency"
-        placeholder="USD"
-        value={values.fiatCurrency}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={errors.fiatCurrency}
       />
       <button
         type="submit"
@@ -67,7 +74,7 @@ export default withFormik({
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
     // console.log('handle submit', values, props);
-    props.addContact(values);
+    props.handleSubmit(values);
     setSubmitting(false);
   },
   displayName: 'CreateInvoiceForm' // helps with React DevTools
