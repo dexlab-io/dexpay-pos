@@ -97,16 +97,14 @@ class Login extends React.Component {
               }}
             >
               {login => (
-                <React.Fragment>
-                  <LoginForm
-                    handleSubmit={data => {
-                      // console.log('login form', data);
-                      login({
-                        variables: data
-                      });
-                    }}
-                  />
-                </React.Fragment>
+                <LoginForm
+                  handleSubmit={data => {
+                    // console.log('login form', data);
+                    login({
+                      variables: data
+                    });
+                  }}
+                />
               )}
             </Mutation>
             <OrText>OR</OrText>
