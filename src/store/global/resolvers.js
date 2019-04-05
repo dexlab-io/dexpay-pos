@@ -56,7 +56,6 @@ const resolvers = {
   Mutation: {
     initApp: async (_, variables, { cache }) => {
       const params = qs.parse(window.location.search.slice(1));
-
       if (params.posAddress && checkValidAddress(params.posAddress)) {
         cache.writeData({
           data: {

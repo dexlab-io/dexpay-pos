@@ -3,12 +3,12 @@ import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 
-import CryptoAmount from './CryptoAmount';
-import FiatAmount from './FiatAmount';
 import WatcherTx from '../../../class/WatcherTx';
 import AddTip from './AddTip';
 import QrCode from './QrCode';
-import AddressClipboard from './AddressClipboard';
+import CryptoAmount from '../../../components/CryptoAmount';
+import FiatAmount from '../../../components/FiatAmount';
+import AddressClipboard from '../../../components/AddressClipboard';
 import NetworkStatus from './NetworkStatus';
 import InProgressBlocks from './InProgressBlocks';
 import dexLogo from '../../../assets/images/dex-logo-white.png';
@@ -84,7 +84,7 @@ class PaymentDetails extends React.Component {
           cryptoCurrency={selectedCurrency}
           cryptoValue={valueCrypto}
           fiatAmount={parseFloat(valueFiat)}
-          hasSelection={status === WatcherTx.STATES.PENDING}
+          hasSelection={false}
           handleChange={option => {
             this.setState({ selectedCurrency: option.value });
           }}

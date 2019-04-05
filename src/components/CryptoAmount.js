@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Select from 'react-select';
 
-import cryptoIcon from '../../../assets/dummy/crypto-icon.png';
+import cryptoIcon from '../assets/dummy/crypto-icon.png';
 
 const Wrapper = styled.div`
   padding: 10px 75px;
@@ -44,17 +44,18 @@ class CryptoAmount extends React.Component {
   }
 
   handleChange = option => {
+    console.log('option', option);
     const { handleChange } = this.props;
     this.setState({ selectedCrypto: option.value, selectOpen: false });
     handleChange(option);
   };
 
   render() {
-    const { cryptoValue, hasSelection } = this.props;
+    const { cryptoValue, hasSelection, style } = this.props;
     const { selectOpen, selectedCrypto } = this.state;
 
     const activeItem = (
-      <Container>
+      <Container style={{ paddingTop: '10px' }}>
         <Image src={cryptoIcon} alt={selectedCrypto} />
         <span>x{selectedCrypto.toUpperCase()}&nbsp;</span>
         <span className="has-text-weight-light">
@@ -65,7 +66,7 @@ class CryptoAmount extends React.Component {
 
     if (hasSelection) {
       return (
-        <Wrapper>
+        <Wrapper style={style}>
           {selectOpen ? (
             <Select
               value={selectedCrypto}

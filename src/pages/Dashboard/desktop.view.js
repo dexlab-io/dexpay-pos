@@ -81,9 +81,7 @@ export default function() {
           </React.Fragment>
         </Container>
       ) : (
-        <div>
-          <SetWalletAddress isLoggedIn={isLoggedIn} />
-        </div>
+        <SetWalletAddress isLoggedIn={isLoggedIn} />
       )}
     </Section>
   );

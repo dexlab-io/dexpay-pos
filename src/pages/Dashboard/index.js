@@ -17,6 +17,15 @@ const query = gql`
   }
 `;
 
+const mutation = gql`
+  mutation updateWalletAddress($address: String!, $source: String) {
+    updateWalletAddress(address: $address, source: $source) @client
+    updateMe(input: { walletAddress: $address }) {
+      id
+    }
+  }
+`;
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -32,12 +41,23 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    const { match } = this.props;
+
     // on screen resize
     checkWindowSize(false, isMobile => {
       this.setState({ isMobile });
     });
 
+    // if address is set
+    if (match.params.id) {
+      apolloClient.mutate({
+        mutation,
+        variables: { address: match.params.id, source: 'getQuery' }
+      });
+    }
+
     apolloClient.watchQuery({ query }).subscribe(result => {
+      console.log('result', result);
       this.setState({
         pos: { address: result.data.walletAddress },
         isLoggedIn: result.data.isLoggedIn

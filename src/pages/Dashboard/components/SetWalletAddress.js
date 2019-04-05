@@ -56,7 +56,7 @@ class SetWalletAddress extends React.Component {
   handleAddressUpdate = data => {
     client.mutate({
       mutation,
-      variables: { address: data.walletAddress }
+      variables: { address: data.walletAddress, source: 'manualInput' }
     });
   };
 
