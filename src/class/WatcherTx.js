@@ -140,15 +140,15 @@ export default class WatcherTx {
     const currentBlock = await web3.eth.getBlockNumber();
 
     console.log(currentBlock, this.pollingOn);
-    console.log('lastBlockChecked', this.lastBlockChecked);
+    // console.log('lastBlockChecked', this.lastBlockChecked);
 
     if (currentBlock > this.lastBlockChecked) {
-      console.log('Checking block', currentBlock);
+      // console.log('Checking block', currentBlock);
       const block = await web3.eth.getBlock(currentBlock);
       this.lastBlockChecked = currentBlock;
-      console.log('Block', block);
-      console.log('recipient', recipient);
-      console.log('total', total);
+      // console.log('Block', block);
+      // console.log('recipient', recipient);
+      // console.log('total', total);
 
       if (block.transactions.length) {
         block.transactions.forEach(async txHash => {
@@ -157,6 +157,7 @@ export default class WatcherTx {
       }
     }
 
+    console.log('this.pollingOn', this.pollingOn);
     if (this.pollingOn) {
       setTimeout(
         () => this.xdaiTransfer(recipient, total, cb),

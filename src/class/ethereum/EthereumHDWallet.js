@@ -77,6 +77,29 @@ export default class EthereumHDWallet extends HDWallet {
 
     return new Promise(async (resolve, reject) => {
       // for modern dapp browsers
+
+      if (this.address) {
+        const engine = new ProviderEngine();
+        Web3.providers.HttpProvider.prototype.sendAsync =
+          Web3.providers.HttpProvider.prototype.send;
+
+        if (!this.watchOnly) {
+          engine.addProvider(new WalletSubprovider(this.instanceWallet, {}));
+        }
+
+        engine.addProvider(
+          new RpcSubprovider({
+            rpcUrl: this.networkUrl
+          })
+        );
+
+        engine.start();
+        this.web3 = new Web3(engine);
+        this.web3.eth.defaultAccount = this.getAddress();
+        resolve();
+        return;
+      }
+
       if (ethereum) {
         // console.log(ethereum);
         ethereum
@@ -102,25 +125,6 @@ export default class EthereumHDWallet extends HDWallet {
         this.address = accounts[0];
         console.log(this.getAddress());
         console.log('legacy dapp browsers');
-        resolve();
-      } else {
-        const engine = new ProviderEngine();
-        Web3.providers.HttpProvider.prototype.sendAsync =
-          Web3.providers.HttpProvider.prototype.send;
-
-        if (!this.watchOnly) {
-          engine.addProvider(new WalletSubprovider(this.instanceWallet, {}));
-        }
-
-        engine.addProvider(
-          new RpcSubprovider({
-            rpcUrl: this.networkUrl
-          })
-        );
-
-        engine.start();
-        this.web3 = new Web3(engine);
-        this.web3.eth.defaultAccount = this.getAddress();
         resolve();
       }
     });
