@@ -20,7 +20,7 @@ const query = gql`
 `;
 
 const createInvoiceMutation = gql`
-  mutation createInvoice($fiatAmount: Int!, $fiatCurrency: String!) {
+  mutation createInvoice($fiatAmount: String!, $fiatCurrency: String!) {
     createInvoice(
       input: { fiatAmount: $fiatAmount, fiatCurrency: $fiatCurrency }
     ) {
@@ -100,7 +100,10 @@ class CreateInvoice extends React.Component {
                   handleSubmit={data => {
                     // console.log('login form', data);
                     createInvoice({
-                      variables: data
+                      variables: {
+                        fiatAmount: data.fiatAmount.toString(),
+                        fiatCurrency: data.fiatCurrency
+                      }
                     });
                   }}
                 />
