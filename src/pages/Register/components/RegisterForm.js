@@ -38,6 +38,7 @@ const RegisterForm = props => {
         onChange={handleChange}
         onBlur={handleBlur}
         error={errors.password}
+        hint="Your password should be at least 6 characters long and contain one number and one uppercase letter"
       />
       <button
         type="submit"

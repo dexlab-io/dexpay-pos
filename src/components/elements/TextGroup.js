@@ -12,8 +12,12 @@ const Input = styled.input`
   border: none;
   box-shadow: none;
 `;
+const Hint = styled.p`
+  color: #929292;
+  width: 90%;
+`;
 
-const TextGroup = ({ label, placeholder, error, ...otherProps }) => (
+const TextGroup = ({ label, placeholder, error, hint, ...otherProps }) => (
   <Field className="field is-horizontal">
     <div className="field-label is-normal">
       <Label className="label">{label}</Label>
@@ -27,6 +31,7 @@ const TextGroup = ({ label, placeholder, error, ...otherProps }) => (
             placeholder={placeholder}
             {...otherProps}
           />
+          {hint && <Hint className="help">{hint}</Hint>}
           {error && <p className="help is-danger">{error}</p>}
         </div>
       </div>
