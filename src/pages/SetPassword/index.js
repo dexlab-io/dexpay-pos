@@ -30,6 +30,7 @@ const Logo = styled.img`
 `;
 const Tagline = styled.h3`
   font-size: 20px;
+  text-align: center;
 `;
 
 class SetPassword extends React.Component {
