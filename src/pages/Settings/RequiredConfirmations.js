@@ -77,7 +77,7 @@ class RequiredConfirmations extends React.Component {
     clearTimeout(this.mutationTimeout);
     this.mutationTimeout = setTimeout(() => {
       apolloClient.mutate({ mutation, variables: { ...confirmation } });
-    }, 1000);
+    }, 800);
   };
 
   render() {

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { find } from 'lodash';
+import { find, isNull } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
 import config from '../../config';
@@ -39,11 +39,28 @@ const ItemContainer = styled.div`
 `;
 
 class BaseCurrency extends React.Component {
-  handleCurrencyChange = currency => {
-    apolloClient.mutate({ mutation, variables: { currency: currency.id } });
+  constructor(props) {
+    super(props);
+
+    this.state = { currency: null };
+    this.mutationTimeout = undefined;
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.mutationTimeout);
+  }
+
+  handleChange = currency => {
+    this.setState({ currency: currency.id });
+
+    clearTimeout(this.mutationTimeout);
+    this.mutationTimeout = setTimeout(() => {
+      apolloClient.mutate({ mutation, variables: { currency: currency.id } });
+    }, 800);
   };
 
   render() {
+    const { currency } = this.state;
     const { history } = this.props;
     const settingItem = find(settingsItems, {
       linkTo: '/settings/base-currency'
@@ -56,17 +73,25 @@ class BaseCurrency extends React.Component {
           <div className="container">
             <SettingsHeader history={history} />
             <Breadcrumb history={history} {...settingItem} />
-            <Query query={query} fetchPolicy="cache-and-network">
-              {({ data, loading, error }) => {
-                if (loading && !data.currency) return <p>loading...</p>;
+            <Query
+              query={query}
+              fetchPolicy="cache-and-network"
+              onCompleted={data => {
+                if (isNull(currency)) {
+                  this.setState({ currency: data.currency });
+                }
+              }}
+            >
+              {({ loading, error }) => {
+                if (loading && isNull(currency)) return <p>loading...</p>;
                 if (error) return <p>Error: {error.message}</p>;
                 // console.log('data.currency', data);
 
                 return config.currencies.map(item => (
                   <ItemContainer
                     key={item.id}
-                    active={data.currency === item.id}
-                    onClick={() => this.handleCurrencyChange(item)}
+                    active={currency === item.id}
+                    onClick={() => this.handleChange(item)}
                   >
                     <span>
                       {item.id} ({item.symbol}) {item.name}
