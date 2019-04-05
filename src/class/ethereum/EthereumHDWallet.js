@@ -79,7 +79,6 @@ export default class EthereumHDWallet extends HDWallet {
       // for modern dapp browsers
 
       if (this.address) {
-        console.log('this.address', this.address);
         const engine = new ProviderEngine();
         Web3.providers.HttpProvider.prototype.sendAsync =
           Web3.providers.HttpProvider.prototype.send;

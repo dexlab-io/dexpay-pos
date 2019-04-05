@@ -124,6 +124,7 @@ class Payment extends Component {
       }
     });
 
+    this.watcherXdai = null;
     this.watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
     this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
       this.setState({
@@ -181,6 +182,7 @@ class Payment extends Component {
           if (this.watcherXdai) {
             this.watcherXdai.pollingOn = false;
           }
+          this.watcherXdai = null;
           onCloseModal();
         }}
         center
