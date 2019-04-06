@@ -74,8 +74,9 @@ export default withFormik({
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
     // console.log('handle submit', values, props);
-    props.handleSubmit(values);
-    setSubmitting(false);
+    props.handleUpdate(values).finally(() => {
+      setSubmitting(false);
+    });
   },
   displayName: 'CreateInvoiceForm' // helps with React DevTools
 })(CreateInvoiceForm);

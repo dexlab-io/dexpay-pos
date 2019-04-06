@@ -2,7 +2,6 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { find } from 'lodash';
-import swal from 'sweetalert';
 
 import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
@@ -29,11 +28,10 @@ const mutation = gql`
 
 class WalletAddress extends React.Component {
   handleUpdate = data => {
-    apolloClient.mutate({
+    return apolloClient.mutate({
       mutation,
       variables: { address: data.walletAddress }
     });
-    swal('Success!', 'Wallet address updated!', 'success');
   };
 
   render() {
@@ -57,7 +55,7 @@ class WalletAddress extends React.Component {
                 return (
                   <WalletAddressForm
                     initialValues={{ walletAddress: data.walletAddress || '' }}
-                    handleSubmit={this.handleUpdate}
+                    handleUpdate={this.handleUpdate}
                   />
                 );
               }}

@@ -67,8 +67,8 @@ class SetPassword extends React.Component {
               {setNewPassword => (
                 <React.Fragment>
                   <SetPasswordForm
-                    handleSubmit={data => {
-                      setNewPassword({
+                    handleUpdate={data => {
+                      return setNewPassword({
                         variables: { password: data.password, token }
                       });
                     }}

@@ -95,16 +95,14 @@ class Register extends React.Component {
               }}
             >
               {register => (
-                <React.Fragment>
-                  <RegisterForm
-                    handleSubmit={data => {
-                      // console.log('login form', data);
-                      register({
-                        variables: data
-                      });
-                    }}
-                  />
-                </React.Fragment>
+                <RegisterForm
+                  handleUpdate={data => {
+                    // console.log('login form', data);
+                    return register({
+                      variables: data
+                    });
+                  }}
+                />
               )}
             </Mutation>
             <OrText>OR</OrText>

@@ -72,8 +72,8 @@ class ForgotPassword extends React.Component {
               {forgotPassword => (
                 <React.Fragment>
                   <ForgotPasswordForm
-                    handleSubmit={data => {
-                      forgotPassword({
+                    handleUpdate={data => {
+                      return forgotPassword({
                         variables: data
                       });
                     }}

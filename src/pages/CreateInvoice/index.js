@@ -97,9 +97,9 @@ class CreateInvoice extends React.Component {
             >
               {createInvoice => (
                 <CreateInvoiceForm
-                  handleSubmit={data => {
+                  handleUpdate={data => {
                     // console.log('login form', data);
-                    createInvoice({
+                    return createInvoice({
                       variables: {
                         fiatAmount: data.fiatAmount.toString(),
                         fiatCurrency: data.fiatCurrency

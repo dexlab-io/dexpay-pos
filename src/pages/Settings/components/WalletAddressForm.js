@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
 import styled from 'styled-components';
+import swal from 'sweetalert';
+
 import { TextGroup } from '../../../components/elements';
 
 const Form = styled.form`
@@ -67,8 +69,14 @@ export default withFormik({
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
     // console.log('handle submit', values, props);
-    props.handleSubmit(values);
-    setSubmitting(false);
+    props
+      .handleUpdate(values)
+      .then(() => {
+        swal('Success!', 'Wallet address updated!', 'success');
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   },
   displayName: 'WalletAddressForm' // helps with React DevTools
 })(WalletAddressForm);

@@ -131,9 +131,9 @@ class Login extends React.Component {
             >
               {login => (
                 <LoginForm
-                  handleSubmit={data => {
+                  handleUpdate={data => {
                     // console.log('login form', data);
-                    login({
+                    return login({
                       variables: data
                     });
                   }}

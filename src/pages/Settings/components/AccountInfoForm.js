@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
+import swal from 'sweetalert';
 
 import { TextGroup } from '../../../components/elements';
 
@@ -108,8 +109,17 @@ export default withFormik({
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
     // console.log('handle submit', values, props);
-    props.handleSubmit(values);
-    setSubmitting(false);
+    props
+      .handleUpdate(values)
+      .then(() => {
+        swal('Success!', 'Account info updated!', 'success');
+      })
+      .catch(() => {
+        swal('Issue!', 'Invalid form input data.', 'warning');
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   },
   displayName: 'AccountInfoForm' // helps with React DevTools
 })(AccountInfoForm);
