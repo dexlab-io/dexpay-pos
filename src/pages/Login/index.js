@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import apolloClient from '../../utils/apolloClient';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import LoginForm from './components/LoginForm';
@@ -20,8 +21,26 @@ const loginMutation = gql`
         profile {
           fullName
         }
+        store {
+          name
+          walletAddress
+          currency
+          acceptedTokens
+        }
       }
     }
+  }
+`;
+
+const mutation = gql`
+  mutation updateWalletAddress(
+    $acceptedTokens: [String]!
+    $currency: String!
+    $walletAddress: String!
+  ) {
+    updateAcceptedTokens(tokens: $acceptedTokens) @client
+    updateCurrency(currency: $currency) @client
+    updateWalletAddress(address: $walletAddress) @client
   }
 `;
 
@@ -68,15 +87,30 @@ class Login extends React.Component {
   }
 
   onLoginSuccess = async (cache, { data: { login } }) => {
-    console.log('onLoginSuccess', login);
+    // console.log('onLoginSuccess', login);
+    const { user, jwt } = login;
     // store token in local storage
-    await window.localStorage.setItem('token', login.jwt);
-    window.location.replace('/dashboard');
+    await window.localStorage.setItem('token', jwt);
+
+    // sync data with local store
+    apolloClient
+      .mutate({
+        mutation,
+        variables: {
+          acceptedTokens: user.store.acceptedTokens,
+          currency: user.store.currency,
+          walletAddress: user.store.walletAddress
+        }
+      })
+      .then(() => {
+        // redirect to dashboard
+        setTimeout(() => {
+          window.location.replace('/dashboard');
+        }, 1000);
+      });
   };
 
   render() {
-    // const { history } = this.props;
-
     return (
       <Layout header={{ isVisible: false }}>
         <Seo title="Login" />
@@ -84,7 +118,6 @@ class Login extends React.Component {
           <Container className="container">
             <Logo src={logo} alt="Dexpay logo" />
             <Tagline>Take your shop to the future</Tagline>
-            <Tagline>Sign Up for free now</Tagline>
             <Mutation
               mutation={loginMutation}
               update={this.onLoginSuccess}

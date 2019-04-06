@@ -71,10 +71,10 @@ const resolvers = {
         data: { isLoggedIn: !!token }
       });
 
-      // fetch exchange rates, every 3 seconds
+      // fetch exchange rates, every 12 seconds
       setInterval(() => {
         fetchExchangeRates(_, variables, { cache });
-      }, 3000);
+      }, 12000);
 
       return true;
     },
@@ -102,6 +102,14 @@ const resolvers = {
         const tokenIndex = indexOf(tokens, token);
         tokens.splice(tokenIndex, 1);
       }
+      // update cache
+      cache.writeData({ data: { acceptedTokens: tokens } });
+
+      return tokens;
+    },
+    updateAcceptedTokens: (_, variables, { cache }) => {
+      const { tokens } = variables;
+
       // update cache
       cache.writeData({ data: { acceptedTokens: tokens } });
 

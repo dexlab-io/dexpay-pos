@@ -33,6 +33,7 @@ const typeDefs = `
     initApp: Boolean!
     updateCurrency(currency: String!): String!
     toggleAcceptedTokens(token: String!, isAccepted: Boolean!): [String!]
+    updateAcceptedTokens(tokens: [String!]!): [String!]
     updateRequiredConfirmations(token: String!, confirmations: Int!): Confirmation!
     updateWalletAddress(address: String!, source: String): String!
   }
