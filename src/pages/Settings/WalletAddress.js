@@ -30,7 +30,7 @@ class WalletAddress extends React.Component {
   handleUpdate = data => {
     return apolloClient.mutate({
       mutation,
-      variables: { address: data.walletAddress }
+      variables: { address: data.walletAddress, source: 'manualInput' }
     });
   };
 

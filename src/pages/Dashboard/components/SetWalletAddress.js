@@ -54,7 +54,7 @@ const MetaMaskLogo = styled.img`
 
 class SetWalletAddress extends React.Component {
   handleAddressUpdate = data => {
-    client.mutate({
+    return client.mutate({
       mutation,
       variables: { address: data.walletAddress, source: 'manualInput' }
     });
@@ -87,7 +87,7 @@ class SetWalletAddress extends React.Component {
           <WalletAddressForm
             column
             initialValues={{ walletAddress: '' }}
-            handleSubmit={this.handleAddressUpdate}
+            handleUpdate={this.handleAddressUpdate}
           />
         </FormContainer>
 
