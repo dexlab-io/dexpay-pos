@@ -72,12 +72,38 @@ export default class EthereumHDWallet extends HDWallet {
     await this.fetchBalance();
   }
 
+  static checkMetaMask() {
+    const { web3, ethereum } = window;
+
+    return new Promise(async resolve => {
+      // Metamask is not installed
+      if (typeof web3 === 'undefined' || typeof ethereum === 'undefined') {
+        resolve('NOWEB3');
+      }
+
+      // Metamask is locked
+      console.log('web3', web3);
+      try {
+        web3.eth.getAccounts((err, _accounts) => {
+          console.log(_accounts);
+          if (_accounts.length > 0) resolve('READY');
+          else resolve('LOCKED');
+        });
+      } catch (e) {
+        console.log('e', e);
+      }
+
+      return null;
+    });
+  }
+
   async setWeb3() {
     const { web3, ethereum } = window;
 
     return new Promise(async (resolve, reject) => {
       // for modern dapp browsers
 
+      // if (this.address && !ethereum && !web3 && !web3.currentProvider) {
       if (this.address) {
         const engine = new ProviderEngine();
         Web3.providers.HttpProvider.prototype.sendAsync =
@@ -109,6 +135,7 @@ export default class EthereumHDWallet extends HDWallet {
             const accounts = await this.web3.eth.getAccounts();
             // eslint-disable-next-line prefer-destructuring
             this.address = accounts[0];
+
             resolve();
           })
           .catch(deniedAccessMessage => {
