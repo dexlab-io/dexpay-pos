@@ -64,8 +64,6 @@ class CreateInvoice extends React.Component {
   }
 
   onSuccess = (cache, { data: { createInvoice } }) => {
-    const { history } = this.props;
-
     swal({
       icon: 'info',
       title: 'Invoice created',
@@ -73,7 +71,11 @@ class CreateInvoice extends React.Component {
         text: 'Get URL'
       }
     }).then(() => {
-      history.push(`/invoice/${createInvoice.invoiceNumber}`);
+      const win = window.open(
+        `/invoice/${createInvoice.invoiceNumber}`,
+        '_blank'
+      );
+      win.focus();
     });
   };
 
