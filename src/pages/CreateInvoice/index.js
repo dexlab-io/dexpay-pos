@@ -1,23 +1,11 @@
 import React from 'react';
 import swal from 'sweetalert';
-import { Query, Mutation } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Link } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import CreateInvoiceForm from './components/CreateInvoiceForm';
-
-const query = gql`
-  {
-    invoices {
-      id
-      invoiceNumber
-      fiatAmount
-      fiatCurrency
-    }
-  }
-`;
 
 const createInvoiceMutation = gql`
   mutation createInvoice($fiatAmount: String!, $fiatCurrency: String!) {
@@ -109,45 +97,6 @@ class CreateInvoice extends React.Component {
                 />
               )}
             </Mutation>
-            <hr />
-            <h2 className="title">Your Invoices</h2>
-            <Query query={query} fetchPolicy="cache-and-network">
-              {({ data, loading, error }) => {
-                if (loading && !data.invoices) return <p>loading...</p>;
-                if (error) return <p>Error: {error.message}</p>;
-                // console.log('invoices', data.invoices);
-
-                return (
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Invoice ID</th>
-                        <th>Currency</th>
-                        <th>Amount</th>
-                        <th />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.invoices.map(invoice => (
-                        <tr key={invoice.id}>
-                          <th>{invoice.invoiceNumber}</th>
-                          <th>{invoice.fiatCurrency}</th>
-                          <th>{invoice.fiatAmount}</th>
-                          <th>
-                            <Link
-                              to={`/invoice/${invoice.invoiceNumber}`}
-                              className="button is-small"
-                            >
-                              VIEW
-                            </Link>
-                          </th>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                );
-              }}
-            </Query>
           </div>
         </div>
       </Layout>

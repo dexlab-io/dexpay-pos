@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
+// import moment from 'moment';
 import { truncateHash } from '../../../../utils/helpers';
 import cryptoIcon from '../../../../assets/dummy/crypto-icon.png';
 import FormatCurrency from '../../../../components/FormatCurrency';
@@ -14,23 +14,24 @@ const Image = styled.img`
 
 const PaymentItem = ({ payment }) => (
   <Container
-    href={`https://blockscout.com/poa/dai/tx/${payment.transactionHash}`}
+    href={`/invoice/${payment.invoiceNumber}`}
     target="_blank"
     className="media"
   >
     <figure className="media-left">
       <p className="image is-32x32">
-        <Image src={cryptoIcon} alt={payment.currency} />
+        <Image src={cryptoIcon} alt={payment.processedType} />
       </p>
     </figure>
     <div className="media-content">
       <div className="content">
         <p>
-          <small className="has-text-weight-light">
-            {moment.unix(payment.timestamp).fromNow()}
-          </small>
+          <small className="has-text-weight-light">{payment.createdAt}</small>
           <br />
-          {truncateHash(payment.transactionHash)}
+          {payment.invoiceNumber} | {truncateHash(payment.txHash || '')}
+          <br />
+          {payment.fiatCurrency}
+          {payment.fiatAmount} | {payment.status}
         </p>
       </div>
     </div>
