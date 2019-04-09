@@ -12,6 +12,7 @@ import Payment from '../Payment';
 
 const query = gql`
   {
+    currency @client
     isLoggedIn @client
     walletAddress @client
   }
@@ -26,6 +27,22 @@ const mutation = gql`
   }
 `;
 
+const createInvoiceMutation = gql`
+  mutation createInvoice($fiatAmount: String!, $fiatCurrency: String!) {
+    createInvoice(
+      input: { fiatAmount: $fiatAmount, fiatCurrency: $fiatCurrency }
+    ) {
+      id
+      invoiceNumber
+      fiatAmount
+      fiatCurrency
+      store {
+        name
+        walletAddress
+      }
+    }
+  }
+`;
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +82,20 @@ class Dashboard extends Component {
     });
   }
 
-  handlePay = () => {
+  handlePay = async () => {
+    const { totalAmount } = this.state;
+
+    const response = await apolloClient.query({ query });
+
+    // add entry to API
+    apolloClient.mutate({
+      mutation: createInvoiceMutation,
+      variables: {
+        fiatAmount: totalAmount.toString(),
+        fiatCurrency: response.data.currency
+      }
+    });
+
     this.setState({ paymentModalOpen: true });
   };
 

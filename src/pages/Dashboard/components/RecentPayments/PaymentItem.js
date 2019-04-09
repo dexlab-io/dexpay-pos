@@ -28,16 +28,17 @@ const PaymentItem = ({ payment }) => (
         <p>
           <small className="has-text-weight-light">{payment.createdAt}</small>
           <br />
-          {payment.invoiceNumber} | {truncateHash(payment.txHash || '')}
-          <br />
-          {payment.fiatCurrency}
-          {payment.fiatAmount} | {payment.status}
+          {payment.invoiceNumber} | {payment.status} |{' '}
+          {truncateHash(payment.txHash || '')}
         </p>
       </div>
     </div>
     <div className="media-right">
       <small>
-        <FormatCurrency value={payment.value} />
+        <FormatCurrency
+          currency={payment.fiatCurrency}
+          value={payment.fiatAmount}
+        />
       </small>
     </div>
   </Container>
