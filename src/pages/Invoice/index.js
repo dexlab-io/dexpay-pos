@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 import React from 'react';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
@@ -145,31 +146,60 @@ class Invoice extends React.Component {
       isApproved: false,
       isSuccessful: false,
       walletAddress: null,
+      web3Status: false,
       exchangeRates: []
     };
+
+    this.init();
+  }
+
+  async init() {
+    this.W = new EthereumHDWallet();
+    const metamaskStatus = await EthereumHDWallet.checkMetaMask();
+
+    this.setState({ web3Status: metamaskStatus });
+    console.log('metamaskStatus', metamaskStatus);
   }
 
   async componentDidMount() {
     apolloClient
       .watchQuery({ query: exchangeRateQuery })
       .subscribe(async result => {
-        this.setState({
-          exchangeRates: result.data.exchangeRates
-        });
+        if (result.data) {
+          this.setState({
+            exchangeRates: result.data.exchangeRates
+          });
+        }
       });
   }
 
   goToStepTwo = () => {
+    const { web3Status } = this.state;
     this.setState({ step: 2 });
+
+    // if (web3Status === 'LOCKED') {
+    //   this.setState({ step: 2 });
+    // }
+
+    if (web3Status === 'READY') {
+      this.setState({ step: 3 });
+    }
+
+    // if (web3Status === 'NOWEB3') {
+    //   this.setState({ step: 3 });
+    // }
   };
 
   handleUseMetamask = async () => {
-    const wallet = new EthereumHDWallet();
-    await wallet.setWeb3();
-    const metaMaskAddress = wallet.getAddress();
+    await this.W.setWeb3();
+    const metaMaskAddress = this.W.getAddress();
     // update cache
     if (metaMaskAddress) {
-      this.setState({ walletAddress: metaMaskAddress, walletConnected: true });
+      this.setState({
+        walletAddress: metaMaskAddress,
+        walletConnected: true,
+        web3Status: 'READY'
+      });
     }
   };
 
@@ -220,7 +250,13 @@ class Invoice extends React.Component {
   };
 
   render() {
-    const { step, walletConnected, isApproved, isSuccessful } = this.state;
+    const {
+      step,
+      walletConnected,
+      isApproved,
+      isSuccessful,
+      web3Status
+    } = this.state;
     const { match } = this.props;
 
     let stepText = 'Payment Method';
@@ -276,7 +312,7 @@ class Invoice extends React.Component {
                           </button>
                         </React.Fragment>
                       )}
-                      {step === 2 && !walletConnected && (
+                      {step === 2 && web3Status === 'LOCKED' && (
                         <React.Fragment>
                           <Tag>Unlock your wallet</Tag>
                           <Button
