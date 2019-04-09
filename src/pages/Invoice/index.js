@@ -6,7 +6,8 @@ import gql from 'graphql-tag';
 import { find } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
-import EthereumHDWallet from '../../class/ethereum/EthereumHDWallet';
+import EthereumHDWalletRopsten from '../../class/ethereum/EthereumHDWalletRopsten';
+import Gateway from '../../class/gateway/Gateway';
 import { Loading } from '../../components/elements';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
@@ -136,6 +137,10 @@ const exchangeRateQuery = gql`
   }
 `;
 
+const order = {
+  id: 1,
+  tokenValue: 0.0001
+};
 class Invoice extends React.Component {
   constructor(props) {
     super(props);
@@ -143,7 +148,7 @@ class Invoice extends React.Component {
     this.state = {
       step: 1,
       walletConnected: false,
-      isApproved: false,
+      isApproved: true,
       isSuccessful: false,
       walletAddress: null,
       web3Status: false,
@@ -154,8 +159,18 @@ class Invoice extends React.Component {
   }
 
   async init() {
-    this.W = new EthereumHDWallet();
-    const metamaskStatus = await EthereumHDWallet.checkMetaMask();
+    this.W = new EthereumHDWalletRopsten();
+    await this.W.setWeb3();
+    const metamaskStatus = await EthereumHDWalletRopsten.checkMetaMask();
+
+    this.G = new Gateway(this.W);
+
+    this.G.getServiceFee();
+    this.G.isOrderPaid(
+      order.id,
+      order.tokenValue,
+      '0x0000000000000000000000000000000000000000'
+    );
 
     this.setState({ web3Status: metamaskStatus });
     console.log('metamaskStatus', metamaskStatus);
@@ -216,7 +231,8 @@ class Invoice extends React.Component {
   };
 
   handlePay = () => {
-    this.setState({ isSuccessful: true });
+    this.G.payWithEth(order);
+    // this.setState({ isSuccessful: true });
   };
 
   cryptoAmount = invoice => {
