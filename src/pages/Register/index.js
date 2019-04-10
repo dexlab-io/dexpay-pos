@@ -49,24 +49,6 @@ const ButtonText = styled(Link)`
 `;
 
 class Register extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const token = window.localStorage.getItem('token');
-    this.state = {
-      isLoggedIn: !!token
-    };
-  }
-
-  componentDidMount() {
-    const { isLoggedIn } = this.state;
-    const { history } = this.props;
-
-    if (isLoggedIn) {
-      history.push('/dashboard');
-    }
-  }
-
   onRegisterSuccess = async (cache, { data: { register } }) => {
     // console.log('onRegisterSuccess', register);
     // store token in local storage

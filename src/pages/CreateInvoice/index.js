@@ -37,32 +37,6 @@ const createInvoiceMutation = gql`
 `;
 
 class CreateInvoice extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const token = window.localStorage.getItem('token');
-    this.state = {
-      isLoggedIn: !!token
-    };
-  }
-
-  componentDidMount() {
-    const { isLoggedIn } = this.state;
-    const { history } = this.props;
-
-    if (!isLoggedIn) {
-      swal({
-        icon: 'info',
-        title: 'Please login to continue',
-        button: {
-          text: 'Login'
-        }
-      }).then(() => {
-        history.push('/login');
-      });
-    }
-  }
-
   onSuccess = (cache, { data: { createInvoice } }) => {
     swal({
       icon: 'info',
@@ -81,7 +55,7 @@ class CreateInvoice extends React.Component {
 
   render() {
     return (
-      <Layout>
+      <Layout header={{ isVisible: false }}>
         <Seo title="Create Invoice" />
         <div className="section">
           <div className="container">

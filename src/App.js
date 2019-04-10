@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import gql from 'graphql-tag';
 
 import './theme/bulma.css'; // load bulma
@@ -33,7 +33,15 @@ const initAppMutation = gql`
 `;
 
 class App extends Component {
-  state = { loaded: false };
+  constructor(props) {
+    super(props);
+
+    const token = window.localStorage.getItem('token');
+    this.state = {
+      loaded: false,
+      isLoggedIn: !!token
+    };
+  }
 
   async componentDidMount() {
     await persistor.restore();
@@ -45,7 +53,7 @@ class App extends Component {
   }
 
   render() {
-    const { loaded } = this.state;
+    const { loaded, isLoggedIn } = this.state;
     if (!loaded) {
       return <div>loading</div>;
     }
@@ -56,26 +64,65 @@ class App extends Component {
           <React.Fragment>
             <BrowserRouter>
               <Switch>
-                <Route path="/" exact component={Register} />
-                <Route path="/login" exact component={Login} />
                 <Route
-                  path="/forgot-password"
                   exact
-                  component={ForgotPassword}
+                  path="/"
+                  render={props =>
+                    isLoggedIn ? (
+                      <Redirect to="/dashboard" />
+                    ) : (
+                      <Register {...props} />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/login"
+                  render={props =>
+                    isLoggedIn ? (
+                      <Redirect to="/dashboard" />
+                    ) : (
+                      <Login {...props} />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/forgot-password"
+                  render={props =>
+                    isLoggedIn ? (
+                      <Redirect to="/dashboard" />
+                    ) : (
+                      <ForgotPassword {...props} />
+                    )
+                  }
                 />
                 <Route path="/set-password/:token" component={SetPassword} />
                 <Route path="/dashboard" exact component={Dashboard} />
                 <Route path="/invoice/:id" component={Invoice} />
-                <Route path="/create-invoice" component={CreateInvoice} />
+                <Route
+                  exact
+                  path="/create-invoice"
+                  render={props =>
+                    !isLoggedIn ? (
+                      <Redirect to="/login" />
+                    ) : (
+                      <CreateInvoice {...props} />
+                    )
+                  }
+                />
                 <Route path="/settings" exact component={Settings} />
                 <Route
-                  path="/settings/account-info"
                   exact
-                  component={AccountInfo}
+                  path="/settings/account-info"
+                  render={props =>
+                    !isLoggedIn ? (
+                      <Redirect to="/login" />
+                    ) : (
+                      <AccountInfo {...props} />
+                    )
+                  }
                 />
-
-                <Route path="/address/:id" component={Dashboard} />
-
                 <Route
                   path="/settings/accepted-tokens"
                   exact
@@ -96,6 +143,7 @@ class App extends Component {
                   exact
                   component={WalletAddress}
                 />
+                <Route path="/address/:id" component={Dashboard} />
                 <Route path="/test" exact component={Test} />
                 <Route component={Error404} />
               </Switch>
