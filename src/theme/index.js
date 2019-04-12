@@ -44,6 +44,9 @@ export const GlobalStyle = createGlobalStyle`
   a {
     color: ${theme.primaryColor};
   }
+  .swal-footer {
+    text-align: center !important;
+  }
   a.navbar-item.is-active, .navbar-link.is-active {
     background: transparent;
   }
