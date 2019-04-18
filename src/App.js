@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
@@ -32,7 +32,7 @@ const initAppMutation = gql`
   }
 `;
 
-const PrivateRoute = ({ component, isLoggedIn, ...rest }) => {
+const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => {
   return (
     <Route
       {...rest}
@@ -43,7 +43,7 @@ const PrivateRoute = ({ component, isLoggedIn, ...rest }) => {
   );
 };
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
