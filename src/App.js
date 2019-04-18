@@ -32,6 +32,17 @@ const initAppMutation = gql`
   }
 `;
 
+const PrivateRoute = ({ component, isLoggedIn, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isLoggedIn ? <Component {...props} /> : <Redirect to="/login" />
+      }
+    />
+  );
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -100,28 +111,18 @@ class App extends Component {
                 <Route path="/set-password/:token" component={SetPassword} />
                 <Route path="/dashboard" exact component={Dashboard} />
                 <Route path="/invoice/:id" component={Invoice} />
-                <Route
+                <PrivateRoute
                   exact
+                  isLoggedIn={isLoggedIn}
                   path="/create-invoice"
-                  render={props =>
-                    !isLoggedIn ? (
-                      <Redirect to="/login" />
-                    ) : (
-                      <CreateInvoice {...props} />
-                    )
-                  }
+                  component={CreateInvoice}
                 />
                 <Route path="/settings" exact component={Settings} />
-                <Route
+                <PrivateRoute
                   exact
+                  isLoggedIn={isLoggedIn}
                   path="/settings/account-info"
-                  render={props =>
-                    !isLoggedIn ? (
-                      <Redirect to="/login" />
-                    ) : (
-                      <AccountInfo {...props} />
-                    )
-                  }
+                  component={CreateInvoice}
                 />
                 <Route
                   path="/settings/accepted-tokens"
