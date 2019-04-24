@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { findIndex } from 'lodash';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { NumberIncrementer } from '../../../components/elements';
 import FormatCurrency from '../../../components/FormatCurrency';
@@ -30,11 +32,18 @@ const ItemQuantitiy = styled.div`
   margin-left: 30px;
 `;
 
-const products = [
-  { id: 1, name: '🍺 Beer', price: 2.0 },
-  { id: 2, name: '🍷 Wine', price: 2.0 },
-  { id: 3, name: '🥤 Soft drink', price: 1.0 }
-];
+const query = gql`
+  {
+    currency @client
+    products {
+      id
+      title
+      details
+      price
+      status
+    }
+  }
+`;
 
 class ProductItems extends React.Component {
   constructor(props) {
@@ -88,28 +97,41 @@ class ProductItems extends React.Component {
 
     return (
       <Container>
-        <Items>
-          {products.map(item => (
-            <Item key={item.id}>
-              <ItemName className="has-text-weight-semibold">
-                {item.name}
-              </ItemName>
-              <ItemRight>
-                <ItemPrice>
-                  <FormatCurrency value={item.price} />
-                </ItemPrice>
-                <ItemQuantitiy>
-                  <NumberIncrementer
-                    value={initValue}
-                    handleChange={newValue =>
-                      this.handleUpdateItem(item, newValue)
-                    }
-                  />
-                </ItemQuantitiy>
-              </ItemRight>
-            </Item>
-          ))}
-        </Items>
+        <Query query={query} fetchPolicy="cache-and-network">
+          {({ data, loading, error }) => {
+            if (loading && !data.products) return <p>loading...</p>;
+            if (error) return <p>Error: {error.message}</p>;
+            // console.log('products', data.products);
+
+            return (
+              <Items>
+                {data.products.map(item => (
+                  <Item key={item.id}>
+                    <ItemName className="has-text-weight-semibold">
+                      {item.title}
+                    </ItemName>
+                    <ItemRight>
+                      <ItemPrice>
+                        <FormatCurrency
+                          currency={data.currency}
+                          value={item.price}
+                        />
+                      </ItemPrice>
+                      <ItemQuantitiy>
+                        <NumberIncrementer
+                          value={initValue}
+                          handleChange={newValue =>
+                            this.handleUpdateItem(item, newValue)
+                          }
+                        />
+                      </ItemQuantitiy>
+                    </ItemRight>
+                  </Item>
+                ))}
+              </Items>
+            );
+          }}
+        </Query>
       </Container>
     );
   }
