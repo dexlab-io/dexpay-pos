@@ -285,7 +285,11 @@ class Invoice extends React.Component {
               text={stepText}
               goToStep={stepNumber => this.setState({ step: stepNumber })}
             />
-            <Query query={query} variables={{ id: match.params.id }}>
+            <Query
+              query={query}
+              variables={{ id: match.params.id }}
+              fetchPolicy="cache-and-network"
+            >
               {({ loading, error, data }) => {
                 if (loading) return <Loading />;
                 if (error) return `Error!: ${error}`;
