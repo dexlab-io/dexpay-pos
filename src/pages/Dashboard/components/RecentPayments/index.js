@@ -4,6 +4,9 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
 import PaymentItem from './PaymentItem';
+import PaymentItemWeb3 from './PaymentItemWeb3';
+import xDAIHDWallet from '../../../../class/xdai/xDAIHDWallet';
+import apolloClient from '../../../../utils/apolloClient';
 
 const query = gql`
   {
@@ -37,17 +40,43 @@ class RecentPayments extends React.Component {
 
     const token = window.localStorage.getItem('token');
     this.state = {
-      isLoggedIn: !!token
+      isLoggedIn: !!token,
+      web3Transactions: []
     };
   }
 
+  componentDidMount() {
+    const { isLoggedIn } = this.state;
+
+    if (!isLoggedIn) {
+      apolloClient.watchQuery({ query }).subscribe(async result => {
+        // eslint-disable-next-line new-cap
+        this.wallet = new xDAIHDWallet(null, result.data.walletAddress);
+        await this.wallet.setWeb3();
+        await this.wallet.fetchEthTransactions();
+        this.setState({
+          // eslint-disable-next-line react/no-unused-state
+          web3Transactions: this.wallet.transactions,
+          isLoading: false
+        });
+      });
+    }
+  }
+
   render() {
-    const { isLoading, isLoggedIn } = this.state;
+    const { isLoading, isLoggedIn, web3Transactions } = this.state;
 
     return (
       <Container>
         {!isLoggedIn ? (
-          <p style={{ marginLeft: '10px' }}>Please login to continue.</p>
+          <React.Fragment>
+            {web3Transactions.length === 0 && !isLoading && (
+              <p>No recent transactions found.</p>
+            )}
+            {web3Transactions.map(item => (
+              <PaymentItemWeb3 key={item.transactionHash} payment={item} />
+            ))}
+          </React.Fragment>
         ) : (
           <Query query={query} fetchPolicy="cache-and-network">
             {({ data, loading, error }) => {

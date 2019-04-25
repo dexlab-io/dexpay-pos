@@ -74,11 +74,12 @@ class Dashboard extends Component {
     }
 
     apolloClient.watchQuery({ query }).subscribe(result => {
-      console.log('result', result);
-      this.setState({
-        pos: { address: result.data.walletAddress },
-        isLoggedIn: result.data.isLoggedIn
-      });
+      if (result.data) {
+        this.setState({
+          pos: { address: result.data.walletAddress },
+          isLoggedIn: result.data.isLoggedIn
+        });
+      }
     });
   }
 
