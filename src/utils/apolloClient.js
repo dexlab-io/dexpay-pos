@@ -13,6 +13,7 @@ import { defaults, resolvers, typeDefs } from '../store';
 const cache = new InMemoryCache();
 
 export const persistor = new CachePersistor({
+  key: 'dexpay-pos-cache',
   cache,
   storage: window.localStorage,
   debug: config.config
