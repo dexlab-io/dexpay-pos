@@ -10,6 +10,7 @@ import apolloClient from '../../../../utils/apolloClient';
 
 const query = gql`
   {
+    walletAddress @client
     invoices {
       id
       invoiceNumber
