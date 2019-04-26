@@ -18,7 +18,7 @@ import {
   Invoice,
   CreateInvoice,
   Settings,
-  AccountInfo,
+  // AccountInfo,
   AcceptedTokens,
   BaseCurrency,
   RequiredConfirmations,

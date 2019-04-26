@@ -18,3 +18,12 @@ export const getTokenPrice = (token = 'ethereum') => {
     })
     .catch(() => 0);
 };
+
+export const getCurrencyRates = (base = 'EUR', to = 'USD') => {
+  return axios
+    .get(`https://api.exchangeratesapi.io/latest?base=${base}&symbols=${to}`)
+    .then(response => {
+      return response.data.rates[to];
+    })
+    .catch(() => 0);
+};

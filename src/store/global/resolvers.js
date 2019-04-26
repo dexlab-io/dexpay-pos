@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import swal from 'sweetalert';
 import qs from 'qs';
 
-import { getTokenPrice } from '../../utils/Coingecko';
+import { getTokenPrice } from '../../utils/exchangeRates';
 
 const fetchExchangeRates = async (_, variables, { cache }) => {
   // check if token already in store

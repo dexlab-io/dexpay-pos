@@ -5,32 +5,11 @@ import { findIndex } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { NumberIncrementer } from '../../../components/elements';
-import FormatCurrency from '../../../components/FormatCurrency';
+import ProductItem from './ProductItem';
 
 const Container = styled.div``;
 
 const Items = styled.div``;
-const Item = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 40px;
-  align-items: center;
-`;
-const ItemRight = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const ItemName = styled.span`
-  font-size: 18px;
-`;
-const ItemPrice = styled.span`
-  font-size: 18px;
-`;
-const ItemQuantitiy = styled.div`
-  width: 120px;
-  margin-left: 30px;
-`;
 
 const query = gql`
   {
@@ -40,6 +19,7 @@ const query = gql`
       title
       details
       price
+      priceCurrency
       status
     }
   }
@@ -50,8 +30,7 @@ class ProductItems extends React.Component {
     super(props);
 
     this.state = {
-      cartItems: [],
-      initValue: 0
+      cartItems: []
     };
   }
 
@@ -84,17 +63,7 @@ class ProductItems extends React.Component {
     handleChange({ cartTotal: parseFloat(cartTotal).toFixed(2) });
   };
 
-  resetItems() {
-    // to reset counter for all items
-    this.setState({ cartItems: [], initValue: 1 });
-    setTimeout(() => {
-      this.setState({ initValue: 0 });
-    }, 2000);
-  }
-
   render() {
-    const { initValue } = this.state;
-
     return (
       <Container>
         <Query query={query} fetchPolicy="cache-and-network">
@@ -106,27 +75,12 @@ class ProductItems extends React.Component {
             return (
               <Items>
                 {data.products.map(item => (
-                  <Item key={item.id}>
-                    <ItemName className="has-text-weight-semibold">
-                      {item.title}
-                    </ItemName>
-                    <ItemRight>
-                      <ItemPrice>
-                        <FormatCurrency
-                          currency={data.currency}
-                          value={item.price}
-                        />
-                      </ItemPrice>
-                      <ItemQuantitiy>
-                        <NumberIncrementer
-                          value={initValue}
-                          handleChange={newValue =>
-                            this.handleUpdateItem(item, newValue)
-                          }
-                        />
-                      </ItemQuantitiy>
-                    </ItemRight>
-                  </Item>
+                  <ProductItem
+                    key={item.id}
+                    product={item}
+                    currency={data.currency}
+                    handleUpdate={this.handleUpdateItem}
+                  />
                 ))}
               </Items>
             );

@@ -17,7 +17,7 @@ import NetworkStatus from './components/NetworkStatus';
 import Breadcrumb from './components/Breadcrumb';
 import dexLogo from '../../assets/images/dex-logo.png';
 import metaMaskLogo from '../../assets/images/metamask-logo.png';
-import privateKeyLogo from '../../assets/images/private-key-logo.png';
+// import privateKeyLogo from '../../assets/images/private-key-logo.png';
 import starbuckLogo from '../../assets/dummy/starbuck-logo.png';
 import checkImg from '../../assets/images/checkmark.png';
 
