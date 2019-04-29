@@ -69,7 +69,7 @@ class ProductItems extends React.Component {
         <Query query={query} fetchPolicy="cache-and-network">
           {({ data, loading, error }) => {
             if (loading && !data.products) return <p>loading...</p>;
-            if (error) return <p>Error: {error.message}</p>;
+            if (error) return <p>Please login to view products.</p>;
             // console.log('products', data.products);
 
             return (

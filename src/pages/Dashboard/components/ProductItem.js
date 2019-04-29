@@ -59,7 +59,7 @@ class ProductItem extends React.Component {
   };
 
   render() {
-    const { initValue } = this.state;
+    const { initValue, price } = this.state;
     const { product, currency, handleUpdate } = this.props;
 
     return (
@@ -69,7 +69,7 @@ class ProductItem extends React.Component {
         </ItemName>
         <ItemRight>
           <ItemPrice>
-            <FormatCurrency currency={currency} value={product.price} />
+            <FormatCurrency currency={currency} value={price} />
           </ItemPrice>
           <ItemQuantitiy>
             <NumberIncrementer
