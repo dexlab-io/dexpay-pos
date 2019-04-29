@@ -36,7 +36,7 @@ const PaymentItemWeb3 = ({ payment }) => (
     </div>
     <div className="media-right">
       <small>
-        <FormatCurrency value={payment.value} />
+        <FormatCurrency value={parseFloat(payment.value)} />
       </small>
     </div>
   </Container>

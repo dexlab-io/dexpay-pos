@@ -8,9 +8,15 @@ import PaymentItemWeb3 from './PaymentItemWeb3';
 import xDAIHDWallet from '../../../../class/xdai/xDAIHDWallet';
 import apolloClient from '../../../../utils/apolloClient';
 
+const queryLocal = gql`
+  {
+    walletAddress @client
+  }
+`;
+
 const query = gql`
   {
-    invoices {
+    invoices(where: { status: [pending, paid] }) {
       id
       invoiceNumber
       txHash
@@ -49,15 +55,13 @@ class RecentPayments extends React.Component {
     const { isLoggedIn } = this.state;
 
     if (!isLoggedIn) {
-      apolloClient.watchQuery({ query }).subscribe(async result => {
+      apolloClient.watchQuery({ query: queryLocal }).subscribe(async result => {
         // eslint-disable-next-line new-cap
         this.wallet = new xDAIHDWallet(null, result.data.walletAddress);
         await this.wallet.setWeb3();
         await this.wallet.fetchEthTransactions();
         this.setState({
-          // eslint-disable-next-line react/no-unused-state
-          web3Transactions: this.wallet.transactions,
-          isLoading: false
+          web3Transactions: this.wallet.transactions
         });
       });
     }
@@ -80,7 +84,6 @@ class RecentPayments extends React.Component {
         ) : (
           <Query query={query} fetchPolicy="cache-and-network">
             {({ data, loading, error }) => {
-              // console.log('data', data);
               if (loading && !data.invoices) {
                 return (
                   <p style={{ marginLeft: '10px' }}>
