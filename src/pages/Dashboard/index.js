@@ -43,6 +43,16 @@ const createInvoiceMutation = gql`
     }
   }
 `;
+
+const updateInvoiceMutation = gql`
+  mutation updateInvoice($id: ID!, $status: String!) {
+    updateInvoice(id: $id, input: { status: $status }) {
+      id
+      status
+    }
+  }
+`;
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -53,7 +63,8 @@ class Dashboard extends Component {
       totalAmount: '0',
       paymentModalOpen: false,
       setupModalOpen: false,
-      pos: { address: null }
+      pos: { address: null },
+      invoiceId: null
     };
   }
 
@@ -89,15 +100,17 @@ class Dashboard extends Component {
     const response = await apolloClient.query({ query });
 
     // add entry to API
-    apolloClient.mutate({
+    const invoiceResult = await apolloClient.mutate({
       mutation: createInvoiceMutation,
       variables: {
         fiatAmount: totalAmount.toString(),
         fiatCurrency: response.data.currency
       }
     });
-
-    this.setState({ paymentModalOpen: true });
+    this.setState({
+      invoiceId: invoiceResult.data.createInvoice.id,
+      paymentModalOpen: true
+    });
   };
 
   onClosePaymentModal = () => {
@@ -107,14 +120,25 @@ class Dashboard extends Component {
   };
 
   onPaymentReceived = () => {
+    const { invoiceId } = this.state;
+
     setTimeout(() => {
+      // close modal
       this.onClosePaymentModal();
+
+      // reset state
       this.setState({
         totalAmount: '0'
       });
       if (this.productItems) {
         this.productItems.resetItems();
       }
+
+      // send update to API
+      apolloClient.mutate({
+        mutation: updateInvoiceMutation,
+        variables: { id: invoiceId, status: 'paid' }
+      });
     }, 5000);
   };
 
