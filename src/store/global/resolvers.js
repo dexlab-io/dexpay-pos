@@ -155,6 +155,14 @@ const resolvers = {
         });
       }
       return variables.address;
+    },
+    setRequiredConfirmations: (_, variables, { cache }) => {
+      // console.log('setRequiredConfirmations', variables);
+      // update cache
+      cache.writeData({
+        data: { requiredConfirmations: variables.requiredConfirmations }
+      });
+      return variables.requiredConfirmations;
     }
   }
 };

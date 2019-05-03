@@ -26,6 +26,10 @@ const loginMutation = gql`
           walletAddress
           currency
           acceptedTokens
+          requiredConfirmations {
+            token
+            confirmations
+          }
         }
       }
     }
@@ -37,10 +41,13 @@ const mutation = gql`
     $acceptedTokens: [String]!
     $currency: String!
     $walletAddress: String!
+    $requiredConfirmations: RequiredConfirmationsInput
   ) {
     updateAcceptedTokens(tokens: $acceptedTokens) @client
     updateCurrency(currency: $currency) @client
     updateWalletAddress(address: $walletAddress) @client
+    setRequiredConfirmations(requiredConfirmations: $requiredConfirmations)
+      @client
   }
 `;
 
@@ -73,6 +80,12 @@ class Login extends React.Component {
     const { user, jwt } = login;
     // store token in local storage
     await window.localStorage.setItem('token', jwt);
+    const requiredConfirmations = user.store.requiredConfirmations.map(
+      confirmation => ({
+        ...confirmation,
+        __typename: 'Confirmation'
+      })
+    );
 
     // sync data with local store
     apolloClient
@@ -81,7 +94,8 @@ class Login extends React.Component {
         variables: {
           acceptedTokens: user.store.acceptedTokens,
           currency: user.store.currency,
-          walletAddress: user.store.walletAddress
+          walletAddress: user.store.walletAddress,
+          requiredConfirmations
         }
       })
       .then(() => {

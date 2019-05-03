@@ -20,6 +20,11 @@ const typeDefs = `
     fiat: [FiatRates]
   }
 
+  input RequiredConfirmationsInput {
+    token: String!
+    confirmations: Int!
+  }
+
   type Query {
     currency: String!
     acceptedTokens: [String!]
@@ -34,6 +39,7 @@ const typeDefs = `
     updateCurrency(currency: String!): String!
     toggleAcceptedTokens(token: String!, isAccepted: Boolean!): [String!]
     updateAcceptedTokens(tokens: [String!]!): [String!]
+    setRequiredConfirmations(requiredConfirmations: RequiredConfirmationsInput): [Confirmation!]
     updateRequiredConfirmations(token: String!, confirmations: Int!): Confirmation!
     updateWalletAddress(address: String!, source: String): String!
   }
