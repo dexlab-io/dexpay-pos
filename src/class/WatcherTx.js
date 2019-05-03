@@ -157,7 +157,6 @@ export default class WatcherTx {
       }
     }
 
-    console.log('this.pollingOn', this.pollingOn);
     if (this.pollingOn) {
       setTimeout(
         () => this.xdaiTransfer(recipient, total, cb),

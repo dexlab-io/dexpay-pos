@@ -41,7 +41,7 @@ export default {
   },
   currencies: [
     { id: 'EUR', name: 'Euro', symbol: '€' },
-    { id: 'USD', name: 'United States Dollar', symbol: 'US$' },
+    { id: 'USD', name: 'United States Dollar', symbol: '$' },
     { id: 'JPY', name: 'Japanese Yen', symbol: '¥' },
     { id: 'GBP', name: 'Pound sterling', symbol: '£' },
     { id: 'AUD', name: 'Australian dollar', symbol: 'A$' },

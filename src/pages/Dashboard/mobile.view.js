@@ -33,7 +33,9 @@ export default function() {
               <GenerateBillBtn handlePay={this.handlePay} />
             </React.Fragment>
           )}
-          {activeTab === 'recentPayments' && <RecentPayments />}
+          {activeTab === 'recentPayments' && (
+            <RecentPayments onOpenModal={this.onOpenModal} />
+          )}
         </div>
       ) : (
         <SetWalletAddress isLoggedIn={isLoggedIn} />
