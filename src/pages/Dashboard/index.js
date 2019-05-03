@@ -76,6 +76,8 @@ class Dashboard extends Component {
       this.setState({ isMobile });
     });
 
+    this.onOpenModal = this.onOpenModal.bind(this);
+
     // if address is set
     if (match.params.id) {
       apolloClient.mutate({
@@ -91,6 +93,14 @@ class Dashboard extends Component {
           isLoggedIn: result.data.isLoggedIn
         });
       }
+    });
+  }
+
+  onOpenModal(invoice) {
+    this.setState({
+      invoiceId: invoice.id,
+      totalAmount: invoice.fiatAmount.toString(),
+      paymentModalOpen: true
     });
   }
 
@@ -115,7 +125,8 @@ class Dashboard extends Component {
 
   onClosePaymentModal = () => {
     this.setState({
-      paymentModalOpen: false
+      paymentModalOpen: false,
+      totalAmount: '0'
     });
   };
 

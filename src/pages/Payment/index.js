@@ -72,6 +72,7 @@ class Payment extends Component {
     if (this.watcherXdai) {
       this.watcherXdai.pollingOn = false;
     }
+    this.watcherXdai = null;
   }
 
   addTipPayment = async percentage => {

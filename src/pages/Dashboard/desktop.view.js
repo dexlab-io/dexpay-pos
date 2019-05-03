@@ -59,7 +59,9 @@ export default function() {
                   handleChange={val => this.setState({ totalAmount: val })}
                 />
               )}
-              {activeTab === 'recentPayments' && <RecentPayments />}
+              {activeTab === 'recentPayments' && (
+                <RecentPayments onOpenModal={this.onOpenModal} />
+              )}
               {activeTab === 'productItems' && (
                 <ProductItems
                   ref={el => {

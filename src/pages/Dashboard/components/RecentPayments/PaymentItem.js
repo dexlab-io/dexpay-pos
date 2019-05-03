@@ -12,36 +12,47 @@ const Image = styled.img`
   margin-top: 6px;
 `;
 
-const PaymentItem = ({ payment }) => (
-  <Container
-    href={`https://blockscout.com/poa/dai/tx/${payment.txHash}`}
-    target="_blank"
-    className="media"
-  >
-    <figure className="media-left">
-      <p className="image is-32x32">
-        <Image src={cryptoIcon} alt={payment.assetUsed} />
-      </p>
-    </figure>
-    <div className="media-content">
-      <div className="content">
-        <p>
-          <small className="has-text-weight-light">{payment.createdAt}</small>
-          <br />
-          {payment.invoiceNumber} | {payment.status} |{' '}
-          {truncateHash(payment.txHash || '')}
+const PaymentItem = ({ payment, onOpenModal }) => {
+  return (
+    <Container
+      onClick={() => {
+        if (payment.status === 'pending') {
+          onOpenModal(payment);
+        } else {
+          window.open(
+            `https://blockscout.com/poa/dai/tx/${payment.txHash}`,
+            '_blank'
+          );
+        }
+      }}
+      target="_blank"
+      className="media"
+    >
+      <figure className="media-left">
+        <p className="image is-32x32">
+          <Image src={cryptoIcon} alt={payment.assetUsed} />
         </p>
+      </figure>
+      <div className="media-content">
+        <div className="content">
+          <p>
+            <small className="has-text-weight-light">{payment.createdAt}</small>
+            <br />
+            {payment.invoiceNumber} | {payment.status} |{' '}
+            {truncateHash(payment.txHash || '')}
+          </p>
+        </div>
       </div>
-    </div>
-    <div className="media-right">
-      <small>
-        <FormatCurrency
-          currency={payment.fiatCurrency}
-          value={payment.fiatAmount}
-        />
-      </small>
-    </div>
-  </Container>
-);
+      <div className="media-right">
+        <small>
+          <FormatCurrency
+            currency={payment.fiatCurrency}
+            value={payment.fiatAmount}
+          />
+        </small>
+      </div>
+    </Container>
+  );
+};
 
 export default PaymentItem;

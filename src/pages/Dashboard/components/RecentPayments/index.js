@@ -69,7 +69,7 @@ class RecentPayments extends React.Component {
 
   render() {
     const { isLoading, isLoggedIn, web3Transactions } = this.state;
-
+    const { onOpenModal } = this.props;
     return (
       <Container>
         {!isLoggedIn ? (
@@ -99,7 +99,11 @@ class RecentPayments extends React.Component {
               }
 
               return data.invoices.map(item => (
-                <PaymentItem key={item.id} payment={item} />
+                <PaymentItem
+                  onOpenModal={onOpenModal}
+                  key={item.id}
+                  payment={item}
+                />
               ));
             }}
           </Query>
