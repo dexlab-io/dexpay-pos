@@ -54,7 +54,7 @@ class AcceptedTokens extends React.Component {
           <div className="container">
             <SettingsHeader history={history} />
             <Breadcrumb history={history} {...settingItem} />
-            <Query query={query} fetchPolicy="cache-and-network">
+            <Query query={query}>
               {({ data, loading, error }) => {
                 if (loading && !data.acceptedTokens) return <p>loading...</p>;
                 if (error) return <p>Error: {error.message}</p>;

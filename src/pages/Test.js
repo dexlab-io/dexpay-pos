@@ -42,7 +42,7 @@ const counterMutation = gql`
 `;
 
 const CounterDataComponent = props => (
-  <Query query={counterQuery} fetchPolicy="cache-and-network">
+  <Query query={counterQuery}>
     {({ data, loading, error }) => {
       console.log('counter', data, loading, error);
       if (loading) return <div>loading...</div>;
@@ -98,7 +98,7 @@ class Test extends React.Component {
         <div className="section">
           <div className="container">
             <h2 className="title">User data:</h2>
-            <Query query={query} fetchPolicy="cache-and-network">
+            <Query query={query}>
               {({ data, loading, error }) => {
                 if (loading) return <p>loading...</p>;
                 if (error && !data.user) return <p>Error: {error.message}</p>;

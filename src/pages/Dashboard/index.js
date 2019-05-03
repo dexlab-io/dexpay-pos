@@ -106,6 +106,7 @@ class Dashboard extends Component {
     this.querySubscription = apolloClient
       .watchQuery({ query })
       .subscribe(result => {
+        console.log('walletAddress', result);
         if (result.data) {
           const objUpdate = {};
           if (!isNull(result.data.walletAddress)) {
