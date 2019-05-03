@@ -51,7 +51,6 @@ class Payment extends Component {
     });
 
     apolloClient.watchQuery({ query }).subscribe(async result => {
-      // console.log('payment query', result);
       this.setState({
         posAddress: result.data.walletAddress,
         exchangeRates: result.data.exchangeRates,
@@ -107,6 +106,7 @@ class Payment extends Component {
     const pricesDai = find(exchangeRates, {
       token: 'xdai'
     });
+
     const pricesDaiFiat = find(pricesDai.fiat, {
       currency: currency.toLowerCase()
     });

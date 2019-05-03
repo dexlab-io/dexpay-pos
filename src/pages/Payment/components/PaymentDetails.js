@@ -99,7 +99,7 @@ class PaymentDetails extends React.Component {
         {status === WatcherTx.STATES.PENDING && (
           <QrCode valueCrypto={valueCrypto[selectedCurrency]} />
         )}
-        <Query query={query} fetchPolicy="cache-and-network">
+        <Query query={query} fetchPolicy="cache">
           {({ data }) => (
             <React.Fragment>
               {status !== WatcherTx.STATES.PENDING && (
