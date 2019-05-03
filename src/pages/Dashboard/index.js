@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
 
+import { isNull } from 'util';
 import { checkWindowSize } from '../../utils/helpers';
 import apolloClient from '../../utils/apolloClient';
 import MobileView from './mobile.view';
@@ -18,7 +19,7 @@ const query = gql`
   }
 `;
 
-const mutation = gql`
+const updateWalletMutation = gql`
   mutation updateWalletAddress($address: String!, $source: String) {
     updateWalletAddress(address: $address, source: $source) @client
     updateMe(input: { walletAddress: $address }) {
@@ -95,19 +96,29 @@ class Dashboard extends Component {
     // if address is set
     if (match.params.id) {
       apolloClient.mutate({
-        mutation,
+        updateWalletMutation,
         variables: { address: match.params.id, source: 'getQuery' }
       });
     }
 
-    apolloClient.watchQuery({ query }).subscribe(result => {
-      if (result.data) {
-        this.setState({
-          pos: { address: result.data.walletAddress },
-          isLoggedIn: result.data.isLoggedIn
-        });
-      }
-    });
+    this.querySubscription = apolloClient
+      .watchQuery({ query })
+      .subscribe(result => {
+        if (result.data) {
+          const objUpdate = {};
+          if (!isNull(result.data.walletAddress)) {
+            objUpdate.pos = { address: result.data.walletAddress };
+          }
+          this.setState({
+            ...objUpdate,
+            isLoggedIn: result.data.isLoggedIn
+          });
+        }
+      });
+  }
+
+  componentWillUnmount() {
+    this.querySubscription.unsubscribe();
   }
 
   onOpenModal(invoice) {

@@ -53,7 +53,7 @@ class Layout extends React.Component {
     return (
       <Container className="my-container">
         <Helmet title={config.siteName} />
-        <Query query={query} fetchPolicy="cache-and-network">
+        <Query query={query}>
           {({ data, loading, error }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;

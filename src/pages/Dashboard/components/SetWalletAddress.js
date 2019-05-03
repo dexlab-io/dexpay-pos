@@ -8,7 +8,7 @@ import EthereumHDWallet from '../../../class/ethereum/EthereumHDWallet';
 import logo from '../../../assets/images/dex-logo-large.png';
 import metaMaskLogo from '../../../assets/images/metamask-logo.png';
 
-const mutation = gql`
+const updateWalletAddressMutation = gql`
   mutation updateWalletAddress($address: String!, $source: String) {
     updateWalletAddress(address: $address, source: $source) @client
     updateMe(input: { walletAddress: $address }) {
@@ -55,7 +55,7 @@ const MetaMaskLogo = styled.img`
 class SetWalletAddress extends React.Component {
   handleAddressUpdate = data => {
     return client.mutate({
-      mutation,
+      mutation: updateWalletAddressMutation,
       variables: { address: data.walletAddress, source: 'manualInput' }
     });
   };
@@ -67,7 +67,7 @@ class SetWalletAddress extends React.Component {
     // update cache
     if (metaMaskAddress) {
       client.mutate({
-        mutation,
+        updateWalletAddressMutation,
         variables: { address: metaMaskAddress, source: 'web3js' }
       });
     }
