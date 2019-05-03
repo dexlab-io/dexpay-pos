@@ -67,7 +67,7 @@ class SetWalletAddress extends React.Component {
     // update cache
     if (metaMaskAddress) {
       client.mutate({
-        updateWalletAddressMutation,
+        mutation: updateWalletAddressMutation,
         variables: { address: metaMaskAddress, source: 'web3js' }
       });
     }
