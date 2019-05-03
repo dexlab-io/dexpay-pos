@@ -138,7 +138,8 @@ class Payment extends Component {
         this.watcherXdai.pollingOn = false;
         onPaymentReceived({
           txHash: data.txHash,
-          assetUsed: 'dai'
+          assetUsed: 'dai',
+          cryptoAmount: parseFloat(daiValue)
         });
       }
     });
