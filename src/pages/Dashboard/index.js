@@ -96,7 +96,7 @@ class Dashboard extends Component {
     // if address is set
     if (match.params.id) {
       apolloClient.mutate({
-        updateWalletMutation,
+        mutation: updateWalletMutation,
         variables: { address: match.params.id, source: 'getQuery' }
       });
     }
