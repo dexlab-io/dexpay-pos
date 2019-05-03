@@ -50,11 +50,16 @@ const updateInvoiceMutation = gql`
     $status: InvoiceStatus!
     $txHash: String!
     $assetUsed: AssetUsedType
-    cryptoAmount: Float
+    $cryptoAmount: Float
   ) {
     updateInvoice(
       id: $id
-      input: { status: $status, txHash: $txHash, assetUsed: $assetUsed, cryptoAmount: $cryptoAmount }
+      input: {
+        status: $status
+        txHash: $txHash
+        assetUsed: $assetUsed
+        cryptoAmount: $cryptoAmount
+      }
     ) {
       id
       status
