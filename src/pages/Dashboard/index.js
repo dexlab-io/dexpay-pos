@@ -72,7 +72,9 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
+    const token = window.localStorage.getItem('token');
     this.state = {
+      isLoggedIn: !!token,
       isMobile: checkWindowSize(),
       activeTab: 'numberPad',
       totalAmount: '0',
@@ -130,22 +132,24 @@ class Dashboard extends Component {
   }
 
   handlePay = async () => {
-    const { totalAmount } = this.state;
+    const { totalAmount, isLoggedIn } = this.state;
+    const objUpdate = { paymentModalOpen: true };
 
     const response = await apolloClient.query({ query });
 
     // add entry to API
-    const invoiceResult = await apolloClient.mutate({
-      mutation: createInvoiceMutation,
-      variables: {
-        fiatAmount: totalAmount.toString(),
-        fiatCurrency: response.data.currency
-      }
-    });
-    this.setState({
-      invoiceId: invoiceResult.data.createInvoice.id,
-      paymentModalOpen: true
-    });
+    // only do this if user is logged in
+    if (isLoggedIn) {
+      const invoiceResult = await apolloClient.mutate({
+        mutation: createInvoiceMutation,
+        variables: {
+          fiatAmount: totalAmount.toString(),
+          fiatCurrency: response.data.currency
+        }
+      });
+      objUpdate.invoiceId = invoiceResult.data.createInvoice.id;
+    }
+    this.setState(objUpdate);
   };
 
   onClosePaymentModal = () => {
@@ -156,7 +160,7 @@ class Dashboard extends Component {
   };
 
   onPaymentReceived = data => {
-    const { invoiceId } = this.state;
+    const { invoiceId, isLoggedIn } = this.state;
 
     setTimeout(() => {
       // close modal
@@ -171,10 +175,13 @@ class Dashboard extends Component {
       }
 
       // send update to API
-      apolloClient.mutate({
-        mutation: updateInvoiceMutation,
-        variables: { id: invoiceId, status: 'paid', ...data }
-      });
+      // Only do if user is logged in
+      if (isLoggedIn) {
+        apolloClient.mutate({
+          mutation: updateInvoiceMutation,
+          variables: { id: invoiceId, status: 'paid', ...data }
+        });
+      }
     }, 5000);
   };
 
