@@ -107,6 +107,9 @@ class Payment extends Component {
     const pricesDai = find(exchangeRates, {
       token: 'xdai'
     });
+    if (!pricesDai) {
+      return window.alert('Unable to fetch fiat prices');
+    }
     const pricesDaiFiat = find(pricesDai.fiat, {
       currency: currency.toLowerCase()
     });
