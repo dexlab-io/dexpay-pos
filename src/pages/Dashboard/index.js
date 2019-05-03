@@ -45,7 +45,7 @@ const createInvoiceMutation = gql`
 `;
 
 const updateInvoiceMutation = gql`
-  mutation updateInvoice($id: ID!, $status: String!) {
+  mutation updateInvoice($id: ID!, $status: InvoiceStatus!) {
     updateInvoice(id: $id, input: { status: $status }) {
       id
       status
