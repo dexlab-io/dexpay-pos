@@ -23,7 +23,7 @@ const query = gql`
       fiatAmount
       fiatCurrency
       cryptoAmount
-      processedType
+      assetUsed
       status
       createdAt
       store {

@@ -20,7 +20,7 @@ const PaymentItem = ({ payment }) => (
   >
     <figure className="media-left">
       <p className="image is-32x32">
-        <Image src={cryptoIcon} alt={payment.processedType} />
+        <Image src={cryptoIcon} alt={payment.assetUsed} />
       </p>
     </figure>
     <div className="media-content">
