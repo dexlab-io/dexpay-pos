@@ -96,7 +96,6 @@ class RequiredConfirmations extends React.Component {
             <Breadcrumb history={history} {...settingItem} />
             <Query
               query={query}
-              fetchPolicy="cache-and-network"
               onCompleted={data => {
                 if (!confirmations) {
                   this.setState({ confirmations: data.requiredConfirmations });

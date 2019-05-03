@@ -75,7 +75,6 @@ class BaseCurrency extends React.Component {
             <Breadcrumb history={history} {...settingItem} />
             <Query
               query={query}
-              fetchPolicy="cache-and-network"
               onCompleted={data => {
                 if (isNull(currency)) {
                   this.setState({ currency: data.currency });

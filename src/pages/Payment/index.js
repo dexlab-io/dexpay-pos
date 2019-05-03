@@ -3,6 +3,7 @@ import { withNamespaces } from 'react-i18next';
 import Modal from 'react-responsive-modal';
 import gql from 'graphql-tag';
 import { find } from 'lodash';
+import swal from 'sweetalert';
 
 import apolloClient from '../../utils/apolloClient';
 import WatcherTx from '../../class/WatcherTx';
@@ -106,7 +107,13 @@ class Payment extends Component {
     const pricesDai = find(exchangeRates, {
       token: 'xdai'
     });
-
+    if (!pricesDai) {
+      return swal(
+        'Issue!',
+        'Unable to fetch fiat prices, please try again',
+        'warning'
+      );
+    }
     const pricesDaiFiat = find(pricesDai.fiat, {
       currency: currency.toLowerCase()
     });
