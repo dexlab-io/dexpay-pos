@@ -136,7 +136,10 @@ class Payment extends Component {
 
       if (data.state === WatcherTx.STATES.CONFIRMED) {
         this.watcherXdai.pollingOn = false;
-        onPaymentReceived();
+        onPaymentReceived({
+          txHash: data.txHash,
+          assetUsed: 'dai'
+        });
       }
     });
 

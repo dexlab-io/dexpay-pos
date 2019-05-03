@@ -130,7 +130,7 @@ class Dashboard extends Component {
     });
   };
 
-  onPaymentReceived = () => {
+  onPaymentReceived = data => {
     const { invoiceId } = this.state;
 
     setTimeout(() => {
@@ -148,7 +148,7 @@ class Dashboard extends Component {
       // send update to API
       apolloClient.mutate({
         mutation: updateInvoiceMutation,
-        variables: { id: invoiceId, status: 'paid' }
+        variables: { id: invoiceId, status: 'paid', ...data }
       });
     }, 5000);
   };
