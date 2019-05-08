@@ -1,5 +1,0 @@
-Format
-
-Wallet Class name: EthereumHDWallet
-Client: EthereumClient
-CustomNode: extends EthereumClient
