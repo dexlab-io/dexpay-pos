@@ -4,9 +4,9 @@ import Modal from 'react-responsive-modal';
 import gql from 'graphql-tag';
 import { find } from 'lodash';
 import swal from 'sweetalert';
+import { WatcherTx } from 'eth-core-js';
 
 import apolloClient from '../../utils/apolloClient';
-import WatcherTx from '../../class/WatcherTx';
 import { checkWindowSize } from '../../utils/helpers';
 import MobileView from './mobile.view';
 import DesktopView from './desktop.view';
@@ -22,6 +22,15 @@ const query = gql`
         currency
         price
       }
+    }
+  }
+`;
+
+const confirmationsQuery = gql`
+  {
+    requiredConfirmations @client {
+      token
+      confirmations
     }
   }
 `;
@@ -132,8 +141,13 @@ class Payment extends Component {
       }
     });
 
+    const result = await apolloClient.query({
+      query: confirmationsQuery
+    });
+    const confirmations = result.data.requiredConfirmations;
+
     this.watcherXdai = null;
-    this.watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI);
+    this.watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI, confirmations);
     this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
       this.setState({
         txState: data.state,
