@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { find } from 'lodash';
+import { EthereumHDWallet } from 'eth-core-js';
 
 import apolloClient from '../../utils/apolloClient';
-import EthereumHDWallet from '../../class/ethereum/EthereumHDWallet';
+// import EthereumHDWallet from '../../class/ethereum/EthereumHDWallet';
 import { Loading } from '../../components/elements';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';

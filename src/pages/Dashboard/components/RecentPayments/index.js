@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { xDAIHDWallet } from 'eth-core-js';
 
 import PaymentItem from './PaymentItem';
 import PaymentItemWeb3 from './PaymentItemWeb3';
-import xDAIHDWallet from '../../../../class/xdai/xDAIHDWallet';
 import apolloClient from '../../../../utils/apolloClient';
 
 const queryLocal = gql`

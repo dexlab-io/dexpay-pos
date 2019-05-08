@@ -1,10 +1,11 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import { EthereumHDWallet } from 'eth-core-js';
 
 import WalletAddressForm from '../../Settings/components/WalletAddressForm';
 import client from '../../../utils/apolloClient';
-import EthereumHDWallet from '../../../class/ethereum/EthereumHDWallet';
+// import EthereumHDWallet from '../../../class/ethereum/EthereumHDWallet';
 import logo from '../../../assets/images/dex-logo-large.png';
 import metaMaskLogo from '../../../assets/images/metamask-logo.png';
 
