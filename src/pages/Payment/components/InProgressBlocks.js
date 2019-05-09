@@ -43,15 +43,16 @@ const InProgressBlocks = ({
   numConfirmations
 }) => {
   const selectedToken = find(requiredConfirmations, { token: 'xdai' });
+  const watchTx = new WatcherTx();
 
   return (
     <Container>
       <div>
-        {status === WatcherTx.STATES.DETECTED ||
-          (status === WatcherTx.STATES.NEW_CONFIRMATION && (
+        {status === watchTx.STATES.DETECTED ||
+          (status === watchTx.STATES.NEW_CONFIRMATION && (
             <LoadingImage src={loadingImg} alt="loading" />
           ))}
-        {status === WatcherTx.STATES.CONFIRMED && (
+        {status === watchTx.STATES.CONFIRMED && (
           <CheckImage src={checkImg} alt="completed" />
         )}
       </div>

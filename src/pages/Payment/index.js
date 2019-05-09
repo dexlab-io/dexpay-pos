@@ -147,7 +147,8 @@ class Payment extends Component {
     const confirmations = result.data.requiredConfirmations;
 
     this.watcherXdai = null;
-    this.watcherXdai = new WatcherTx(WatcherTx.NETWORKS.XDAI, confirmations);
+    const watchTx = new WatcherTx();
+    this.watcherXdai = new WatcherTx(watchTx.NETWORKS.XDAI, confirmations);
     this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
       this.setState({
         txState: data.state,
@@ -155,7 +156,7 @@ class Payment extends Component {
         numConfirmations: data.numConfirmations
       });
 
-      if (data.state === WatcherTx.STATES.CONFIRMED) {
+      if (data.state === watchTx.STATES.CONFIRMED) {
         this.watcherXdai.pollingOn = false;
         onPaymentReceived({
           txHash: data.txHash,
@@ -175,9 +176,11 @@ class Payment extends Component {
   async updateFiatValue() {
     const { total } = this.props;
     const valueFiat = total;
+    const watchTx = new WatcherTx();
+
     await this.setState({
       valueFiat,
-      txState: WatcherTx.STATES.PENDING
+      txState: watchTx.STATES.PENDING
     });
     await this.calculateCryptoValue();
   }
@@ -188,13 +191,15 @@ class Payment extends Component {
     this.title = '';
     this.status = txState;
 
-    if (txState === WatcherTx.STATES.PENDING) {
+    const watchTx = new WatcherTx();
+
+    if (txState === watchTx.STATES.PENDING) {
       this.title = `1 / 3 ${t('Awaiting Payment')}`;
-    } else if (txState === WatcherTx.STATES.DETECTED) {
+    } else if (txState === watchTx.STATES.DETECTED) {
       this.title = `2 / 3 ${t('Pending Payment')}`;
-    } else if (txState === WatcherTx.STATES.NEW_CONFIRMATION) {
+    } else if (txState === watchTx.STATES.NEW_CONFIRMATION) {
       this.title = `2 / 3 ${t('Pending Payment')}`;
-    } else if (txState === WatcherTx.STATES.CONFIRMED) {
+    } else if (txState === watchTx.STATES.CONFIRMED) {
       this.title = `3 / 3 ${t('Payment Successful')}`;
     }
 

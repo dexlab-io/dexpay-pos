@@ -72,13 +72,14 @@ class PaymentDetails extends React.Component {
       numConfirmations
     } = this.props;
     const { selectedCurrency } = this.state;
+    const watchTx = new WatcherTx();
 
     return (
       <Container>
         <Header>
           <Logo src={dexLogo} alt="Dexpay logo" />
         </Header>
-        {status === WatcherTx.STATES.PENDING && (
+        {status === watchTx.STATES.PENDING && (
           <AddTip value={0} handleChange={addTipPayment} />
         )}
         <CryptoAmount
@@ -97,13 +98,13 @@ class PaymentDetails extends React.Component {
             fiatAmount={parseFloat(valueFiat) + tipValue}
           />
         </FiatContainer>
-        {status === WatcherTx.STATES.PENDING && (
+        {status === watchTx.STATES.PENDING && (
           <QrCode valueCrypto={valueCrypto[selectedCurrency]} />
         )}
         <Query query={query}>
           {({ data }) => (
             <React.Fragment>
-              {status !== WatcherTx.STATES.PENDING && (
+              {status !== watchTx.STATES.PENDING && (
                 <InProgressBlocks
                   status={status}
                   txHash={txHash}
