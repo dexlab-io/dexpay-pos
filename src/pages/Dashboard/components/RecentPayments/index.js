@@ -6,6 +6,7 @@ import { xDAIHDWallet } from 'eth-core-js';
 
 import PaymentItem from './PaymentItem';
 import PaymentItemWeb3 from './PaymentItemWeb3';
+import { Message } from '../../../../components/elements';
 import apolloClient from '../../../../utils/apolloClient';
 
 const queryLocal = gql`
@@ -75,7 +76,7 @@ class RecentPayments extends React.Component {
         {!isLoggedIn ? (
           <React.Fragment>
             {web3Transactions.length === 0 && !isLoading && (
-              <p>No recent transactions found.</p>
+              <Message>No recent transactions found.</Message>
             )}
             {web3Transactions.map(item => (
               <PaymentItemWeb3 key={item.transactionHash} payment={item} />
@@ -91,11 +92,11 @@ class RecentPayments extends React.Component {
                   </p>
                 );
               }
-              if (error) return <p>Error: {error.message}</p>;
+              if (error) return <Message>Error: {error.message}</Message>;
               // console.log('invoices', data.invoices);
 
               if (data.invoices.length === 0 && !isLoading) {
-                return <p>No recent transactions found.</p>;
+                return <Message>No recent transactions found.</Message>;
               }
 
               return data.invoices.map(item => (

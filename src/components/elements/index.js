@@ -5,6 +5,7 @@ import SelectGroup from './SelectGroup';
 import Slider from './Slider';
 import NumberIncrementer from './NumberIncrementer';
 import Loading from './Loading';
+import Message from './Message';
 
 export {
   Divider,
@@ -13,5 +14,6 @@ export {
   SelectGroup,
   Slider,
   NumberIncrementer,
-  Loading
+  Loading,
+  Message
 };

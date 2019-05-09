@@ -6,6 +6,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import ProductItem from './ProductItem';
+import { Message, Loading } from '../../../components/elements';
 
 const Container = styled.div``;
 
@@ -68,8 +69,11 @@ class ProductItems extends React.Component {
       <Container>
         <Query query={query} fetchPolicy="cache-and-network">
           {({ data, loading, error }) => {
-            if (loading && !data.products) return <p>loading...</p>;
-            if (error) return <p>Please login to view products.</p>;
+            if (loading && !data.products) return <Loading />;
+            if (error)
+              return (
+                <Message type="error">Please login to view products.</Message>
+              );
             // console.log('products', data.products);
 
             return (
