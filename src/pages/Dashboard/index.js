@@ -134,7 +134,7 @@ class Dashboard extends Component {
 
   handlePay = async () => {
     const { totalAmount, isLoggedIn } = this.state;
-    const objUpdate = { paymentModalOpen: true };
+    this.setState({ paymentModalOpen: true });
 
     const response = await apolloClient.query({ query });
 
@@ -148,9 +148,8 @@ class Dashboard extends Component {
           fiatCurrency: response.data.currency
         }
       });
-      objUpdate.invoiceId = invoiceResult.data.createInvoice.id;
+      this.setState({ invoiceId: invoiceResult.data.createInvoice.id });
     }
-    this.setState(objUpdate);
   };
 
   onClosePaymentModal = () => {
