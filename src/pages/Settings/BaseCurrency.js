@@ -6,6 +6,7 @@ import { find, isNull } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
 import config from '../../config';
+import { Loading, Message } from '../../components/elements';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
@@ -82,8 +83,9 @@ class BaseCurrency extends React.Component {
               }}
             >
               {({ loading, error }) => {
-                if (loading && isNull(currency)) return <p>loading...</p>;
-                if (error) return <p>Error: {error.message}</p>;
+                if (loading && isNull(currency)) return <Loading />;
+                if (error)
+                  return <Message type="error">{error.message}</Message>;
                 // console.log('data.currency', data);
 
                 return config.currencies.map(item => (

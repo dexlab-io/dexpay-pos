@@ -6,6 +6,7 @@ import Sidebar from 'react-sidebar';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { Loading, Message } from './elements';
 import config from '../config';
 import Header from './Header';
 import MySidebar from './Sidebar';
@@ -55,8 +56,8 @@ class Layout extends React.Component {
         <Helmet title={config.siteName} />
         <Query query={query}>
           {({ data, loading, error }) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) return <p>Error: {error.message}</p>;
+            if (loading) return <Loading />;
+            if (error) return <Message type="error">{error.message}</Message>;
             // console.log('Layout', data);
 
             if (isSlim) {

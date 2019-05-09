@@ -9,7 +9,7 @@ import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
-import { Slider } from '../../components/elements';
+import { Loading, Message, Slider } from '../../components/elements';
 import settingsItems from './components/settingsItems';
 
 const query = gql`
@@ -103,8 +103,9 @@ class RequiredConfirmations extends React.Component {
               }}
             >
               {({ loading, error }) => {
-                if (loading || !confirmations) return <p>loading...</p>;
-                if (error) return <p>Error: {error.message}</p>;
+                if (loading || !confirmations) return <Loading />;
+                if (error)
+                  return <Message type="error">{error.message}</Message>;
                 // console.log('data', confirmations);
 
                 return confirmations.map(item => (

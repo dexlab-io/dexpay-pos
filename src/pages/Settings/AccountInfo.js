@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { find } from 'lodash';
 
 import apolloClient from '../../utils/apolloClient';
+import { Loading, Message } from '../../components/elements';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import SettingsHeader from './components/SettingsHeader';
@@ -66,8 +67,9 @@ class AccountInfo extends React.Component {
             <Breadcrumb history={history} {...settingItem} />
             <Query query={query} fetchPolicy="cache-and-network">
               {({ data, loading, error }) => {
-                if (loading && !data.me) return <p>loading...</p>;
-                if (error) return <p>Error: {error.message}</p>;
+                if (loading && !data.me) return <Loading />;
+                if (error)
+                  return <Message type="error">{error.message}</Message>;
                 // console.log('data', data);
 
                 return (
