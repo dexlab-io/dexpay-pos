@@ -96,6 +96,7 @@ class RequiredConfirmations extends React.Component {
             <Breadcrumb history={history} {...settingItem} />
             <Query
               query={query}
+              fetchPolicy="cache-only"
               onCompleted={data => {
                 if (!confirmations) {
                   this.setState({ confirmations: data.requiredConfirmations });
@@ -103,30 +104,33 @@ class RequiredConfirmations extends React.Component {
               }}
             >
               {({ loading, error }) => {
-                if (loading || !confirmations) return <Loading />;
+                if (loading) return <Loading />;
                 if (error)
                   return <Message type="error">{error.message}</Message>;
-                // console.log('data', confirmations);
 
-                return confirmations.map(item => (
-                  <SliderContainer key={item.token}>
-                    <SliderLabel className="has-text-weight-semibold">
-                      {item.token}
-                    </SliderLabel>
-                    <SliderValue>{item.confirmations} Blocks</SliderValue>
-                    <SliderWrapper>
-                      <Slider
-                        value={item.confirmations}
-                        onChange={count =>
-                          this.handleChange({
-                            token: item.token,
-                            confirmations: count
-                          })
-                        }
-                      />
-                    </SliderWrapper>
-                  </SliderContainer>
-                ));
+                return confirmations ? (
+                  confirmations.map(item => (
+                    <SliderContainer key={item.token}>
+                      <SliderLabel className="has-text-weight-semibold">
+                        {item.token}
+                      </SliderLabel>
+                      <SliderValue>{item.confirmations} Blocks</SliderValue>
+                      <SliderWrapper>
+                        <Slider
+                          value={item.confirmations}
+                          onChange={count =>
+                            this.handleChange({
+                              token: item.token,
+                              confirmations: count
+                            })
+                          }
+                        />
+                      </SliderWrapper>
+                    </SliderContainer>
+                  ))
+                ) : (
+                  <Loading />
+                );
               }}
             </Query>
           </div>

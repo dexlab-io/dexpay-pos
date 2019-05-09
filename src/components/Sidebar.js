@@ -40,9 +40,6 @@ class Sidebar extends React.Component {
               <Link to="/settings">Account Settings</Link>
             </Item>
             <Item>
-              <Link to="/create-invoice">Create Invoice</Link>
-            </Item>
-            <Item>
               <a
                 href="https://medium.com/dexlab-io/introducing-dexpay-and-makerdao-grant-announcement-f437f2e87da3"
                 target="_blank"

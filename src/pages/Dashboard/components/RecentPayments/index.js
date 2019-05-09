@@ -6,7 +6,7 @@ import { xDAIHDWallet } from 'eth-core-js';
 
 import PaymentItem from './PaymentItem';
 import PaymentItemWeb3 from './PaymentItemWeb3';
-import { Message } from '../../../../components/elements';
+import { Message, Loading } from '../../../../components/elements';
 import apolloClient from '../../../../utils/apolloClient';
 
 const queryLocal = gql`
@@ -17,7 +17,7 @@ const queryLocal = gql`
 
 const query = gql`
   {
-    invoices(where: { status: [pending, paid] }) {
+    invoices(where: { status: [paid] }) {
       id
       invoiceNumber
       txHash
@@ -86,13 +86,9 @@ class RecentPayments extends React.Component {
           <Query query={query} fetchPolicy="cache-and-network">
             {({ data, loading, error }) => {
               if (loading && !data.invoices) {
-                return (
-                  <p style={{ marginLeft: '10px' }}>
-                    Loading recent transactions.
-                  </p>
-                );
+                return <Loading />;
               }
-              if (error) return <Message>Error: {error.message}</Message>;
+              if (error) return <Message type="error">{error.message}</Message>;
               // console.log('invoices', data.invoices);
 
               if (data.invoices.length === 0 && !isLoading) {

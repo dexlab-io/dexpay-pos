@@ -48,7 +48,7 @@ class WalletAddress extends React.Component {
           <div className="container">
             <SettingsHeader history={history} />
             <Breadcrumb history={history} {...settingItem} />
-            <Query query={query} fetchPolicy="cache-and-network">
+            <Query query={query} fetchPolicy="cache-only">
               {({ data, loading, error }) => {
                 if (loading && !data.currency) return <Loading />;
                 if (error)

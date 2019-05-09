@@ -76,6 +76,7 @@ class BaseCurrency extends React.Component {
             <Breadcrumb history={history} {...settingItem} />
             <Query
               query={query}
+              fetchPolicy="cache-only"
               onCompleted={data => {
                 if (isNull(currency)) {
                   this.setState({ currency: data.currency });
@@ -86,7 +87,6 @@ class BaseCurrency extends React.Component {
                 if (loading && isNull(currency)) return <Loading />;
                 if (error)
                   return <Message type="error">{error.message}</Message>;
-                // console.log('data.currency', data);
 
                 return config.currencies.map(item => (
                   <ItemContainer

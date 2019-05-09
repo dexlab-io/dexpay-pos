@@ -43,7 +43,7 @@ const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (config.debug) {
-        // console.log('onError', graphQLErrors, networkError);
+        console.log('onError', graphQLErrors, networkError);
       }
     }),
     withClientState({

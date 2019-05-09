@@ -18,7 +18,7 @@ import {
   Invoice,
   CreateInvoice,
   Settings,
-  // AccountInfo,
+  AccountInfo,
   AcceptedTokens,
   BaseCurrency,
   RequiredConfirmations,
@@ -122,7 +122,7 @@ class App extends React.Component {
                   exact
                   isLoggedIn={isLoggedIn}
                   path="/settings/account-info"
-                  component={CreateInvoice}
+                  component={AccountInfo}
                 />
                 <Route
                   path="/settings/accepted-tokens"
