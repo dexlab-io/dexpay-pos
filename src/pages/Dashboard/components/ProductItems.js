@@ -35,7 +35,7 @@ class ProductItems extends React.Component {
     };
   }
 
-  handleUpdateItem = (product, newValue) => {
+  handleUpdateItem = (product, newValue, price) => {
     const { cartItems } = this.state;
     const { handleChange } = this.props;
 
@@ -51,7 +51,7 @@ class ProductItems extends React.Component {
       }
     } else {
       // else push to array
-      cartItems.push({ ...product, quantity: newValue });
+      cartItems.push({ ...product, price, quantity: newValue });
     }
 
     let cartTotal = 0;

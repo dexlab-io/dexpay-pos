@@ -74,7 +74,7 @@ class ProductItem extends React.Component {
           <ItemQuantitiy>
             <NumberIncrementer
               value={initValue}
-              handleChange={newValue => handleUpdate(product, newValue)}
+              handleChange={newValue => handleUpdate(product, newValue, price)}
             />
           </ItemQuantitiy>
         </ItemRight>
