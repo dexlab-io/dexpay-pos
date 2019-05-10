@@ -17,6 +17,7 @@ const queryLocal = gql`
 
 const query = gql`
   {
+    currency @client
     invoices(where: { status: [paid] }) {
       id
       invoiceNumber
@@ -100,6 +101,7 @@ class RecentPayments extends React.Component {
                   onOpenModal={onOpenModal}
                   key={item.id}
                   payment={item}
+                  currency={data.currency}
                 />
               ));
             }}
