@@ -146,6 +146,7 @@ class Payment extends Component {
     });
     const confirmations = result.data.requiredConfirmations;
 
+    // console.log('transaction', confirmations, posAddress, daiValue);
     this.watcherXdai = null;
     const watchTx = new WatcherTx();
     this.watcherXdai = new WatcherTx(watchTx.NETWORKS.XDAI, confirmations);
