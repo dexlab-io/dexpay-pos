@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { withNamespaces } from 'react-i18next';
 import Modal from 'react-responsive-modal';
 import gql from 'graphql-tag';
-import { find } from 'lodash';
+import { find, first } from 'lodash';
 import swal from 'sweetalert';
 import { WatcherTx } from 'eth-core-js';
 
+import { isNull } from 'util';
 import apolloClient from '../../utils/apolloClient';
 import { checkWindowSize } from '../../utils/helpers';
 import MobileView from './mobile.view';
@@ -35,6 +36,24 @@ const confirmationsQuery = gql`
   }
 `;
 
+const watchInvoiceMutation = gql`
+  mutation watchInvoice(
+    $invoiceId: String!
+    $cryptoAmount: Float!
+    $confirmations: Int!
+    $posAddress: String!
+  ) {
+    watchInvoice(
+      input: {
+        invoiceId: $invoiceId
+        cryptoAmount: $cryptoAmount
+        confirmations: $confirmations
+        posAddress: $posAddress
+      }
+    )
+  }
+`;
+
 class Payment extends Component {
   state = {
     isMobile: checkWindowSize(),
@@ -51,7 +70,8 @@ class Payment extends Component {
     txHash: null,
     numConfirmations: 0,
     exchangeRates: [],
-    currency: null
+    currency: null,
+    confirmations: []
   };
 
   async componentDidMount() {
@@ -71,9 +91,14 @@ class Payment extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { total } = this.props;
+    const { total, invoiceId } = this.props;
+
     if (total !== prevProps.total) {
       this.updateFiatValue();
+    }
+
+    if (!isNull(invoiceId)) {
+      this.watchInvoiceOnApi();
     }
   }
 
@@ -167,12 +192,33 @@ class Payment extends Component {
       }
     });
 
-    this.setState({
+    await this.setState({
       watchers: {
         xdai: this.watcherXdai
-      }
+      },
+      confirmations
     });
+
+    this.watchInvoiceOnApi();
   };
+
+  watchInvoiceOnApi() {
+    const { invoiceId } = this.props;
+    const { confirmations, posAddress, valueCrypto } = this.state;
+
+    if (!isNull(invoiceId)) {
+      // call watcher on server side also
+      apolloClient.mutate({
+        mutation: watchInvoiceMutation,
+        variables: {
+          invoiceId,
+          confirmations: first(confirmations).confirmations,
+          posAddress,
+          cryptoAmount: parseFloat(valueCrypto.dai)
+        }
+      });
+    }
+  }
 
   async updateFiatValue() {
     const { total } = this.props;

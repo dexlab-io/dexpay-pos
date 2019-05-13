@@ -199,7 +199,13 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { isMobile, totalAmount, paymentModalOpen, activeTab } = this.state;
+    const {
+      isMobile,
+      totalAmount,
+      paymentModalOpen,
+      activeTab,
+      invoiceId
+    } = this.state;
 
     return (
       <Layout
@@ -216,6 +222,7 @@ class Dashboard extends Component {
             isModalOpen={paymentModalOpen}
             onCloseModal={this.onClosePaymentModal}
             total={totalAmount}
+            invoiceId={invoiceId}
           />
         ) : null}
       </Layout>
