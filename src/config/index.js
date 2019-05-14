@@ -3,7 +3,8 @@ export default {
   APP_VERSION: '0.0.1',
   siteName: 'Dexpay',
   siteUrl: 'https://dexpay.me',
-  graphQlUri: 'https://dexpay-graphql.now.sh/',
+  graphQlUri: 'https://dexpay-api-dev.pinku1.now.sh/',
+  // graphQlUri: 'https://dexpay-graphql.now.sh/',
   // graphQlUri: 'http://localhost:4000/',
   logo: '',
 
