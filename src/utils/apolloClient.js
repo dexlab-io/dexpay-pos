@@ -21,7 +21,10 @@ export const persistor = new CachePersistor({
 
 const httpLink = createHttpLink({
   uri: config.graphQlUri,
-  credentials: 'same-origin'
+  credentials: 'same-origin',
+  fetchOptions: {
+    mode: 'no-cors'
+  }
 });
 
 const authLink = setContext(async (_, { headers }) => {
