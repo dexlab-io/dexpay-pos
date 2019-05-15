@@ -6,6 +6,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { createHttpLink } from 'apollo-link-http';
+import fetch from 'isomorphic-fetch';
 
 import config from '../config';
 import { defaults, resolvers, typeDefs } from '../store';
@@ -19,12 +20,20 @@ export const persistor = new CachePersistor({
   debug: config.config
 });
 
+const customFetch = (uri, options) => {
+  return fetch(uri, options).then(response => {
+    if (response.status >= 500) {
+      // or handle 400 errors
+      return Promise.reject(response.status);
+    }
+    return response;
+  });
+};
+
 const httpLink = createHttpLink({
   uri: config.graphQlUri,
   credentials: 'same-origin',
-  fetchOptions: {
-    mode: 'no-cors'
-  }
+  fetch: customFetch
 });
 
 const authLink = setContext(async (_, { headers }) => {
