@@ -4,7 +4,7 @@ export default {
   siteName: 'Dexpay',
   siteUrl: 'https://dexpay.me',
   // graphQlUri: 'http://localhost:3000/graphql',
-  graphQlUri: 'https://dexpay-api-dev.pinku1.now.sh/graphql',
+  graphQlUri: 'https://dexpay-backend.herokuapp.com/',
   // graphQlUri: 'https://dexpay-graphql.now.sh/',
   // graphQlUri: 'http://localhost:4000/',
   logo: '',
