@@ -183,7 +183,9 @@ class Payment extends Component {
       });
 
       if (data.state === watchTx.STATES.CONFIRMED) {
-        this.watcherXdai.pollingOn = false;
+        if (this.watcherXdai) {
+          this.watcherXdai.pollingOn = false;
+        }
         onPaymentReceived({
           txHash: data.txHash,
           assetUsed: 'dai',
@@ -212,7 +214,7 @@ class Payment extends Component {
         mutation: watchInvoiceMutation,
         variables: {
           invoiceId,
-          confirmations: first(confirmations).confirmations,
+          confirmations: confirmations ? first(confirmations).confirmations : 5,
           posAddress,
           cryptoAmount: parseFloat(valueCrypto.dai)
         }
