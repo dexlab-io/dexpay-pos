@@ -214,7 +214,8 @@ class Payment extends Component {
         mutation: watchInvoiceMutation,
         variables: {
           invoiceId,
-          confirmations: confirmations ? first(confirmations).confirmations : 5,
+          confirmations:
+            confirmations.length > 0 ? first(confirmations).confirmations : 5,
           posAddress,
           cryptoAmount: parseFloat(valueCrypto.dai)
         }
