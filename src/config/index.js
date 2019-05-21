@@ -3,7 +3,7 @@ export default {
   APP_VERSION: '0.0.1',
   siteName: 'Dexpay',
   siteUrl: 'https://dexpay.me',
-  graphQlUri: 'https://dexpay-backend.herokuapp.com/',
+  graphQlUri: 'https://dexpay-api.herokuapp.com/',
   // graphQlUri: 'http://localhost:4000/',
   logo: '',
 
