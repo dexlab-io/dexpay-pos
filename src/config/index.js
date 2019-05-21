@@ -15,6 +15,7 @@ export default {
     { id: 'AUD', name: 'Australian dollar', symbol: 'A$' },
     { id: 'CAD', name: 'Canadian dollar', symbol: 'C$' },
     { id: 'CHF', name: 'Swiss franc', symbol: 'Fr' },
-    { id: 'CNY', name: 'Renminbi', symbol: '元' }
+    { id: 'CNY', name: 'Renminbi', symbol: '元' },
+    { id: 'INR', name: 'Indian rupee', symbol: '₹' }
   ]
 };
