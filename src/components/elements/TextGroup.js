@@ -17,11 +17,20 @@ const Hint = styled.p`
   width: 90%;
 `;
 
-const TextGroup = ({ label, placeholder, error, hint, ...otherProps }) => (
-  <Field className="field is-horizontal">
-    <div className="field-label is-normal">
-      <Label className="label">{label}</Label>
-    </div>
+const TextGroup = ({
+  label,
+  placeholder,
+  error,
+  hint,
+  isVertical,
+  ...otherProps
+}) => (
+  <Field className={`field ${isVertical ? '' : 'is-horizontal'}`}>
+    {label && (
+      <div className="field-label is-normal">
+        <Label className="label">{label}</Label>
+      </div>
+    )}
     <div className="field-body">
       <div className="field">
         <div className="control">
