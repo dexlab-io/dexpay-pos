@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import { truncateHash } from '../../../../utils/helpers';
 import cryptoIcon from '../../../../assets/dummy/crypto-icon.png';
@@ -71,7 +72,7 @@ class PaymentItem extends React.Component {
           <div className="content">
             <p>
               <small className="has-text-weight-light">
-                {payment.createdAt}
+                {moment(payment.createdAt).format('DD/MM/YYYY H:mm:ss')}
               </small>
               <br />
               {payment.invoiceNumber} | {payment.status} |{' '}
