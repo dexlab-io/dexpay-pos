@@ -29,8 +29,8 @@ const CheckImage = styled.img`
 `;
 const Count = styled.div`
   background-color: ${props =>
-    props.status === 'detected' ? '#000000' : props.theme.secondaryColor};
-  color: ${props => (props.status === 'detected' ? '#ffffff' : '#000000')};
+    props.confirmed ? props.theme.secondaryColor : '#000000'};
+  color: ${props => (props.confirmed ? '#000000' : '#ffffff')};
   padding: 6px 12px;
   margin-top: 30px;
   margin-bottom: 10px;
@@ -56,7 +56,7 @@ const InProgressBlocks = ({
           <CheckImage src={checkImg} alt="completed" />
         )}
       </div>
-      <Count status={status}>
+      <Count confirmed={numConfirmations === selectedToken.confirmations}>
         {numConfirmations}/{selectedToken.confirmations}
       </Count>
       <div>
