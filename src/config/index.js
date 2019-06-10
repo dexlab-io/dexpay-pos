@@ -7,6 +7,7 @@ export default {
   // graphQlUri: 'http://localhost:4000/',
   logo: '',
 
+  requiredConfirmations: 3,
   currencies: [
     { id: 'EUR', name: 'Euro', symbol: '€' },
     { id: 'USD', name: 'United States Dollar', symbol: '$' },
