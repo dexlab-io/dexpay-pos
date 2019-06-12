@@ -68,8 +68,8 @@ export default function() {
                     this.productItems = el;
                   }}
                   paymentModalOpen={paymentModalOpen}
-                  handleChange={({ cartTotal }) =>
-                    this.setState({ totalAmount: cartTotal })
+                  handleChange={({ cartTotal, cartItems }) =>
+                    this.setState({ totalAmount: cartTotal, cartItems })
                   }
                 />
               )}
