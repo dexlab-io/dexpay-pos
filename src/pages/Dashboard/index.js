@@ -223,7 +223,6 @@ class Dashboard extends Component {
       activeTab,
       invoiceId
     } = this.state;
-    console.log('cartItems', this.state.cartItems);
 
     return (
       <Layout
