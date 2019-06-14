@@ -64,6 +64,10 @@ class ProductItems extends React.Component {
     handleChange({ cartTotal: parseFloat(cartTotal).toFixed(2), cartItems });
   };
 
+  resetItems() {
+    this.setState({ cartItems: [] });
+  }
+
   render() {
     return (
       <Container>

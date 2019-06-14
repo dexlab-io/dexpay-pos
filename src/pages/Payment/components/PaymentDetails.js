@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { WatcherTx } from 'eth-core-js';
 
-// import WatcherTx from '../../../class/WatcherTx';
 import AddTip from './AddTip';
 import QrCode from './QrCode';
 import CryptoAmount from '../../../components/CryptoAmount';

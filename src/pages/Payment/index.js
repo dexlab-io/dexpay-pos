@@ -128,14 +128,7 @@ class Payment extends Component {
   };
 
   calculateCryptoValue = async () => {
-    const {
-      valueFiat,
-      tipValue,
-      posAddress,
-      exchangeRates,
-      currency
-    } = this.state;
-    const { onPaymentReceived } = this.props;
+    const { valueFiat, tipValue, exchangeRates, currency } = this.state;
 
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
     const pricesDai = find(exchangeRates, {
@@ -166,12 +159,23 @@ class Payment extends Component {
       }
     });
 
+    this.watchInvoiceOnClient();
+
+    this.watchInvoiceOnApi();
+
+    return null;
+  };
+
+  async watchInvoiceOnClient() {
+    const { posAddress, valueCrypto } = this.state;
+    const { onPaymentReceived } = this.props;
+    const daiValue = valueCrypto.dai;
+
     const result = await apolloClient.query({
       query: confirmationsQuery
     });
     const confirmations = result.data.requiredConfirmations;
 
-    // console.log('transaction', confirmations, posAddress, daiValue);
     this.watcherXdai = null;
     const watchTx = new WatcherTx();
     this.watcherXdai = new WatcherTx(watchTx.NETWORKS.XDAI, confirmations);
@@ -194,15 +198,13 @@ class Payment extends Component {
       }
     });
 
-    await this.setState({
+    this.setState({
       watchers: {
         xdai: this.watcherXdai
       },
       confirmations
     });
-
-    this.watchInvoiceOnApi();
-  };
+  }
 
   watchInvoiceOnApi() {
     const { invoiceId } = this.props;

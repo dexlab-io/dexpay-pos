@@ -32,7 +32,7 @@ const createInvoiceMutation = gql`
   mutation createInvoice(
     $fiatAmount: String!
     $fiatCurrency: String!
-    $items: [ItemInput!]
+    $items: [ItemInput]
   ) {
     createInvoice(
       input: {
@@ -165,6 +165,7 @@ class Dashboard extends Component {
           items
         }
       });
+
       this.setState({ invoiceId: invoiceResult.data.createInvoice.id });
     }
   };
@@ -187,6 +188,7 @@ class Dashboard extends Component {
       this.setState({
         totalAmount: '0'
       });
+
       if (this.productItems) {
         this.productItems.resetItems();
       }
