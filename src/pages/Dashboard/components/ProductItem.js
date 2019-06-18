@@ -46,6 +46,9 @@ class ProductItem extends React.Component {
     const { price } = this.state;
     const { product, currency } = this.props;
 
+    if (!product.priceCurrency) {
+      return this.setState({ price });
+    }
     if (
       product.priceCurrency.length === 0 ||
       product.priceCurrency === currency
