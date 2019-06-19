@@ -61,8 +61,12 @@ class ProductItems extends React.Component {
     });
 
     this.setState({ cartItems });
-    handleChange({ cartTotal: parseFloat(cartTotal).toFixed(2) });
+    handleChange({ cartTotal: parseFloat(cartTotal).toFixed(2), cartItems });
   };
+
+  resetItems() {
+    this.setState({ cartItems: [] });
+  }
 
   render() {
     return (

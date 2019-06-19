@@ -146,7 +146,7 @@ class Invoice extends React.Component {
       walletConnected: false,
       isApproved: false,
       isSuccessful: false,
-      walletAddress: null,
+      // walletAddress: null,
       web3Status: false,
       exchangeRates: []
     };
@@ -159,7 +159,7 @@ class Invoice extends React.Component {
     const metamaskStatus = await EthereumHDWallet.checkMetaMask();
 
     this.setState({ web3Status: metamaskStatus });
-    console.log('metamaskStatus', metamaskStatus);
+    // console.log('metamaskStatus', metamaskStatus);
   }
 
   async componentDidMount() {

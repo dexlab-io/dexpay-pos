@@ -1,29 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+
+import ShareInvoice from './ShareInvoice';
 import { truncateHash } from '../../../../utils/helpers';
 import cryptoIcon from '../../../../assets/dummy/crypto-icon.png';
 import FormatCurrency from '../../../../components/FormatCurrency';
 
-const Container = styled.a`
+const Container = styled.div`
   padding-left: 1.5rem;
+`;
+const Content = styled.div`
+  cursor: pointer;
 `;
 const Image = styled.img`
   margin-top: 6px;
 `;
 
 const PaymentItemWeb3 = ({ payment }) => (
-  <Container
-    href={`https://blockscout.com/poa/dai/tx/${payment.transactionHash}`}
-    target="_blank"
-    className="media"
-  >
+  <Container className="media">
     <figure className="media-left">
       <p className="image is-32x32">
         <Image src={cryptoIcon} alt={payment.currency} />
       </p>
     </figure>
-    <div className="media-content">
+    <Content
+      className="media-content"
+      href={`https://blockscout.com/poa/dai/tx/${payment.transactionHash}`}
+      target="_blank"
+    >
       <div className="content">
         <p>
           <small className="has-text-weight-light">
@@ -33,11 +38,12 @@ const PaymentItemWeb3 = ({ payment }) => (
           {truncateHash(payment.transactionHash)}
         </p>
       </div>
-    </div>
+    </Content>
     <div className="media-right">
       <small>
         <FormatCurrency value={parseFloat(payment.value)} />
       </small>
+      <ShareInvoice payment={payment} />
     </div>
   </Container>
 );

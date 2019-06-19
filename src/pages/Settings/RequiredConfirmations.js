@@ -11,9 +11,11 @@ import SettingsHeader from './components/SettingsHeader';
 import Breadcrumb from './components/Breadcrumb';
 import { Loading, Message, Slider } from '../../components/elements';
 import settingsItems from './components/settingsItems';
+import config from '../../config';
 
 const query = gql`
   {
+    acceptedTokens @client
     requiredConfirmations @client {
       token
       confirmations
@@ -69,9 +71,16 @@ class RequiredConfirmations extends React.Component {
     const selectedIndex = findIndex(confirmations, {
       token: confirmation.token
     });
-    const selected = confirmations[selectedIndex];
-    selected.confirmations = confirmation.confirmations;
-    confirmations[selectedIndex] = selected;
+    if (selectedIndex === -1) {
+      // new item
+      confirmations.push(confirmation);
+    } else {
+      // update item
+      const selected = confirmations[selectedIndex];
+      selected.confirmations = confirmation.confirmations;
+      confirmations[selectedIndex] = selected;
+    }
+
     this.setState({ confirmations });
 
     clearTimeout(this.mutationTimeout);
@@ -99,37 +108,52 @@ class RequiredConfirmations extends React.Component {
               fetchPolicy="cache-only"
               onCompleted={data => {
                 if (!confirmations) {
-                  this.setState({ confirmations: data.requiredConfirmations });
+                  this.setState({
+                    confirmations: data.requiredConfirmations
+                  });
                 }
               }}
             >
-              {({ loading, error }) => {
+              {({ loading, error, data }) => {
                 if (loading) return <Loading />;
                 if (error)
                   return <Message type="error">{error.message}</Message>;
+                const tokens = data.acceptedTokens;
 
-                return confirmations ? (
-                  confirmations.map(item => (
-                    <SliderContainer key={item.token}>
-                      <SliderLabel className="has-text-weight-semibold">
-                        {item.token}
-                      </SliderLabel>
-                      <SliderValue>{item.confirmations} Blocks</SliderValue>
-                      <SliderWrapper>
-                        <Slider
-                          value={item.confirmations}
-                          onChange={count =>
-                            this.handleChange({
-                              token: item.token,
-                              confirmations: count
-                            })
-                          }
-                        />
-                      </SliderWrapper>
-                    </SliderContainer>
-                  ))
+                return tokens && tokens.length > 0 ? (
+                  tokens.map(token => {
+                    let item = find(confirmations, { token });
+                    if (!item) {
+                      item = {
+                        token,
+                        confirmations: config.requiredConfirmations
+                      };
+                    }
+
+                    return (
+                      <SliderContainer key={token}>
+                        <SliderLabel className="has-text-weight-semibold">
+                          {item.token}
+                        </SliderLabel>
+                        <SliderValue>{item.confirmations} Blocks</SliderValue>
+                        <SliderWrapper>
+                          <Slider
+                            value={item.confirmations}
+                            onChange={count =>
+                              this.handleChange({
+                                token: item.token,
+                                confirmations: count
+                              })
+                            }
+                          />
+                        </SliderWrapper>
+                      </SliderContainer>
+                    );
+                  })
                 ) : (
-                  <Loading />
+                  <Message>
+                    No tokens are selected in accepted tokens settings.
+                  </Message>
                 );
               }}
             </Query>

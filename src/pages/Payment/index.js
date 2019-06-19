@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { withNamespaces } from 'react-i18next';
 import Modal from 'react-responsive-modal';
 import gql from 'graphql-tag';
-import { find } from 'lodash';
+import { find, first } from 'lodash';
 import swal from 'sweetalert';
 import { WatcherTx } from 'eth-core-js';
 
+import { isNull } from 'util';
 import apolloClient from '../../utils/apolloClient';
 import { checkWindowSize } from '../../utils/helpers';
 import MobileView from './mobile.view';
@@ -35,6 +36,24 @@ const confirmationsQuery = gql`
   }
 `;
 
+const watchInvoiceMutation = gql`
+  mutation watchInvoice(
+    $invoiceId: String!
+    $cryptoAmount: Float!
+    $confirmations: Int!
+    $posAddress: String!
+  ) {
+    watchInvoice(
+      input: {
+        invoiceId: $invoiceId
+        cryptoAmount: $cryptoAmount
+        confirmations: $confirmations
+        posAddress: $posAddress
+      }
+    )
+  }
+`;
+
 class Payment extends Component {
   state = {
     isMobile: checkWindowSize(),
@@ -51,7 +70,8 @@ class Payment extends Component {
     txHash: null,
     numConfirmations: 0,
     exchangeRates: [],
-    currency: null
+    currency: null,
+    confirmations: []
   };
 
   async componentDidMount() {
@@ -71,9 +91,14 @@ class Payment extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { total } = this.props;
+    const { total, invoiceId } = this.props;
+
     if (total !== prevProps.total) {
       this.updateFiatValue();
+    }
+
+    if (!isNull(invoiceId)) {
+      this.watchInvoiceOnApi();
     }
   }
 
@@ -103,14 +128,7 @@ class Payment extends Component {
   };
 
   calculateCryptoValue = async () => {
-    const {
-      valueFiat,
-      tipValue,
-      posAddress,
-      exchangeRates,
-      currency
-    } = this.state;
-    const { onPaymentReceived } = this.props;
+    const { valueFiat, tipValue, exchangeRates, currency } = this.state;
 
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
     const pricesDai = find(exchangeRates, {
@@ -141,12 +159,23 @@ class Payment extends Component {
       }
     });
 
+    this.watchInvoiceOnClient();
+
+    this.watchInvoiceOnApi();
+
+    return null;
+  };
+
+  async watchInvoiceOnClient() {
+    const { posAddress, valueCrypto } = this.state;
+    const { onPaymentReceived } = this.props;
+    const daiValue = valueCrypto.dai;
+
     const result = await apolloClient.query({
       query: confirmationsQuery
     });
     const confirmations = result.data.requiredConfirmations;
 
-    // console.log('transaction', confirmations, posAddress, daiValue);
     this.watcherXdai = null;
     const watchTx = new WatcherTx();
     this.watcherXdai = new WatcherTx(watchTx.NETWORKS.XDAI, confirmations);
@@ -158,7 +187,9 @@ class Payment extends Component {
       });
 
       if (data.state === watchTx.STATES.CONFIRMED) {
-        this.watcherXdai.pollingOn = false;
+        if (this.watcherXdai) {
+          this.watcherXdai.pollingOn = false;
+        }
         onPaymentReceived({
           txHash: data.txHash,
           assetUsed: 'dai',
@@ -170,9 +201,29 @@ class Payment extends Component {
     this.setState({
       watchers: {
         xdai: this.watcherXdai
-      }
+      },
+      confirmations
     });
-  };
+  }
+
+  watchInvoiceOnApi() {
+    const { invoiceId } = this.props;
+    const { confirmations, posAddress, valueCrypto } = this.state;
+
+    if (!isNull(invoiceId)) {
+      // call watcher on server side also
+      apolloClient.mutate({
+        mutation: watchInvoiceMutation,
+        variables: {
+          invoiceId,
+          confirmations:
+            confirmations.length > 0 ? first(confirmations).confirmations : 5,
+          posAddress,
+          cryptoAmount: parseFloat(valueCrypto.dai)
+        }
+      });
+    }
+  }
 
   async updateFiatValue() {
     const { total } = this.props;
