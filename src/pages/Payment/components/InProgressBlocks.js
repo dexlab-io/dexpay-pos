@@ -7,7 +7,7 @@ import { Trans } from 'react-i18next';
 import { find } from 'lodash';
 import { WatcherTx } from 'eth-core-js';
 
-// import WatcherTx from '../../../class/WatcherTx';
+import config from '../../../config';
 import loadingImg from '../../../assets/images/loading.gif';
 import checkImg from '../../../assets/images/checkmark.png';
 
@@ -29,8 +29,8 @@ const CheckImage = styled.img`
 `;
 const Count = styled.div`
   background-color: ${props =>
-    props.status === 'detected' ? '#000000' : props.theme.secondaryColor};
-  color: ${props => (props.status === 'detected' ? '#ffffff' : '#000000')};
+    props.confirmed ? props.theme.secondaryColor : '#000000'};
+  color: ${props => (props.confirmed ? '#000000' : '#ffffff')};
   padding: 6px 12px;
   margin-top: 30px;
   margin-bottom: 10px;
@@ -42,8 +42,11 @@ const InProgressBlocks = ({
   requiredConfirmations,
   numConfirmations
 }) => {
-  const selectedToken = find(requiredConfirmations, { token: 'xdai' });
+  let selectedToken = find(requiredConfirmations, { token: 'xdai' });
   const watchTx = new WatcherTx();
+  if (!selectedToken) {
+    selectedToken = { confirmations: config.requiredConfirmations };
+  }
 
   return (
     <Container>
@@ -56,7 +59,7 @@ const InProgressBlocks = ({
           <CheckImage src={checkImg} alt="completed" />
         )}
       </div>
-      <Count status={status}>
+      <Count confirmed={numConfirmations === selectedToken.confirmations}>
         {numConfirmations}/{selectedToken.confirmations}
       </Count>
       <div>

@@ -29,9 +29,17 @@ const updateWalletMutation = gql`
 `;
 
 const createInvoiceMutation = gql`
-  mutation createInvoice($fiatAmount: String!, $fiatCurrency: String!) {
+  mutation createInvoice(
+    $fiatAmount: String!
+    $fiatCurrency: String!
+    $items: [ItemInput]
+  ) {
     createInvoice(
-      input: { fiatAmount: $fiatAmount, fiatCurrency: $fiatCurrency }
+      input: {
+        fiatAmount: $fiatAmount
+        fiatCurrency: $fiatCurrency
+        items: $items
+      }
     ) {
       id
       invoiceNumber
@@ -81,7 +89,8 @@ class Dashboard extends Component {
       paymentModalOpen: false,
       setupModalOpen: false,
       pos: { address: null },
-      invoiceId: null
+      invoiceId: null,
+      cartItems: []
     };
   }
 
@@ -133,7 +142,7 @@ class Dashboard extends Component {
   }
 
   handlePay = async () => {
-    const { totalAmount, isLoggedIn } = this.state;
+    const { totalAmount, cartItems, isLoggedIn } = this.state;
     this.setState({ paymentModalOpen: true });
 
     const response = await apolloClient.query({ query });
@@ -141,13 +150,22 @@ class Dashboard extends Component {
     // add entry to API
     // only do this if user is logged in
     if (isLoggedIn) {
+      const items = cartItems.map(item => ({
+        productId: item.id,
+        title: item.title,
+        price: item.price,
+        quantity: item.quantity
+      }));
+
       const invoiceResult = await apolloClient.mutate({
         mutation: createInvoiceMutation,
         variables: {
           fiatAmount: totalAmount.toString(),
-          fiatCurrency: response.data.currency
+          fiatCurrency: response.data.currency,
+          items
         }
       });
+
       this.setState({ invoiceId: invoiceResult.data.createInvoice.id });
     }
   };
@@ -170,6 +188,7 @@ class Dashboard extends Component {
       this.setState({
         totalAmount: '0'
       });
+
       if (this.productItems) {
         this.productItems.resetItems();
       }
@@ -199,7 +218,13 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { isMobile, totalAmount, paymentModalOpen, activeTab } = this.state;
+    const {
+      isMobile,
+      totalAmount,
+      paymentModalOpen,
+      activeTab,
+      invoiceId
+    } = this.state;
 
     return (
       <Layout
@@ -216,6 +241,7 @@ class Dashboard extends Component {
             isModalOpen={paymentModalOpen}
             onCloseModal={this.onClosePaymentModal}
             total={totalAmount}
+            invoiceId={invoiceId}
           />
         ) : null}
       </Layout>

@@ -35,7 +35,11 @@ const Tagline = styled.h3`
 
 class SetPassword extends React.Component {
   onSuccess = () => {
-    swal('Success!', 'Password has been set, please login.');
+    const { history } = this.props;
+
+    swal('Success!', 'Password has been set, please login.').then(() => {
+      history.push('/login');
+    });
   };
 
   render() {

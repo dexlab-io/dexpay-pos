@@ -131,16 +131,22 @@ const resolvers = {
       const selectedIndex = findIndex(confirmations, {
         token: variables.token
       });
-      const selected = confirmations[selectedIndex];
-      selected.confirmations = variables.confirmations;
-      confirmations[selectedIndex] = selected;
+      if (selectedIndex === -1) {
+        // new item
+        confirmations.push({ __typename: 'Confirmation', ...variables });
+      } else {
+        // update item
+        const selected = confirmations[selectedIndex];
+        selected.confirmations = variables.confirmations;
+        confirmations[selectedIndex] = selected;
+      }
 
       // update cache
       cache.writeData({
         data: { requiredConfirmations: confirmations }
       });
 
-      return selected;
+      return variables;
     },
     updateWalletAddress: (_, variables, { cache }) => {
       // update cache
