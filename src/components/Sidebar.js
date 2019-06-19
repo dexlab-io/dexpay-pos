@@ -41,7 +41,7 @@ class Sidebar extends React.Component {
             </Item>
             <Item>
               <a
-                href="https://dexpay-dashboard-dev.netlify.com"
+                href="https://dashboard.dexpay.me"
                 target="_blank"
                 rel="noopener noreferrer"
               >
