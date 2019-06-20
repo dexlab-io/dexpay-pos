@@ -1,12 +1,12 @@
 export default [
-  {
-    id: 1,
-    title: 'Update account',
-    linkTo: '/settings',
-    bgColor: '#FFEF66',
-    emoji: '👋',
-    isPrivate: true
-  },
+  // {
+  //   id: 1,
+  //   title: 'Update account',
+  //   linkTo: '/settings',
+  //   bgColor: '#FFEF66',
+  //   emoji: '👋',
+  //   isPrivate: true
+  // },
   // {
   //   id: 2,
   //   title: 'Shop Items',

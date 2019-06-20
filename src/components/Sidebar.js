@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import logoImg from '../assets/images/dex-logo.png';
+import DashboardOpener from './DashboardOpener';
 
 const Container = styled.div`
   padding: 40px;
@@ -40,13 +41,7 @@ class Sidebar extends React.Component {
               <Link to="/settings">Account Settings</Link>
             </Item>
             <Item>
-              <a
-                href="https://dashboard.dexpay.me"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Admin Dashboard
-              </a>
+              <DashboardOpener>Admin Dashboard</DashboardOpener>
             </Item>
             <Item>
               <a

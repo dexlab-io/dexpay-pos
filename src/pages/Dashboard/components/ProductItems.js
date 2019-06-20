@@ -6,6 +6,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import ProductItem from './ProductItem';
+import DashboardOpener from '../../../components/DashboardOpener';
 import { Message, Loading } from '../../../components/elements';
 
 const Container = styled.div``;
@@ -74,10 +75,19 @@ class ProductItems extends React.Component {
         <Query query={query} fetchPolicy="cache-and-network">
           {({ data, loading, error }) => {
             if (loading && !data.products) return <Loading />;
-            if (error)
+            if (error) {
               return (
                 <Message type="error">Please login to view products.</Message>
               );
+            }
+            if (data.products.length === 0) {
+              return (
+                <Message type="error">
+                  No products available, please add new products in{' '}
+                  <DashboardOpener>Admin Dashboard</DashboardOpener>
+                </Message>
+              );
+            }
             // console.log('products', data.products);
 
             return (
