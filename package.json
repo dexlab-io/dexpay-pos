@@ -12,6 +12,7 @@
     "css-build": "node-sass --omit-source-map-url src/theme/bulma.scss src/theme/bulma.css"
   },
   "dependencies": {
+    "@sentry/browser": "^5.4.3",
     "apollo-cache-inmemory": "1.4.2",
     "apollo-cache-persist": "0.1.1",
     "apollo-client": "2.4.12",
