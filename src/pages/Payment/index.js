@@ -131,9 +131,9 @@ class Payment extends Component {
     this.calculateCryptoValue();
   };
 
-  changeCurrency = newToken => {
+  changeCurrency = async newToken => {
     console.log('changeCurrency', newToken);
-    this.setState({ selectedCurrency: newToken });
+    await this.setState({ selectedCurrency: newToken });
     this.calculateCryptoValue();
   };
 
@@ -190,10 +190,37 @@ class Payment extends Component {
 
     this.watcherXdai = null;
 
+    console.log('selectedCurrency', selectedCurrency);
     const watchTx = new WatcherTx();
-    if (selectedCurrency === 'xdai') {
-      this.watcherXdai = new WatcherTx(watchTx.NETWORKS.XDAI, confirmations);
-      this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
+
+    this.watcherXdai = new WatcherTx(watchTx.NETWORKS.XDAI, confirmations);
+    this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
+      this.setState({
+        txState: data.state,
+        txHash: data.txHash,
+        numConfirmations: data.numConfirmations
+      });
+
+      if (data.state === watchTx.STATES.CONFIRMED) {
+        if (this.watcherXdai) {
+          this.watcherXdai.pollingOn = false;
+        }
+        onPaymentReceived({
+          txHash: data.txHash,
+          assetUsed: 'dai',
+          cryptoAmount: parseFloat(daiValue)
+        });
+      }
+    });
+
+    this.watcherDai = new WatcherTx(watchTx.NETWORKS.ETHEREUM, confirmations);
+    this.watcherDai.tokenTransfers(
+      '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
+      posAddress,
+      daiValue,
+      data => {
+        console.log('data cb', data);
+
         this.setState({
           txState: data.state,
           txHash: data.txHash,
@@ -210,37 +237,8 @@ class Payment extends Component {
             cryptoAmount: parseFloat(daiValue)
           });
         }
-      });
-    }
-
-    if (selectedCurrency === 'dai') {
-      this.watcherDai = new WatcherTx(watchTx.NETWORKS.ETHEREUM, confirmations);
-      this.watcherDai.tokenTransfers(
-        '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
-        posAddress,
-        daiValue,
-        data => {
-          console.log('data cb', data);
-
-          this.setState({
-            txState: data.state,
-            txHash: data.txHash,
-            numConfirmations: data.numConfirmations
-          });
-
-          if (data.state === watchTx.STATES.CONFIRMED) {
-            if (this.watcherXdai) {
-              this.watcherXdai.pollingOn = false;
-            }
-            onPaymentReceived({
-              txHash: data.txHash,
-              assetUsed: 'dai',
-              cryptoAmount: parseFloat(daiValue)
-            });
-          }
-        }
-      );
-    }
+      }
+    );
 
     this.setState({
       watchers: {
