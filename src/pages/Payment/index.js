@@ -4,9 +4,9 @@ import Modal from 'react-responsive-modal';
 import gql from 'graphql-tag';
 import { find, first } from 'lodash';
 import swal from 'sweetalert';
-import { WatcherTx } from 'eth-core-js';
-
 import { isNull } from 'util';
+import { WatcherTx } from '../../lib/main';
+
 import apolloClient from '../../utils/apolloClient';
 import { checkWindowSize } from '../../utils/helpers';
 import MobileView from './mobile.view';
@@ -61,6 +61,7 @@ class Payment extends Component {
       eth: '0',
       dai: '0'
     },
+    selectedCurrency: 'dai',
     posAddress: null,
     watchers: null,
     valueFiat: 0,
@@ -93,6 +94,8 @@ class Payment extends Component {
   componentDidUpdate(prevProps) {
     const { total, invoiceId } = this.props;
 
+    console.log('componentDidUpdate this.props', this.props);
+
     if (total !== prevProps.total) {
       this.updateFiatValue();
     }
@@ -107,6 +110,7 @@ class Payment extends Component {
       this.watcherXdai.pollingOn = false;
     }
     this.watcherXdai = null;
+    this.watcherEth = null;
   }
 
   addTipPayment = async percentage => {
@@ -127,6 +131,12 @@ class Payment extends Component {
     this.calculateCryptoValue();
   };
 
+  changeCurrency = newToken => {
+    console.log('changeCurrency', newToken);
+    this.setState({ selectedCurrency: newToken });
+    this.calculateCryptoValue();
+  };
+
   calculateCryptoValue = async () => {
     const { valueFiat, tipValue, exchangeRates, currency } = this.state;
 
@@ -134,6 +144,7 @@ class Payment extends Component {
     const pricesDai = find(exchangeRates, {
       token: 'xdai'
     });
+
     if (!pricesDai) {
       return swal(
         'Issue!',
@@ -167,40 +178,74 @@ class Payment extends Component {
   };
 
   async watchInvoiceOnClient() {
-    const { posAddress, valueCrypto } = this.state;
+    const { posAddress, valueCrypto, selectedCurrency } = this.state;
     const { onPaymentReceived } = this.props;
     const daiValue = valueCrypto.dai;
 
     const result = await apolloClient.query({
       query: confirmationsQuery
     });
+
     const confirmations = result.data.requiredConfirmations;
 
     this.watcherXdai = null;
-    const watchTx = new WatcherTx();
-    this.watcherXdai = new WatcherTx(watchTx.NETWORKS.XDAI, confirmations);
-    this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
-      this.setState({
-        txState: data.state,
-        txHash: data.txHash,
-        numConfirmations: data.numConfirmations
-      });
 
-      if (data.state === watchTx.STATES.CONFIRMED) {
-        if (this.watcherXdai) {
-          this.watcherXdai.pollingOn = false;
-        }
-        onPaymentReceived({
+    const watchTx = new WatcherTx();
+    if (selectedCurrency === 'xdai') {
+      this.watcherXdai = new WatcherTx(watchTx.NETWORKS.XDAI, confirmations);
+      this.watcherXdai.xdaiTransfer(posAddress, daiValue, data => {
+        this.setState({
+          txState: data.state,
           txHash: data.txHash,
-          assetUsed: 'dai',
-          cryptoAmount: parseFloat(daiValue)
+          numConfirmations: data.numConfirmations
         });
-      }
-    });
+
+        if (data.state === watchTx.STATES.CONFIRMED) {
+          if (this.watcherXdai) {
+            this.watcherXdai.pollingOn = false;
+          }
+          onPaymentReceived({
+            txHash: data.txHash,
+            assetUsed: 'dai',
+            cryptoAmount: parseFloat(daiValue)
+          });
+        }
+      });
+    }
+
+    if (selectedCurrency === 'dai') {
+      this.watcherDai = new WatcherTx(watchTx.NETWORKS.ETHEREUM, confirmations);
+      this.watcherDai.tokenTransfers(
+        '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
+        posAddress,
+        daiValue,
+        data => {
+          console.log('data cb', data);
+
+          this.setState({
+            txState: data.state,
+            txHash: data.txHash,
+            numConfirmations: data.numConfirmations
+          });
+
+          if (data.state === watchTx.STATES.CONFIRMED) {
+            if (this.watcherXdai) {
+              this.watcherXdai.pollingOn = false;
+            }
+            onPaymentReceived({
+              txHash: data.txHash,
+              assetUsed: 'dai',
+              cryptoAmount: parseFloat(daiValue)
+            });
+          }
+        }
+      );
+    }
 
     this.setState({
       watchers: {
-        xdai: this.watcherXdai
+        xdai: this.watcherXdai,
+        dai: this.watcherDai
       },
       confirmations
     });

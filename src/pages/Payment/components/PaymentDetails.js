@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
-import { WatcherTx } from 'eth-core-js';
+import { WatcherTx } from 'eth-dexcore-js';
 
 import AddTip from './AddTip';
 import QrCode from './QrCode';
@@ -67,6 +67,7 @@ class PaymentDetails extends React.Component {
       watchers,
       status,
       addTipPayment,
+      changeCurrency,
       title,
       numConfirmations
     } = this.props;
@@ -85,8 +86,11 @@ class PaymentDetails extends React.Component {
           cryptoCurrency={selectedCurrency}
           cryptoValue={valueCrypto}
           fiatAmount={parseFloat(valueFiat)}
-          hasSelection={false}
+          hasSelection
           handleChange={option => {
+            console.log('asdf', option);
+            console.log('this.props', this.props);
+            changeCurrency(option.value);
             this.setState({ selectedCurrency: option.value });
           }}
         />
@@ -115,9 +119,13 @@ class PaymentDetails extends React.Component {
                 <AddressClipboard address={data.walletAddress} />
                 {watchers ? (
                   <NetworkStatus
-                    label={watchers.xdai.conf.label}
+                    label={
+                      selectedCurrency === 'xdai'
+                        ? watchers.xdai.conf.label
+                        : 'Dai on Ethereum'
+                    }
                     status={
-                      watchers.xdai.isConnected()
+                      watchers.xdai && watchers.xdai.isConnected()
                         ? 'connected'
                         : 'not connected'
                     }

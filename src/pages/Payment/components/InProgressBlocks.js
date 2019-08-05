@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Trans } from 'react-i18next';
 import { find } from 'lodash';
-import { WatcherTx } from 'eth-core-js';
+import { WatcherTx } from 'eth-dexcore-js';
 
 import config from '../../../config';
 import loadingImg from '../../../assets/images/loading.gif';

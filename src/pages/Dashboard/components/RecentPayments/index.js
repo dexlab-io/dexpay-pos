@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { xDAIHDWallet } from 'eth-core-js';
+import { xDAIHDWallet } from 'eth-dexcore-js';
 
 import PaymentItem from './PaymentItem';
 import PaymentItemWeb3 from './PaymentItemWeb3';

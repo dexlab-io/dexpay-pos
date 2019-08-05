@@ -32,8 +32,8 @@ const InnerSelect = styled.div`
 const SelectIcon = styled.div``;
 
 const options = [
-  { value: 'dai', label: 'xDai' }
-  // { value: 'eth', label: 'Ethereum' }
+  { value: 'xdai', label: 'xDai' },
+  { value: 'dai', label: 'Dai (ETH)' }
 ];
 
 class CryptoAmount extends React.Component {
@@ -57,7 +57,7 @@ class CryptoAmount extends React.Component {
     const activeItem = (
       <Container style={{ paddingTop: '10px' }}>
         <Image src={cryptoIcon} alt={selectedCrypto} />
-        <span>x{selectedCrypto.toUpperCase()}&nbsp;</span>
+        <span>{selectedCrypto.toUpperCase()}&nbsp;</span>
         <span className="has-text-weight-light">
           {cryptoValue[selectedCrypto.toLowerCase()]}
         </span>

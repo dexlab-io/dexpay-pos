@@ -1,7 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import { EthereumHDWallet } from 'eth-core-js';
+import { EthereumHDWallet } from 'eth-dexcore-js';
 
 import WalletAddressForm from '../../Settings/components/WalletAddressForm';
 import client from '../../../utils/apolloClient';
