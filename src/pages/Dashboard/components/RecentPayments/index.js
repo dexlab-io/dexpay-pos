@@ -90,7 +90,7 @@ class RecentPayments extends React.Component {
                 return <Loading />;
               }
               if (error) return <Message type="error">{error.message}</Message>;
-              // console.log('invoices', data.invoices);
+              console.log('invoices', data.invoices);
 
               if (data.invoices.length === 0 && !isLoading) {
                 return <Message>No recent transactions found.</Message>;
