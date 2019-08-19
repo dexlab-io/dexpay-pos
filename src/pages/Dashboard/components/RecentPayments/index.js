@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { xDAIHDWallet } from 'eth-core-js';
+import { xDAIHDWallet } from 'eth-dexcore-js';
 
 import PaymentItem from './PaymentItem';
 import PaymentItemWeb3 from './PaymentItemWeb3';
@@ -90,7 +90,7 @@ class RecentPayments extends React.Component {
                 return <Loading />;
               }
               if (error) return <Message type="error">{error.message}</Message>;
-              // console.log('invoices', data.invoices);
+              console.log('invoices', data.invoices);
 
               if (data.invoices.length === 0 && !isLoading) {
                 return <Message>No recent transactions found.</Message>;

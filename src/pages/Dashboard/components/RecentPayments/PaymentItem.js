@@ -66,7 +66,7 @@ class PaymentItem extends React.Component {
               onOpenModal(payment);
             } else {
               window.open(
-                `https://blockscout.com/poa/dai/tx/${payment.txHash}`,
+                `https://blockscout.com/${payment.assetUsed === 'dai' ? 'eth/mainnet' : 'poa/dai'}/tx/${payment.txHash}`,
                 '_blank'
               );
             }

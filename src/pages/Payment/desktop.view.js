@@ -10,6 +10,7 @@ export default function() {
         status={status}
         title={title}
         addTipPayment={this.addTipPayment}
+        changeCurrency={this.changeCurrency}
         {...this.state}
       />
     </section>
