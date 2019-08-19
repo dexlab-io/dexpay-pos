@@ -163,7 +163,7 @@ export default class WatcherTx {
     const currentBlock = await web3.eth.getBlockNumber();
 
     if (CONF.ENABLE_LOGS) {
-      console.log('xdaiTransfer', currentBlock, this.pollingOn);
+      // console.log('xdaiTransfer', currentBlock, this.pollingOn);
     }
 
     if (currentBlock > this.lastBlockChecked) {
@@ -214,15 +214,16 @@ export default class WatcherTx {
   subscribeLogEvent = (contract, eventName, recipient, value, cb) => {
     const web3 = this.getWeb3ws();
 
-    console.log('contract', contract);
     const eventJsonInterface = web3.utils._.find(
       contract._jsonInterface,
       o => o.name === eventName && o.type === 'event'
     );
 
-    console.log('eventJsonInterface', eventJsonInterface);
+    console.log('value', value);
 
     const weiValue = web3.utils.toWei(value.toString());
+
+    console.log('weiValue', weiValue);
 
     const subscription = web3.eth.subscribe(
       'logs',

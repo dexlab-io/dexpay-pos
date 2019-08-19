@@ -14,7 +14,6 @@ export const getTokenPrice = (token = 'ethereum') => {
       `https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=${currenciesString}`
     )
     .then(response => {
-      console.log('response', response);
       return response.data[token];
     })
     .catch(() => 0);
