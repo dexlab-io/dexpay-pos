@@ -8,13 +8,18 @@ import { getTokenPrice } from '../../utils/exchangeRates';
 
 const fetchExchangeRates = async (_, variables, { cache }) => {
   // check if token already in store
-  const data = cache.readQuery({
-    query: gql`
-      query AcceptedTokens {
-        acceptedTokens @client
-      }
-    `
-  });
+  // THIS SHIT DOES NOT WORK
+  // const data = cache.readQuery({
+  //   query: gql`
+  //     query AcceptedTokens {
+  //       acceptedTokens @client
+  //     }
+  //   `
+  // });
+
+  const data = {
+    acceptedTokens: ['dai']
+  };
 
   const exchangeRates = await new Promise(resolve => {
     const ratesPromise = data.acceptedTokens.map(async token => {
@@ -29,7 +34,12 @@ const fetchExchangeRates = async (_, variables, { cache }) => {
       });
       return { __typename: 'ExchangeRates', token, fiat };
     });
-    Promise.all(ratesPromise).then(resultData => resolve(resultData));
+
+    Promise.all(ratesPromise)
+      .then(resultData => resolve(resultData))
+      .catch(e => {
+        console.log('', e);
+      });
   });
 
   // console.log('exchangeRates', exchangeRates);
@@ -71,10 +81,13 @@ const resolvers = {
         data: { isLoggedIn: !!token }
       });
 
+      console.log('INIT');
+
+      fetchExchangeRates(_, variables, { cache });
       // fetch exchange rates, every 12 seconds
       setInterval(() => {
         fetchExchangeRates(_, variables, { cache });
-      }, 12000);
+      }, 1000);
 
       return true;
     },

@@ -141,9 +141,14 @@ class Payment extends Component {
     const { valueFiat, tipValue, exchangeRates, currency } = this.state;
 
     const totalIncludingTip = parseFloat(valueFiat) + parseFloat(tipValue);
+
+    console.log('exchangeRates', exchangeRates);
+
     const pricesDai = find(exchangeRates, {
-      token: 'xdai'
+      token: 'dai'
     });
+
+    console.log('pricesDai', pricesDai);
 
     if (!pricesDai) {
       return swal(
