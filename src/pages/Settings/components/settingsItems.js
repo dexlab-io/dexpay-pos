@@ -23,14 +23,14 @@ export default [
     emoji: '🔑',
     isPrivate: true
   },
-  {
-    id: 4,
-    title: 'Accepted Tokens',
-    linkTo: '/settings/accepted-tokens',
-    bgColor: '#99CC66',
-    emoji: '💱',
-    isPrivate: false
-  },
+  // {
+  //   id: 4,
+  //   title: 'Accepted Tokens',
+  //   linkTo: '/settings/accepted-tokens',
+  //   bgColor: '#99CC66',
+  //   emoji: '💱',
+  //   isPrivate: false
+  // },
   {
     id: 5,
     title: 'Wallet Address',

@@ -171,12 +171,12 @@ class Payment extends Component {
     await this.setState({
       valueCrypto: {
         //   eth: ethValue,
-        dai: daiValue
+        dai: daiValue,
+        xdai: daiValue
       }
     });
 
     this.watchInvoiceOnClient();
-
     this.watchInvoiceOnApi();
 
     return null;
@@ -212,7 +212,7 @@ class Payment extends Component {
         }
         onPaymentReceived({
           txHash: data.txHash,
-          assetUsed: 'dai',
+          assetUsed: 'xdai',
           cryptoAmount: parseFloat(daiValue)
         });
       }
