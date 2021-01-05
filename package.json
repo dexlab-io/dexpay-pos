@@ -20,7 +20,7 @@
     "apollo-link-error": "1.1.5",
     "apollo-link-http": "^1.5.12",
     "apollo-link-state": "0.4.2",
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "bootstrap": "^4.2.1",
     "currency.js": "^1.2.1",
     "eslint-plugin-jsx-a11y": "^6.2.1",
