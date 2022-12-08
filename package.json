@@ -34,7 +34,7 @@
     "merge-graphql-schemas": "^1.5.8",
     "moment": "^2.24.0",
     "prop-types": "^15.6.2",
-    "qs": "^6.6.0",
+    "qs": "^6.7.3",
     "rc-slider": "^8.6.5",
     "react": "^16.7.0",
     "react-apollo": "2.4.1",
